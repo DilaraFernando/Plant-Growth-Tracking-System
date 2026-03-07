@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenGuard AI - My Greenhouse</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/GreenHouse.css">
+</head>
+<body>
+
+<div id="alert-container" class="alert-stack"></div>
+
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+        <div class="logo">🌿 <span>Growth-Agri</span></div>
+
+        <!-- Navigation Links ) -->
+        <ul class="nav-list">
+            <li><a href="../../mainPage/pages/index.html" class="nav-link active"><i class="fas fa-home"></i>Back Home <--</a></li>
+
+        </ul>
+
+        <!-- New Categories Section -->
+        <div class="categories-box">
+            <div class="box-header">
+                <h3>Our Categories</h3>
+            </div>
+            <div class="categories-list">
+                <a href="#" class="category-item">
+                    <span class="cat-icon">🥕</span>
+                    <span>Vegetables</span>
+                </a>
+                <a href="#" class="category-item">
+                    <span class="cat-icon">🍎</span>
+                    <span>Fruits</span>
+                </a>
+                <a href="#" class="category-item">
+                    <span class="cat-icon">🌸</span>
+                    <span>Flowers</span>
+                </a>
+                <a href="#" class="category-item">
+                    <span class="cat-icon">🪴</span>
+                    <span>Indoor Plants</span>
+                </a>
+                <a href="#" class="category-item">
+                    <span class="cat-icon">🌳</span>
+                    <span>Outdoor Plants</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Activity Box  -->
+        <div class="activity-box">
+            <div class="box-header">
+                <h3>Recent Activity</h3>
+                <a href="#">View All</a>
+            </div>
+            <div id="activity-list" class="activity-list">
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search plants, sectors or sensors...">
+            </div>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Tuki+Joshua&background=1e293b&color=fff" alt="Dilara">
+                <span>Dilara Fernando</span>
+            </div>
+        </header>
+
+        <section class="plant-section">
+            <div class="section-title">
+                <h2>My Greenhouse Collection</h2>
+                <p>Live status and public community feedback</p>
+            </div>
+
+            <div class="plant-grid">
+
+                <div class="plant-card">
+                    <div class="card-img">
+                        <span class="badge veg">Vegetable</span>
+                        <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=500" alt="Tomato">
+                        <div class="live-tag">● Live</div>
+                    </div>
+                    <div class="card-body">
+                        <h3>Heirloom Tomato</h3>
+                        <p class="id-text">ID: GH-A1 | Sector: Zone A</p>
+
+                        <div class="sensor-row">
+                            <div class="stat"><i class="fas fa-thermometer-half"></i> 22°C</div>
+                            <div class="stat"><i class="fas fa-tint"></i> 45%</div>
+                        </div>
+
+                        <div class="feedback-input">
+                            <input type="text" id="input-GH-A1" placeholder="Add public feedback...">
+                            <button onclick="sendFeedback('Heirloom Tomato', 'GH-A1')">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plant-card">
+                    <div class="card-img">
+                        <span class="badge veg">Vegetable</span>
+                        <img src="https://images.unsplash.com/photo-1558449195-fa2815c4a548?auto=format&fit=crop&w=500" alt="Pepper">
+                        <div class="live-tag">● Live</div>
+                    </div>
+                    <div class="card-body">
+                        <h3>Bell Pepper</h3>
+                        <p class="id-text">ID: GH-B5 | Sector: Zone B</p>
+
+                        <div class="sensor-row">
+                            <div class="stat"><i class="fas fa-thermometer-half"></i> 24°C</div>
+                            <div class="stat"><i class="fas fa-tint"></i> 55%</div>
+                        </div>
+
+                        <div class="feedback-input">
+                            <input type="text" id="input-GH-B5" placeholder="Add public feedback...">
+                            <button onclick="sendFeedback('Bell Pepper', 'GH-B5')">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+</div>
+<script src="../js/GreenHouse.js"></script>
+</body>
+</html>
