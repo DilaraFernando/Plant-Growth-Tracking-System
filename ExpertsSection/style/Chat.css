@@ -162,8 +162,12 @@ body {
     border: 2px solid white;
 }
 
-.online { background: #22c55e; }
-.offline { background: #9ca3af; }
+.online {
+    background: #22c55e;
+}
+.offline {
+    background: #9ca3af;
+}
 
 /* Chat Section */
 .chat-section {
