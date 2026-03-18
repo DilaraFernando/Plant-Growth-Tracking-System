@@ -4,79 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Growth-Agri | Expert Consultation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style/Chat.css">
 </head>
 <body>
 
-<ul class="nav-links">
-    <li><a href="../../ExpertsSection/pages/ExpertsPage.html">Send Request Experts</a></li>
-</ul>
 
-<div class="expert-container">
-
-    <!-- Sidebar - More experts added -->
-    <aside class="expert-sidebar">
-        <div class="sidebar-header">
-            <h3>Plant Guiders</h3>
-            <p>Connect with professionals</p>
+<div class="chat-card">
+    <header class="chat-header">
+        <div class="expert-avatar">DS</div>
+        <div class="expert-info">
+            <h4>Denver Simonz</h4>
+            <p>Plant Pathologists</p>
         </div>
+    </header>
 
-        <div class="expert-list">
-            <div class="expert-card active" data-name="Mr. Denver Simonz" data-specialty="Plant Pathologist">
-                <div class="avatar">DS</div>
-                <div class="info">
-                    <span class="name">Denver Simonz</span>
-                    <span class="specialty">Plant Pathologist</span>
-                </div>
-                <span class="status online"></span>
-            </div>
-
-            <div class="expert-card" data-name="Mr. Harshitha Fernandez" data-specialty="Climate & Weather Expert">
-                <div class="avatar gray">HF</div>
-                <div class="info">
-                    <span class="name">Harshitha Fernandez</span>
-                    <span class="specialty">Climate & Weather Expert</span>
-                </div>
-                <span class="status online"></span>
-            </div>
-
-            <div class="expert-card" data-name="Miss. Shashi Waduage" data-specialty="Soil Scientist / Agronomist">
-                <div class="avatar gray">SW</div>
-                <div class="info">
-                    <span class="name">Shashi Waduage</span>
-                    <span class="specialty">Soil Scientist / Agronomist</span>
-                </div>
-                <span class="status offline"></span>
-            </div>
-
-
+    <div id="waiting-overlay">
+        <div class="waiting-card">
+            <div class="spinner"></div>
+            <h4>Connecting to Expert...</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">Waiting for Ms. Denver Simonz to accept.</p>
         </div>
-    </aside>
+    </div>
 
-    <!-- Chat Area -->
-    <main class="chat-section">
-        <header class="chat-header">
-            <div class="active-expert">
-                <h4 id="chat-with-name">Denver Simonz</h4>
-                <p id="chat-with-specialty">Plant Pathologist • Active Now</p>
-            </div>
-            <button class="call-btn">Start Video Call</button>
-        </header>
+    <div class="chat-messages" id="chat-box">
+        <div class="msg bot">Hello! I am Denver Simonz. Please wait a moment until I review your request.</div>
+        <div id="typing-indicator" class="typing">Denver Simonz is typing...</div>
+    </div>
 
-        <div class="chat-window" id="chat-window">
-            <div class="message bot">Hello! I'm Denver Simonz, Plant Pathologist. How can I assist with your plants today?</div>
-            <div class="message user">My tomato leaves are turning yellow. Any idea why?</div>
-        </div>
-
-        <footer class="chat-input-area">
-            <input type="text" id="user-input" placeholder="Ask your question here...">
-            <button id="send-btn">➤</button>
-        </footer>
-    </main>
-
+    <footer class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Waiting..." disabled>
+        <button id="send-btn" disabled>Send</button>
+    </footer>
 </div>
-
 <script src="../js/Chat.js"></script>
 
 </body>

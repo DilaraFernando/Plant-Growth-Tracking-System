@@ -1,100 +1,72 @@
-const chatHistories = {
-    "Mr. Denver Simonz": [
-        { type: "bot", text: "Hello! I'm Mr. Denver Simonz, Plant Pathologist. How can I assist with your plants today?" },
-        { type: "user", text: "My tomato leaves are turning yellow. Any idea why?" }
-    ],
-    "Mr. Harshitha Fernandez": [
-        { type: "bot", text: "Hi there! Harshitha here, climate & weather expert. What's the weather challenge you're facing?" }
-    ],
-    "Miss. Shashi Waduage": [
-        { type: "bot", text: "Hello! Shashi Waduage, soil scientist & agronomist. Tell me about your soil condition." }
-    ]
+const overlay = document.getElementById('waiting-overlay');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const chatBox = document.getElementById('chat-box');
+const typingIndicator = document.getElementById('typing-indicator');
+
+// --- STEP 1: Simulate Expert Accepting (After 3 Seconds) ---
+setTimeout(() => {
+    unlockChat();
+}, 3000);
+
+function unlockChat() {
+    overlay.classList.add('hidden');
+    chatInput.disabled = false;
+    sendBtn.disabled = false;
+    chatInput.placeholder = "Type your message here...";
+
+    const notify = document.createElement('div');
+    notify.style.cssText = "text-align:center; font-size:0.75rem; color:#2e7d32; margin:10px 0; font-weight:bold;";
+    notify.innerText = "Expert has joined the chat";
+    chatBox.insertBefore(notify, typingIndicator);
+}
+
+// --- STEP 2: Handle Sending and Auto Reply ---
+function appendMessage(text, side) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${side}`;
+    msgDiv.textContent = text;
+    chatBox.insertBefore(msgDiv, typingIndicator); // Always insert before typing indicator
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function expertReply(userText) {
+    // Show typing indicator
+    typingIndicator.style.display = "block";
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Simulate expert thinking for 2 seconds
+    setTimeout(() => {
+        typingIndicator.style.display = "none";
+
+        let response = "";
+        const input = userText.toLowerCase();
+
+        // Simple Logic for Auto Replies
+        if (input.includes("hello") || input.includes("hi")) {
+            response = "Hello! How can I help you with your plants today?";
+        } else if (input.includes("water") || input.includes("dry")) {
+            response = "It sounds like a soil moisture issue. Have you checked the sensor readings on your dashboard?";
+        } else if (input.includes("yellow")) {
+            response = "Yellow leaves can be due to overwatering or lack of nitrogen. Can you send a photo?";
+        } else {
+            response = "That's interesting. Tell me more about the current conditions of your farm.";
+        }
+
+        appendMessage(response, 'bot');
+    }, 2000);
+}
+
+sendBtn.onclick = () => {
+    const text = chatInput.value.trim();
+    if (text) {
+        appendMessage(text, 'user');
+        chatInput.value = '';
+        expertReply(text); // Trigger the expert's response
+    }
 };
 
-const chatWindow = document.getElementById('chat-window');
-const userInput = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
-const chatName = document.getElementById('chat-with-name');
-const chatSpecialty = document.getElementById('chat-with-specialty');
-
-// Load chat for selected expert
-function loadChat(name, specialty) {
-    chatName.textContent = name;
-    chatSpecialty.textContent = specialty + ' • Active Now';
-
-    chatWindow.innerHTML = '';
-
-    (chatHistories[name] || []).forEach(msg => {
-        const div = document.createElement('div');
-        div.className = `message ${msg.type}`;
-        div.textContent = msg.text;
-        chatWindow.appendChild(div);
-    });
-
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-}
-
-// Switch expert
-document.querySelectorAll('.expert-card').forEach(card => {
-    card.addEventListener('click', () => {
-        document.querySelectorAll('.expert-card').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-
-        const name = card.querySelector('.name').textContent;
-        const specialty = card.querySelector('.specialty').textContent;
-
-        loadChat(name, specialty);
-    });
-});
-
-// Send message
-function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
-
-    const currentExpert = chatName.textContent;
-
-    // Add user message
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user';
-    userMsg.textContent = text;
-    chatWindow.appendChild(userMsg);
-
-    // Save to history
-    if (!chatHistories[currentExpert]) chatHistories[currentExpert] = [];
-    chatHistories[currentExpert].push({ type: 'user', text });
-
-    userInput.value = '';
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-
-    // Simulate expert reply after delay
-    setTimeout(() => {
-        const replies = [
-            "Thanks for the details! Let me analyze this...",
-            "Got it! This could be due to nutrient deficiency or pests.",
-            "I recommend checking soil pH first. Do you have a test kit?"
-        ];
-        const randomReply = replies[Math.floor(Math.random() * replies.length)];
-
-        const botMsg = document.createElement('div');
-        botMsg.className = 'message bot';
-        botMsg.textContent = randomReply;
-        chatWindow.appendChild(botMsg);
-
-        // Save reply to history
-        chatHistories[currentExpert].push({ type: 'bot', text: randomReply });
-
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    }, 1200);
-}
-
-sendBtn.addEventListener('click', sendMessage);
-userInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendMessage();
-    }
-});
-
-// Load initial expert
-loadChat("Mr. Denver Simonz", "Plant Pathologist");
+// Allow Enter key to send
+chatInput.onkeypress = (e) => {
+    if (e.key === 'Enter') sendBtn.click();
+};
