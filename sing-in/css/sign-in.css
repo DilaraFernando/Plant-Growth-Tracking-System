@@ -15,6 +15,7 @@ body {
     color: #111827;
 }
 
+
 .card {
     background: white;
     border-radius: 20px;
@@ -23,9 +24,9 @@ body {
             0 10px 20px -5px rgba(0, 0, 0, 0.06),
             0 0 0 1px rgba(0, 0, 0, 0.03);
     width: 100%;
-    height: 500%;
-    max-width: 500px;
-    padding: 48px 40px;
+    height: 650px;%;
+    max-width: 450px;
+    padding: 40px 40px;
     border: 2px solid rgba(0, 0, 0, 0.04);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -37,29 +38,27 @@ body {
             0 15px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
+
 .logo-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 36px;
+    text-align: center;
+    margin-bottom: 32px;
 }
 
 .logo {
-    font-size: 40px;
+    font-size: 20px;
     line-height: 1;
     color: #3a5042;
-    margin-bottom: 6px;
 }
 
 .brand-name {
-    font-size: 22px;
+    font-size: 14px;
     font-weight: 700;
     color: #3a5042;
     letter-spacing: -0.4px;
 }
 
 h1 {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
     margin-bottom: 8px;
     text-align: center;
@@ -68,19 +67,19 @@ h1 {
 
 .subtitle {
     color: #6b7280;
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
     margin-bottom: 36px;
     line-height: 1.5;
 }
 
 .form-group {
-    margin-bottom: 26px;
+    margin-bottom: 10px;
 }
 
 label {
     display: block;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     margin-bottom: 8px;
     color: #77787a;
@@ -91,7 +90,7 @@ input {
     padding: 14px 16px;
     border: 1px solid #77787a;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 12px;
     background: #ffffff;
     transition: all 0.25s ease;
 }
@@ -105,14 +104,14 @@ input:focus {
 
 .forgot-link {
     text-align: right;
-    margin-bottom: 28px;
-    font-size: 14px;
+    margin-bottom: 20px;
+    font-size: 12px;
 }
 
 .forgot-link a {
     color: #3a5042;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 300;
 }
 
 .forgot-link a:hover {
@@ -126,7 +125,7 @@ input:focus {
     color: white;
     border: none;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -147,7 +146,7 @@ input:focus {
     position: relative;
     text-align: center;
     color: #9ca3af;
-    font-size: 14px;
+    font-size: 12px;
     margin: 32px 0;
 }
 
@@ -169,19 +168,19 @@ input:focus {
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin-bottom: 36px;
+    margin-bottom: 25px;
 }
 
 .social-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 60%;
     border: 1px solid #d1d5db;
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 14px;
     color: #374151;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -196,7 +195,7 @@ input:focus {
 
 .footer {
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     color: #6b7280;
 }
 

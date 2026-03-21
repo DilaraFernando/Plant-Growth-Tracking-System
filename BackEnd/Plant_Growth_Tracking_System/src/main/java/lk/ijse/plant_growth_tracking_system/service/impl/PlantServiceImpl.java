@@ -21,7 +21,6 @@ public class PlantServiceImpl implements PlantService {
     private final PlantRepository plantRepository;
     private final ModelMapper modelMapper;
 
-
     @Override
     public void savePlant(PlantDTO plantDTO) {
 

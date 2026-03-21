@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,5 +26,5 @@ public class UserDTO {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    private String role; // FARMER, EXPERT
+    private String role;
 }
