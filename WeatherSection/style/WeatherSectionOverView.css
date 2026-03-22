@@ -235,11 +235,11 @@ body {
     font-size: 13px;
 }
 
-.nav-menu {
+.nav-item {
     list-style: none;
     margin-top: auto;
 }
-.nav-item {
+.nav-item{
     padding: 10px;
     display: flex;
     align-items: center;
@@ -247,7 +247,7 @@ body {
     color: var(--text-muted);
     cursor: pointer;
     transition: 0.2s;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .nav-item.active {
