@@ -213,23 +213,40 @@ body {
     margin-bottom: 25px;
     font-size: 13px;
 }
-.nav-item {
+/* Container  */
+.nav-menu-list {
+    position: absolute;
+    bottom: 15px;
     list-style: none;
-    margin-top: auto;
-}
-.nav-item{
-    padding: 10px;
+    padding: 0;
+    margin-top: 20px;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: 0.2s;
-    border-radius: 20px;
+    flex-direction: column;
+    gap: 5px; /* Buttons gap */
 }
-.nav-item.active {
+.nav-link {
+    display: flex;
+    background: var(--white);
+    padding: 8px 15px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 12px; /* Smooth corners */
+    transition: all 0.3s ease;
+    width: fit-content;
+    min-width: 160px;
+}
+.nav-link:hover {
+    background: rgba(46, 125, 50, 0.05);
+    color: var(--primary);
+    padding-left: 20px; /* පොඩි slide effect එකක් */
+}
+/* Active Button */
+.nav-link.active {
     background: var(--primary);
-    color: white;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
 }
 /* --- Right Side: Growth Analytics --- */
 .main-content {
