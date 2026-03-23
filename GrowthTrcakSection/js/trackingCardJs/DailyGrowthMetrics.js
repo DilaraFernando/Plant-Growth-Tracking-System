@@ -13,7 +13,7 @@ function updateGrowthChart(growthData, labels) {
     heightVal.innerText = `${latestHeight.toFixed(1)} cm`;
     growthDiff.innerText = `+${diff} cm`;
 
-    // උපරිම අගය සොයා ගෙන ඒ අනුව Bars වල උස තීරණය කිරීම
+    //  Bars height
     const maxHeight = Math.max(...growthData);
 
     growthData.forEach((height, index) => {
@@ -30,7 +30,7 @@ function updateGrowthChart(growthData, labels) {
 
         chartBox.appendChild(barGroup);
 
-        // ඉතා කුඩා delay එකකට පසු height එක update කිරීමෙන් animation එක පෙනේ
+        //  small delay one after height  update  animation display
         setTimeout(() => {
             const barElement = barGroup.querySelector('.bar');
             if(barElement) {
@@ -39,12 +39,11 @@ function updateGrowthChart(growthData, labels) {
         }, 50 * index);
     });
 }
-
-// Backend එකෙන් දත්ත ලැබෙන ආකාරය (උදාහරණ)
+// Backend data
 const backendData = [8.4, 10.2, 11.8, 14.5];
 const dayLabels = ['15 Mar', '16 Mar', '17 Mar', '18 Mar'];
 
-// පද්ධතිය පූරණය වූ පසු update කිරීම
+//  update
 window.onload = () => {
     updateGrowthChart(backendData, dayLabels);
 };

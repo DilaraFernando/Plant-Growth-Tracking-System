@@ -8,7 +8,6 @@
     --bg-tag: #f0fdf4;
     --danger: #ef4444;
 }
-
 body {
     background-color: #f8fafc;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -18,7 +17,6 @@ body {
     height: 100vh;
     margin: 0;
 }
-
 .metrics-card {
     position: absolute;
     right: 260px;
@@ -30,49 +28,41 @@ body {
     box-shadow: 0 15px 45px rgba(0,0,0,0.04);
     border: 1px solid var(--border);
 }
-
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
 }
-
 .header h3 {
     font-size: 16px;
     margin: 0;
     color: var(--text-main);
     font-weight: 700;
 }
-
 .header i {
     color: var(--text-muted);
     font-size: 14px;
     cursor: pointer;
 }
-
 .value-section {
     margin-bottom: 20px;
 }
-
 .current-height {
     font-size: 38px;
     font-weight: 800;
     color: var(--text-main);
     display: block;
 }
-
 .growth-desc {
     font-size: 14px;
     color: var(--text-muted);
     margin-top: 5px;
 }
-
 .growth-desc span {
     color: var(--primary);
     font-weight: 700;
 }
-
 /* Graph Section */
 .chart-container {
     display: flex;
@@ -82,7 +72,6 @@ body {
     margin-top: 30px;
     padding: 0 10px;
 }
-
 .bar-group {
     display: flex;
     flex-direction: column;
@@ -92,7 +81,6 @@ body {
     height: 100%;
     justify-content: flex-end;
 }
-
 .bar {
     width: 32px;
     background-color: #e2e8f0; /* Default Gray */
@@ -101,12 +89,10 @@ body {
     display: block;
     min-height: 4px;
 }
-
 /* Active Bar gradient colors */
 .bar.active {
     background: linear-gradient(180deg, #4ade80 0%, #2e7d32 100%) !important;
 }
-
 .day-label {
     font-size: 11px;
     font-weight: 700;

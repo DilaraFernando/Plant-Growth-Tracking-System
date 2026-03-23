@@ -5,13 +5,11 @@
     box-sizing: border-box;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
-
 body {
     background-color: #ffffff;
     overflow-x: hidden;
     color: #1a202c;
 }
-
 /* --- Navigation Bar --- */
 .navbar {
     display: flex;
@@ -20,7 +18,6 @@ body {
     padding: 20px 80px;
     background: #ffffff;
 }
-
 .logo {
     display: flex;
     align-items: center;
@@ -28,7 +25,6 @@ body {
     font-weight: 700;
     font-size: 12px;
 }
-
 .nav-links {
     display: flex;
     gap: 30px;
@@ -37,7 +33,6 @@ body {
     padding: 8px 25px;
     border-radius: 30px;
 }
-
 .nav-links a {
     text-decoration: none;
     color: #6b7280;
@@ -45,13 +40,11 @@ body {
     font-weight: 500;
     transition: 0.3s;
 }
-
 .nav-links a.active,
 .nav-links a:hover {
     color: #000;
     font-weight: 700;
 }
-
 .nav-right {
     display: flex;
     align-items: center;
@@ -59,7 +52,6 @@ body {
     font-size: 12px;
     font-weight: 500;
 }
-
 .signin-btn {
     background: #000;
     color: #fff;
@@ -69,7 +61,6 @@ body {
     cursor: pointer;
     font-weight: 600;
 }
-
 /* --- Hero Section --- */
 .hero {
     text-align: center;
@@ -91,7 +82,6 @@ body {
     white-space: nowrap;
     text-align: center;
 }
-
 /* --- Buttons --- */
 /* CTA Buttons Section */
 .cta-buttons {
@@ -101,7 +91,6 @@ body {
     margin: 40px 0 60px;
     flex-wrap: wrap;
 }
-
 .btn-register,
 .btn-login {
     position: relative;
@@ -116,7 +105,6 @@ body {
     transition: all 0.3s ease;
     overflow: hidden;
 }
-
 /* Register Plants button - Primary style */
 .btn-register {
     background: linear-gradient(135deg, #2e7d32, #2e7d32);
@@ -124,40 +112,33 @@ body {
     border: none;
     box-shadow: 0 8px 25px rgba(58, 80, 66, 0.25);
 }
-
-
 .btn-register:hover {
     transform: translateY(-4px);
     box-shadow: 0 16px 40px rgba(58, 80, 66, 0.35);
     background: linear-gradient(135deg, #ffffff, #ffffff);
     color: black;
 }
-
 /* My GreenHouse button - Secondary style */
 .btn-login {
     background: white;
     color: #3a5042;
     border: 1px solid #3a5042;
 }
-
 .btn-login:hover {
     background: #3a5042;
     color: white;
     transform: translateY(-4px);
 }
-
 /* Arrow animation */
 .arrow {
     font-size: 18px;
     font-weight: bold;
     transition: transform 0.3s ease;
 }
-
 .btn-register:hover .arrow,
 .btn-login:hover .arrow {
     transform: translateX(8px);
 }
-
 /* Optional ripple effect on click */
 .btn-register:active,
 .btn-login:active {
@@ -168,13 +149,11 @@ body {
     position: relative;
     display: inline-block;
 }
-
 .hero-image {
     width: 400px;
     position: relative;
     z-index: 2;
 }
-
 .image-shadow {
     position: absolute;
     bottom: 20px;
@@ -187,7 +166,6 @@ body {
     border-radius: 50%;
     z-index: 1;
 }
-
 .floating-icons {
     position: absolute;
     right: 50px;
@@ -196,7 +174,6 @@ body {
     flex-direction: column;
     gap: 20px;
 }
-
 .f-icon {
     width: 50px;
     height: 50px;
@@ -210,11 +187,9 @@ body {
     transition: 0.3s;
     font-size: 20px;
 }
-
 .f-icon:hover {
     transform: scale(1.1) rotate(10deg);
 }
-
 .location-card {
     position: absolute;
     bottom: 20px;
@@ -228,59 +203,49 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     transition: 0.3s;
 }
-
 .location-card:hover {
     transform: scale(1.05);
 }
-
 .loc-pin {
     background: #fff1f2;
     padding: 10px;
     border-radius: 50%;
 }
-
 .loc-info {
     text-align: left;
 }
-
 .city {
     font-weight: 700;
     font-size: 14px;
     color: #111827;
     display: block;
 }
-
 .weather-brief {
     font-size: 12px;
     color: #6b7280;
 }
-
 /* --- Footer Section --- */
 .main-footer {
     background-color: #ffffff;
     padding: 80px 0 40px 0;
     border-top: 1px solid #edf2f7;
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
-
 .footer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
 }
-
 .footer-logo {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-
 .logo-box {
     background-color: #2e7d32;
     color: white;
@@ -292,12 +257,10 @@ body {
     align-items: center;
     font-weight: bold;
 }
-
 .footer-logo h2 {
     font-size: 20px;
     font-weight: 800;
 }
-
 .cta-button {
     background-color: #2e7d32;
     color: white;
@@ -308,41 +271,34 @@ body {
     cursor: pointer;
     transition: 0.3s;
 }
-
 .line-divider {
     border: 0;
     border-top: 1px solid #edf2f7;
     margin-bottom: 60px;
 }
-
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 30px;
     margin-bottom: 80px;
 }
-
 .footer-column h3 {
     font-size: 13px;
     font-weight: 700;
     margin-bottom: 25px;
 }
-
 .footer-column ul {
     list-style: none;
 }
-
 .footer-column ul li {
     margin-bottom: 12px;
 }
-
 .footer-column ul li a {
     text-decoration: none;
     color: #6b7280;
     font-size: 12px;
     transition: 0.2s;
 }
-
 .footer-column ul li a:hover {
     color: #3a5042;
 }
@@ -351,7 +307,6 @@ body {
     gap: 16px;
     justify-content: center;   /* center කරන්න ඕනෙ නම් */
 }
-
 .social-icon {
     display: block;
     width: 40px;
@@ -361,14 +316,12 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-
 .social-icon img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
-
 .social-icon:hover {
     transform: translateY(-4px) scale(1.08);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
@@ -378,7 +331,6 @@ body {
 .social-icon.instagram img { background: #e1306c; padding: 8px; }
 .social-icon.whatsapp img { background: #25D366; padding: 8px; }
 .social-icon.discord img { background: #5865F2; padding: 8px; }
-
 .footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -387,17 +339,14 @@ body {
     color: #9ca3af;
     font-size: 12px;
 }
-
 .bottom-links {
     display: flex;
     gap: 20px;
 }
-
 .bottom-links a {
     text-decoration: none;
     color: #9ca3af;
 }
-
 /* --- Responsiveness --- */
 @media (max-width: 900px) {
     .navbar {
@@ -413,7 +362,6 @@ body {
         left: 20px;
     }
 }
-
 @media (max-width: 600px) {
     .main-title {
         font-size: 36px;

@@ -33,7 +33,7 @@ const latestConditions = {
     }
 };
 
-// UI එක Update කිරීමට Call කිරීම
+// UI Update Call
 setTimeout(() => {
     updateConditionTracker(latestConditions);
 }, 800);

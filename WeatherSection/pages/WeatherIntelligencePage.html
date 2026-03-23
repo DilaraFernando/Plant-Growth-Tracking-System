@@ -15,21 +15,16 @@
         <i></i> Weather Overview
     </a>
 </nav>
-
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h2>Weather Intelligence :</h2>
     </div>
-
     <div class="cards-wrapper">
-
-
         <div class="suitability-card">
             <div class="card-header">
                 <h3>Suitability Score</h3>
                 <span class="status-tag">Highly Compatible</span>
             </div>
-
             <div class="progress-container">
                 <svg class="progress-svg" viewBox="0 0 100 100">
                     <circle class="bg-circle" cx="50" cy="50" r="45"></circle>
@@ -40,35 +35,27 @@
                     <small>Match</small>
                 </div>
             </div>
-
             <div class="card-footer">
                 <p>Current conditions are <strong>92% optimal</strong> for your plant's specific growth stage.</p>
             </div>
         </div>
-
-
         <div class="growth-card">
             <div class="growth-header">
                 <h3>Growth Prediction</h3>
                 <span class="badge-green">Next 7 Days</span>
             </div>
-
             <div class="chart-container">
                 <canvas id="growthLineChart"></canvas>
             </div>
-
             <div class="growth-footer">
                 <p>Estimated Total Growth: <strong>+5.8 cm</strong> for this week</p>
             </div>
         </div>
-
-
         <div class="risk-card">
             <div class="risk-header">
                 <h3>Risk Assessment</h3>
                 <i class="fa-solid fa-triangle-exclamation" style="color: #6b7280;"></i>
             </div>
-
             <div class="risk-progress-container">
                 <span>🚀</span>
                 <div class="risk-progress-bar">
@@ -76,7 +63,6 @@
                 </div>
                 <span class="risk-percent" id="overall-risk-text">0%</span>
             </div>
-
             <div class="risk-list">
                 <div class="risk-item item-safe" id="heat-risk">
                     <div class="risk-icon"><i class="fa-solid fa-check"></i></div>
@@ -85,7 +71,6 @@
                     </div>
                     <i class="fa-solid fa-chevron-right risk-arrow"></i>
                 </div>
-
                 <div class="risk-item item-warning" id="rain-risk">
                     <div class="risk-icon">2</div>
                     <div class="risk-info">
@@ -93,7 +78,6 @@
                     </div>
                     <i class="fa-solid fa-chevron-right risk-arrow"></i>
                 </div>
-
                 <div class="risk-item item-danger" id="uv-risk">
                     <div class="risk-icon">3</div>
                     <div class="risk-info">
@@ -101,7 +85,6 @@
                     </div>
                     <i class="fa-solid fa-chevron-right risk-arrow"></i>
                 </div>
-
                 <div class="risk-item" id="soil-risk">
                     <div class="risk-icon">4</div>
                     <div class="risk-info">
@@ -113,7 +96,6 @@
         </div>
     </div>
 </div>
-
 <script src="../js/WeatherInterlligencePage.js"></script>
 </body>
 </html>

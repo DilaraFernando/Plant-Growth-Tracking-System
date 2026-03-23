@@ -8,7 +8,7 @@ function handleShare() {
     }, 2000);
 }
 
-// Backend එකෙන් දත්ත එනකොට UI එක update කරන්න
+// Backend data UI  update
 function updateSocialPreview(data) {
     document.getElementById('display-day').innerText = `DAY ${data.day}`;
     document.getElementById('post-h').innerText = data.height + ' cm';

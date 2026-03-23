@@ -13,60 +13,47 @@
     <link rel="stylesheet" href="../styles/trackinCardStyle/ConditionTracking.css">
 </head>
 <body>
-
 <div class="dashboard-container"></div>
-
 <div class="cards-wrapper">
-
     <div class="task-card">
         <span class="label">Task Completion Rate</span>
-
         <div class="completion-section">
             <span id="percentage-value" class="percentage">0%</span>
             <div class="growth"><i class="fa-solid fa-arrow-trend-up"></i> +12% vs yesterday</div>
         </div>
-
         <div class="progress-line-empty">
             <div id="progress-fill" class="progress-line-fill"></div>
         </div>
-
         <div class="success-box">
             <i class="fa-solid fa-circle-check"></i>
             <span>Almost all assigned tasks completed on time.</span>
         </div>
     </div>
-
-
     <div class="analysis-container">
         <div class="analysis-header">
             <h2>Visual Health Analysis</h2>
             <p id="plant-id-display">Analyzing Plant: Tomato T-01</p>
         </div>
-
         <div class="visual-core">
             <div class="indicator-card pos-leaf">
                 <div class="icon-box"><i class="fa-solid fa-leaf"></i></div>
                 <b>Leaf Condition</b>
                 <span id="leaf-status">Healthy</span>
             </div>
-
             <div class="indicator-card pos-height">
                 <div class="icon-box"><i class="fa-solid fa-ruler-vertical"></i></div>
                 <b>Stem Height</b>
                 <span id="stem-height">12.4 cm</span>
             </div>
-
             <div class="indicator-card pos-root">
                 <div class="icon-box"><i class="fa-solid fa-seedling"></i></div>
                 <b>Root Health</b>
                 <span id="root-status">Excellent</span>
             </div>
-
             <div class="plant-center-box">
                 <img src="../../images/c432b3faa4249ea7cabd7392c83d611b-removebg-preview.png" alt="Plant">
             </div>
         </div>
-
         <div class="stats-footer">
             <div class="stat-item">
                 <b id="count-leaves">14</b>
@@ -82,29 +69,23 @@
             </div>
         </div>
     </div>
-
     <div class="metrics-card">
         <div class="header">
             <h3>Daily Growth Metrics</h3>
             <i class="fa-solid fa-chevron-right"></i>
         </div>
-
         <div class="value-section">
             <span id="current-height-val" class="current-height">0.0 cm</span>
             <p class="growth-desc">Your plant grew by about <span id="growth-diff">+0.0 cm</span> today.</p>
         </div>
-
         <div class="chart-container" id="chart-box">
         </div>
     </div>
-
-
     <div class="condition-card">
         <div class="header">
             <h3>Condition Tracking</h3>
             <span class="date-tag" id="current-date">Today</span>
         </div>
-
         <span class="section-title">Soil Status</span>
         <div class="soil-grid">
             <div class="soil-item">
@@ -128,7 +109,6 @@
                 <b id="soil-humidity">0%</b>
             </div>
         </div>
-
         <span class="section-title">Leaf Growth Tracking</span>
         <div class="leaf-tracking">
             <div class="growth-row">
@@ -144,7 +124,6 @@
             </div>
         </div>
     </div>
-
     <div class="leaf-card" id="leaf-container">
         <div class="card-header">
             <div class="icon-circle">
@@ -152,7 +131,6 @@
             </div>
             <h3>Live Leaf Analysis</h3>
         </div>
-
         <div class="analysis-item">
             <span class="label">Leaf Color</span>
             <div class="value">
@@ -160,7 +138,6 @@
                 <span id="leaf-color-text">Waiting for data...</span>
             </div>
         </div>
-
         <div class="analysis-item">
             <span class="label">Texture</span>
             <div class="value">
@@ -168,7 +145,6 @@
                 <span id="leaf-texture-text">Analyzing...</span>
             </div>
         </div>
-
         <div class="analysis-item">
             <span class="label">Growth/Sprouting</span>
             <div class="value">
@@ -178,7 +154,6 @@
         </div>
     </div>
 </div>
-
 <script src="../js/trackingCardJs/DailyGrowthMetrics.js"></script>
 <script src="../js/trackingCardJs/VisualHealthAnalysis.js"></script>
 <script src="../js/trackingCardJs/CondtionTracking.js"></script>

@@ -8,7 +8,6 @@
     --bg-tag: #f0fdf4;
     --danger: #ef4444;
 }
-
 body {
     background-color: #f8fafc;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -18,7 +17,6 @@ body {
     height: 100vh;
     margin: 0;
 }
-
 .task-card {
     position: absolute;
     background: var(--bg-card);
@@ -31,7 +29,6 @@ body {
     border: 1px solid var(--border);
     text-align: center;
 }
-
 /* Label Section (Top Left) */
 .label {
     font-size: 13px;
@@ -42,12 +39,10 @@ body {
     margin-bottom: 25px;
     display: block;
 }
-
 /* Percentage and Progress Line */
 .completion-section {
     margin-bottom: 25px;
 }
-
 .percentage {
     font-size: 48px;
     font-weight: 800;
@@ -55,7 +50,6 @@ body {
     display: block;
     line-height: 1;
 }
-
 .growth {
     font-size: 14px;
     color: var(--primary);
@@ -66,7 +60,6 @@ body {
     gap: 5px;
     margin-top: 5px;
 }
-
 /* Smart Progress Bar */
 .progress-line-empty {
     width: 90%;
@@ -76,7 +69,6 @@ body {
     margin: 15px auto;
     position: relative;
 }
-
 .progress-line-fill {
     position: absolute;
     top: 0; left: 0;
@@ -86,7 +78,6 @@ body {
     width: 0%; /* JS will update this */
     transition: width 1s ease-out;
 }
-
 /* Message Box */
 .success-box {
     background: var(--soft-green);
@@ -97,12 +88,10 @@ body {
     gap: 8px;
     border: 1px solid #dcfce7;
 }
-
 .success-box i {
     font-size: 13px;
     color: var(--primary);
 }
-
 .success-box span {
     font-size: 12px;
     color: var(--text-main);

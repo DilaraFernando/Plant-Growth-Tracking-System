@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const target = 92; // ඔයාගේ Feature එකේ අගය
+    const target = 92; //  Feature count
     const ring = document.getElementById('progress-ring');
     const numberDisplay = document.getElementById('match-number');
 
@@ -7,13 +7,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const radius = 45;
     const circumference = 2 * Math.PI * radius; // Approx 283
 
-    // පියවර 1: Offset එක ගණනය කර Animation එක පටන් ගැනීම
+    // step 1: Offset  Animation start
     const offset = circumference - (target / 100) * circumference;
 
     setTimeout(() => {
         ring.style.strokeDashoffset = offset;
 
-        // පියවර 2: අංකය 0 සිට 92 දක්වා වැඩි කිරීම
+        // step 2: number 0  92
         let count = 0;
         const duration = 1800; // 1.8 seconds
         const increment = target / (duration / 20);
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     const ctx = document.getElementById('growthLineChart').getContext('2d');
 
-    // Gradient එක නිර්මාණය කිරීම (Green to Transparent)
+    // Gradient (Green to Transparent)
     const gradient = ctx.createLinearGradient(0, 0, 0, 200);
     gradient.addColorStop(0, 'rgba(46, 125, 50, 0.2)');
     gradient.addColorStop(1, 'rgba(46, 125, 50, 0)');
@@ -76,16 +76,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 document.addEventListener("DOMContentLoaded", () => {
-    // පද්ධතියෙන් ලැබෙන දත්ත අනුව මේවා වෙනස් කළ හැකිය
+
     const overallRisk = 45;
     const bar = document.getElementById('overall-risk-bar');
     const text = document.getElementById('overall-risk-text');
 
-    // පියවර 1: Progress Bar එක Update කිරීම
+    // step 1: Progress Bar Update
     setTimeout(() => {
         bar.style.width = overallRisk + "%";
 
-        // අංකය Animation කිරීම
+        // number Animation
         let start = 0;
         const interval = setInterval(() => {
             if (start >= overallRisk) {
