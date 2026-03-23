@@ -1,0 +1,148 @@
+:root {
+    --primary: #2e7d32;
+    --soft-green: #e8f5e9;
+    --bg-card: #ffffff;
+    --text-main: #1a1a1a;
+    --text-muted: #6b7280;
+    --border: #f0f4f0;
+    --bg-tag: #f0fdf4;
+    --danger: #ef4444;
+}
+
+body {
+    background-color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.condition-card {
+    position: absolute;
+    bottom: 90px;
+    left:289px;
+    background: var(--bg-card);
+    width: 350px;
+    height: 400px;
+    padding: 30px;
+    border-radius: 35px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h3 {
+    font-size: 18px;
+    margin: 0;
+    color: var(--text-main);
+    font-weight: 800;
+}
+
+.date-tag {
+    font-size: 12px;
+    color: var(--primary);
+    background: var(--primary);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+/* Section Styling */
+.section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    display: block;
+    font-weight: 700;
+}
+
+/* Grid for Soil Data */
+.soil-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.soil-item {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid #f5f5f5;
+}
+
+.soil-item i {
+    color: var(--primary);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.soil-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.soil-item b {
+    font-size: 16px;
+    color: var(--text-main);
+}
+
+/* Leaf Growth List */
+.leaf-tracking {
+    background: var(--bg-tag);
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.growth-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.growth-row:last-child {
+    margin-bottom: 0;
+}
+
+.growth-label {
+    font-size: 13px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.growth-value {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Progress Bar for Growth */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    width: 0;
+    transition: width 1.5s ease-in-out;
+}

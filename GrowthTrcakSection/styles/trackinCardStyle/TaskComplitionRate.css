@@ -1,0 +1,116 @@
+:root {
+    --primary: #2e7d32;
+    --soft-green: #e8f5e9;
+    --bg-card: #ffffff;
+    --text-main: #1a1a1a;
+    --text-muted: #6b7280;
+    --border: #f0f4f0;
+    --bg-tag: #f0fdf4;
+    --danger: #ef4444;
+}
+
+body {
+    background-color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.task-card {
+    position: absolute;
+    background: var(--bg-card);
+    border-radius: 30px;
+    padding: 35px;
+    left: 300px;
+    top: 80px;
+    width: 320px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+/* Label Section (Top Left) */
+.label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 25px;
+    display: block;
+}
+
+/* Percentage and Progress Line */
+.completion-section {
+    margin-bottom: 25px;
+}
+
+.percentage {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text-main);
+    display: block;
+    line-height: 1;
+}
+
+.growth {
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+/* Smart Progress Bar */
+.progress-line-empty {
+    width: 90%;
+    height: 8px;
+    background: #f1f5f1;
+    border-radius: 10px;
+    margin: 15px auto;
+    position: relative;
+}
+
+.progress-line-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 10px;
+    width: 0%; /* JS will update this */
+    transition: width 1s ease-out;
+}
+
+/* Message Box */
+.success-box {
+    background: var(--soft-green);
+    padding: 10px 15px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #dcfce7;
+}
+
+.success-box i {
+    font-size: 13px;
+    color: var(--primary);
+}
+
+.success-box span {
+    font-size: 12px;
+    color: var(--text-main);
+    font-weight: 600;
+}
