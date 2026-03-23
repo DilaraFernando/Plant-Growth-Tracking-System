@@ -18,12 +18,6 @@ body {
     height: 100vh;
     margin: 0;
 }
-.cards-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
-}
 
 .task-card {
     position: absolute;

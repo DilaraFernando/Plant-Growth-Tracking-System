@@ -89,7 +89,7 @@ body {
 .user-area {
     position: relative;
     left: 500px;
-    display: flex;
+    display:flex;
     align-items: center;
     gap: 24px;
     flex-shrink: 0;

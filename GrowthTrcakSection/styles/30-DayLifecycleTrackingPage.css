@@ -32,3 +32,9 @@ body {
     overflow: hidden;
     box-shadow: 0 30px 80px rgba(0,0,0,0.1);
 }
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
