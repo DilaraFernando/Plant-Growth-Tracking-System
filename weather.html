@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather - Plant Growth Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="mainPage/style/HomeSection.css">
+    <style>
+        .weather-cards-row {
+            display: flex;
+            gap: 18px;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+        .weather-card {
+            flex: 1 1 0;
+            background: #e6fbe6;
+            border: 1.5px solid #10b981;
+            border-radius: 10px;
+            padding: 18px 0 14px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px 0 rgba(46,125,50,0.07);
+            min-width: 90px;
+        }
+        .weather-card-label {
+            color: #166534;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            letter-spacing: 0.5px;
+        }
+        .weather-card-value {
+            color: #14532d;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .alert-result {
+            margin-top: 24px;
+            padding: 22px 18px;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .alert-green { background: #e6fbe6; color: #166534; border: 2px solid #10b981; }
+        .alert-yellow { background: #fffbe6; color: #92400e; border: 2px solid #f59e0b; }
+        .alert-red { background: #ffe6e6; color: #991b1b; border: 2px solid #ef4444; }
+    </style>
+    <style>
+        body { background: var(--bg, #f8fafc); color: var(--text, #1f2937); min-height: 100vh; }
+        .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: var(--shadow, 0 4px 6px -1px rgba(0,0,0,0.1)); padding: 32px; }
+        .form-group { margin-bottom: 20px; }
+        label { font-weight: 600; margin-bottom: 8px; display: block; }
+        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray, #9ca3af); font-size: 16px; }
+        button { background: var(--primary, #2e7d32); color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; margin-right: 10px; }
+        button:hover { background: var(--primary-hover, #1b5e20); }
+        .weather-result, .alert-result { margin-top: 24px; padding: 18px; border-radius: 8px; font-size: 18px; }
+        .alert-green { background: #e6fbe6; color: #166534; border: 1px solid #10b981; }
+        .alert-yellow { background: #fffbe6; color: #92400e; border: 1px solid #f59e0b; }
+        .alert-red { background: #ffe6e6; color: #991b1b; border: 1px solid #ef4444; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 80px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--primary, #2e7d32); text-decoration: none; }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { color: var(--text, #1f2937); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-links a.active, .nav-links a:hover { color: var(--primary, #2e7d32); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> Plant Growth</a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="register-plant.html">Register Plant</a></li>
+            <li><a href="social-posts.html">Social Posts</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="weather.html" class="active">Weather</a></li>
+            <li><a href="sing-in/pages/sign-in.html" id="auth-link">Sign In</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2 style="margin-bottom: 24px;">Weather & Plant Alerts</h2>
+        <div class="form-group">
+            <label for="city">City Name</label>
+            <input type="text" id="city" placeholder="Enter city name">
+        </div>
+        <div class="form-group">
+            <button id="check-weather">Check Weather</button>
+        </div>
+        <div class="form-group">
+            <label for="plant-type">Plant Type</label>
+            <select id="plant-type">
+                <option>Tomato</option>
+                <option>Rose</option>
+                <option>Basil</option>
+                <option>Sunflower</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="get-alert">Get Plant Alert</button>
+        </div>
+        <div id="weather-result" class="weather-result" style="display:none;"></div>
+        <div id="alert-result" class="alert-result" style="display:none;"></div>
+    </div>
+    <script src="API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) {
+            window.location.href = "sing-in/pages/sign-in.html";
+        }
+        hideAuthLinks();
+        document.getElementById('check-weather').onclick = async function() {
+            const city = document.getElementById('city').value.trim();
+            if (!city) return;
+            const res = await fetch("http://localhost:8080/api/v1/weather/current?city=" + encodeURIComponent(city), {
+                headers: auth.authHeaders()
+            });
+            const json = await res.json();
+            if (json && json.data) {
+                const data = json.data;
+                document.getElementById('weather-result').style.display = '';
+                document.getElementById('weather-result').innerHTML = `
+                    <div class="weather-cards-row">
+                        <div class="weather-card">
+                            <div class="weather-card-label">Temperature</div>
+                            <div class="weather-card-value">${data.temperature}°C</div>
+                        </div>
+                        <div class="weather-card">
+                            <div class="weather-card-label">Humidity</div>
+                            <div class="weather-card-value">${data.humidity}%</div>
+                        </div>
+                        <div class="weather-card">
+                            <div class="weather-card-label">Wind Speed</div>
+                            <div class="weather-card-value">${data.windSpeed} m/s</div>
+                        </div>
+                        <div class="weather-card">
+                            <div class="weather-card-label">Condition</div>
+                            <div class="weather-card-value">${data.condition}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('weather-result').style.display = '';
+                document.getElementById('weather-result').innerHTML = 'Could not fetch weather.';
+            }
+        };
+        document.getElementById('get-alert').onclick = async function() {
+            const city = document.getElementById('city').value.trim();
+            const plantType = document.getElementById('plant-type').value;
+            if (!city) return;
+            const res = await fetch("http://localhost:8080/api/v1/weather/alert?city=" + encodeURIComponent(city) + "&plantType=" + encodeURIComponent(plantType), {
+                headers: auth.authHeaders()
+            });
+            const json = await res.json();
+            if (json && json.data) {
+                let color = 'alert-green';
+                const msg = json.data.toLowerCase();
+                if (msg.includes('hot') || msg.includes('wind') || msg.includes('protect')) {
+                    color = 'alert-red';
+                } else if (msg.includes('humidity') || msg.includes('water')) {
+                    color = 'alert-yellow';
+                } else if (msg.includes('suitable')) {
+                    color = 'alert-green';
+                }
+                document.getElementById('alert-result').style.display = '';
+                document.getElementById('alert-result').className = 'alert-result ' + color;
+                document.getElementById('alert-result').innerText = json.data;
+            } else {
+                document.getElementById('alert-result').style.display = '';
+                document.getElementById('alert-result').className = 'alert-result alert-red';
+                document.getElementById('alert-result').innerText = 'Could not fetch alert.';
+            }
+        };
+    </script>
+</body>
+</html>
