@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="../../API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) {
+            window.location.href = "../../sing-in/pages/sign-in.html";
+        }
+    </script>
     <title>Growth-Agri | Expert Consultation</title>
     <link rel="stylesheet" href="../style/Chat.css">
 </head>
