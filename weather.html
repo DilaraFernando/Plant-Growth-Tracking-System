@@ -184,6 +184,11 @@
             <div id="plant-alert-result" style="margin-top: 18px;"></div>
         </header>
 
+        <div style="margin-bottom:24px;">
+            <h3 style="margin:0 0 12px 0;font-size:1.25rem;font-weight:800;color:var(--text-main);">Your Plants</h3>
+            <div id="plants-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;"></div>
+        </div>
+
         <div class="grid">
             <div class="card">
                 <div class="weather-icon" style="background: var(--primary-light); color: var(--primary);"><i data-lucide="sun"></i></div>
@@ -282,7 +287,15 @@
         const plantDropdown = document.getElementById('plant-dropdown');
         let plantsList = [];
         fetch('http://localhost:8080/api/v1/plants', { headers: auth.authHeaders() })
-            .then(r => r.json())
+            .then(r => {
+                if (r.status === 403 || r.status === 401) {
+                    // token missing/invalid — redirect to sign-in
+                    alert('Session expired or unauthorized. Please sign in again.');
+                    window.location.href = 'sing-in/pages/sign-in.html';
+                    throw new Error('unauthorized');
+                }
+                return r.json();
+            })
             .then(json => {
                 plantsList = json.data || [];
                 plantDropdown.innerHTML = '';
@@ -298,7 +311,70 @@
                     });
                     plantDropdown.disabled = false;
                 }
+                renderPlants(plantsList);
+            })
+            .catch((err) => {
+                if (err && err.message === 'unauthorized') return;
+                plantDropdown.innerHTML = '<option value="">Failed to load plants</option>';
+                plantDropdown.disabled = true;
             });
+
+        function renderPlants(plants) {
+            const container = document.getElementById('plants-container');
+            container.innerHTML = '';
+            if (!plants || !plants.length) {
+                container.innerHTML = '<div style="color:var(--text-dim);font-weight:700;">No plants available.</div>';
+                return;
+            }
+            plants.forEach(plant => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.padding = '18px';
+                card.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:start;gap:12px;">
+                        <div>
+                            <div style="font-size:1rem;font-weight:800;color:var(--text-main);">${escapeHtml(plant.plantName || '')}</div>
+                            <div style="font-size:0.9rem;color:var(--text-dim);margin-top:6px;">${escapeHtml(plant.species || '')}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.85rem;color:var(--text-dim);">Last water</div>
+                            <div style="font-weight:700;margin-top:6px;">${plant.lastWatered ? new Date(plant.lastWatered).toLocaleDateString() : '—'}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
+                        <button class="plant-alert-single" data-id="${plant.id}" style="padding:8px 12px;border-radius:8px;border:none;background:var(--primary);color:#fff;font-weight:700;cursor:pointer;">Get Alert</button>
+                        <div class="plant-alert-output" style="flex:1;color:var(--text-dim);font-weight:700;"></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // attach listeners
+            container.querySelectorAll('.plant-alert-single').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const output = btn.parentElement.querySelector('.plant-alert-output');
+                    if (!id) return;
+                    output.innerText = 'Loading...';
+                    fetch(`http://localhost:8080/api/v1/plants/${id}/alert`, { headers: auth.authHeaders() })
+                        .then(r => r.json())
+                        .then(json => {
+                            const alert = json.data || json.message || 'No alert.';
+                            output.innerText = alert;
+                        })
+                        .catch(() => {
+                            output.innerText = 'Failed to fetch alert.';
+                        });
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function (s) {
+                return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]);
+            });
+        }
 
         // --- Plant Alert Logic ---
         const alertBtn = document.getElementById('plant-alert-btn');

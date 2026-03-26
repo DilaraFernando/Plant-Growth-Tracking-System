@@ -13,10 +13,12 @@ function logout() {
 }
 
 function authHeaders() {
-    return {
-        "Authorization": "Bearer " + getToken(),
-        "Content-Type": "application/json"
-    };
+    const token = getToken();
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+        headers["Authorization"] = "Bearer " + token;
+    }
+    return headers;
 }
 
 function redirectIfAuthenticated() {
