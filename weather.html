@@ -261,14 +261,15 @@
         const adviceMsg = document.getElementById('advice-msg');
 
         function fetchWeather(city) {
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${OPENWEATHER_API_KEY}&units=metric`)
+            fetch(`http://localhost:8080/api/v1/weather/current?city=${encodeURIComponent(city)}`)
                 .then(r => r.json())
-                .then(data => {
-                    locationCity.innerText = data.name + ', ' + (data.sys.country || '');
-                    tempEl.innerText = Math.round(data.main.temp) + '°C';
-                    humidityEl.innerText = data.main.humidity + '%';
-                    windEl.innerText = data.wind.speed + ' m/s';
-                    condEl.innerText = data.weather[0].main;
+                .then(json => {
+                    const data = (json && json.data) || {};
+                    locationCity.innerText = data.city || city;
+                    tempEl.innerText = data.temperature ? Math.round(data.temperature) + '°C' : '--';
+                    humidityEl.innerText = data.humidity ? data.humidity + '%' : '--';
+                    windEl.innerText = data.windSpeed ? data.windSpeed + ' m/s' : '--';
+                    condEl.innerText = data.condition || '--';
                 })
                 .catch(() => {
                     locationCity.innerText = city;
