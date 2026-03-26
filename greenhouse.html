@@ -191,74 +191,160 @@
     </aside>
 
     <main>
-        <div class="header-title">
-            <h1>My Collection</h1>
-            <p>Live inventory of your digital garden's health and development.</p>
-        </div>
-
-        <div class="categories-row">
-            <div class="category-pill active">🌱 All Plants</div>
-            <div class="category-pill">🥕 Vegetables</div>
-            <div class="category-pill">🍎 Fruits</div>
-            <div class="category-pill">🌸 Flowers</div>
-            <div class="category-pill">🪴 Indoor</div>
-        </div>
-
-        <div class="greenhouse-grid" id="plants-grid">
-            <div class="plant-card">
-                <div class="card-img-wrapper">
-                    <div class="badge-live">Live Sensor</div>
-                    <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=600" alt="Plant">
-                </div>
-                <div class="card-body">
-                    <h3 class="plant-name">Heirloom Tomato</h3>
-                    <span class="plant-id">GH-A1 | Zone Alpha</span>
-                    <div class="sensor-grid">
-                        <div class="sensor-item">
-                            <span class="sensor-label">Temp</span>
-                            <span class="sensor-value">22°C</span>
-                        </div>
-                        <div class="sensor-item">
-                            <span class="sensor-label">Moisture</span>
-                            <span class="sensor-value">45%</span>
-                        </div>
-                    </div>
-                    <button class="btn-view" onclick="window.location.href='plant-detail.html'">
-                        View Detailed Metrics <i data-lucide="chevron-right"></i>
-                    </button>
-                </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+            <div class="header-title">
+                <h1>My Collection</h1>
+                <p>Live inventory of your digital garden's health and development.</p>
             </div>
-
-            <div class="plant-card">
-                <div class="card-img-wrapper">
-                    <div class="badge-live">Live Sensor</div>
-                    <img src="https://images.unsplash.com/photo-1558449195-fa2815c4a548?auto=format&fit=crop&w=600" alt="Plant">
-                </div>
-                <div class="card-body">
-                    <h3 class="plant-name">Bell Pepper</h3>
-                    <span class="plant-id">GH-B5 | Zone Beta</span>
-                    <div class="sensor-grid">
-                        <div class="sensor-item">
-                            <span class="sensor-label">Temp</span>
-                            <span class="sensor-value">24°C</span>
-                        </div>
-                        <div class="sensor-item">
-                            <span class="sensor-label">Moisture</span>
-                            <span class="sensor-value">55%</span>
-                        </div>
-                    </div>
-                    <button class="btn-view" onclick="window.location.href='plant-detail.html'">
-                        View Detailed Metrics <i data-lucide="chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+            <button id="add-collection-btn" style="background: var(--primary); color: #fff; border: none; border-radius: 16px; font-weight: 800; font-size: 1rem; padding: 16px 32px; cursor: pointer; box-shadow: 0 4px 12px -2px rgba(5,150,105,0.12); margin-left: 24px;">+ Add Collection</button>
         </div>
+
+        <div class="categories-row" id="categories-row">
+            <div class="category-pill active" data-category="ALL">🌱 All</div>
+            <div class="category-pill" data-category="VEGETABLES">🥕 Vegetables</div>
+            <div class="category-pill" data-category="FRUITS">🍎 Fruits</div>
+            <div class="category-pill" data-category="FLOWERS">🌸 Flowers</div>
+            <div class="category-pill" data-category="INDOOR">🪴 Indoor</div>
+            <div class="category-pill" data-category="OTHER">Other</div>
+        </div>
+
+        <div id="add-collection-form-wrapper" style="display:none; margin-bottom:32px;">
+            <form id="add-collection-form" style="background:#fff; border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); padding:32px; display:flex; gap:24px; align-items:flex-end; flex-wrap:wrap;">
+                <div style="flex:1; min-width:200px;">
+                    <label for="collection-name" style="font-weight:700; color:var(--text-main);">Name</label>
+                    <input id="collection-name" name="name" required style="width:100%; padding:12px; border-radius:12px; border:1.5px solid var(--glass-border); margin-top:6px; font-size:1rem;">
+                </div>
+                <div style="flex:1; min-width:180px;">
+                    <label for="collection-category" style="font-weight:700; color:var(--text-main);">Category</label>
+                    <select id="collection-category" name="category" required style="width:100%; padding:12px; border-radius:12px; border:1.5px solid var(--glass-border); margin-top:6px; font-size:1rem;">
+                        <option value="VEGETABLES">Vegetables</option>
+                        <option value="FRUITS">Fruits</option>
+                        <option value="FLOWERS">Flowers</option>
+                        <option value="INDOOR">Indoor</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <div style="flex:1; min-width:180px;">
+                    <label for="collection-location" style="font-weight:700; color:var(--text-main);">Location</label>
+                    <input id="collection-location" name="location" style="width:100%; padding:12px; border-radius:12px; border:1.5px solid var(--glass-border); margin-top:6px; font-size:1rem;">
+                </div>
+                <button type="submit" style="background:var(--primary); color:#fff; border:none; border-radius:12px; font-weight:800; font-size:1rem; padding:14px 32px; cursor:pointer;">Add</button>
+                <button type="button" id="cancel-add-collection" style="background:#f1f5f9; color:var(--text-dim); border:none; border-radius:12px; font-weight:700; font-size:1rem; padding:14px 24px; cursor:pointer; margin-left:8px;">Cancel</button>
+                <span id="add-collection-error" style="color:#dc2626; font-weight:700; margin-left:16px;"></span>
+            </form>
+        </div>
+
+        <div class="greenhouse-grid" id="plants-grid"></div>
+        <div id="empty-state" style="display:none; text-align:center; color:var(--text-dim); font-size:1.2rem; margin-top:48px;">No collections yet. Add your first collection.</div>
     </main>
 
     <script src="API/auth.js"></script>
     <script>
         lucide.createIcons();
         if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
+
+        let collections = [];
+        let filteredCategory = 'ALL';
+        const grid = document.getElementById('plants-grid');
+        const emptyState = document.getElementById('empty-state');
+        const pills = document.querySelectorAll('.category-pill');
+        const addBtn = document.getElementById('add-collection-btn');
+        const formWrapper = document.getElementById('add-collection-form-wrapper');
+        const form = document.getElementById('add-collection-form');
+        const cancelBtn = document.getElementById('cancel-add-collection');
+        const errorSpan = document.getElementById('add-collection-error');
+
+        const BACKEND_URL = 'http://localhost:8080/api/v1/collections';
+        function renderCollections() {
+            let data = filteredCategory === 'ALL' ? collections : collections.filter(c => c.category === filteredCategory);
+            grid.innerHTML = '';
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+            data.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'plant-card';
+                card.innerHTML = `
+                    <div style="position:relative; height:60px;">
+                        <span style="position:absolute; top:20px; left:20px; background:var(--primary); color:#fff; padding:6px 18px; border-radius:50px; font-weight:800; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">${c.category}</span>
+                    </div>
+                    <div class="card-body" style="padding-top:12px;">
+                        <h3 class="plant-name" style="margin-bottom:2px;">${c.name}</h3>
+                        <div style="color:var(--text-dim); font-size:0.98rem; margin-bottom:8px;">${c.location ? c.location : ''}</div>
+                        <div style="color:var(--text-dim); font-size:0.92rem; margin-bottom:16px;">Created: ${c.createdAt}</div>
+                        <button class="btn-view" style="background:#fff; color:var(--primary); border:1.5px solid var(--primary); margin-bottom:8px;" onclick="deleteCollection(${c.id})">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function fetchCollections() {
+            fetch(BACKEND_URL, { headers: auth.authHeaders() })
+                .then(r => r.json())
+                .then(json => {
+                    collections = json.data || json;
+                    renderCollections();
+                });
+        }
+
+        window.deleteCollection = function(id) {
+            fetch(`${BACKEND_URL}/${id}`, { method: 'DELETE', headers: auth.authHeaders() })
+                .then(r => {
+                    if (r.ok) {
+                        collections = collections.filter(c => c.id !== id);
+                        renderCollections();
+                    }
+                });
+        }
+
+        pills.forEach(pill => {
+            pill.onclick = function() {
+                pills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                filteredCategory = pill.getAttribute('data-category');
+                renderCollections();
+            }
+        });
+
+        addBtn.onclick = function() {
+            formWrapper.style.display = 'block';
+            addBtn.style.display = 'none';
+            errorSpan.textContent = '';
+        }
+        cancelBtn.onclick = function() {
+            formWrapper.style.display = 'none';
+            addBtn.style.display = 'inline-block';
+            form.reset();
+            errorSpan.textContent = '';
+        }
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            errorSpan.textContent = '';
+            const name = form['name'].value.trim();
+            const category = form['category'].value;
+            const location = form['location'].value.trim();
+            fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: auth.authHeaders(),
+                body: JSON.stringify({ name, category, location })
+            })
+            .then(async r => {
+                if (r.status === 201) {
+                    formWrapper.style.display = 'none';
+                    addBtn.style.display = 'inline-block';
+                    form.reset();
+                    fetchCollections();
+                } else {
+                    const err = await r.json();
+                    errorSpan.textContent = err.message || 'Error adding collection';
+                }
+            });
+        }
+
+        fetchCollections();
     </script>
 </body>
 </html>
