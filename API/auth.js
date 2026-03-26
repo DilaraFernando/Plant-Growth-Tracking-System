@@ -19,4 +19,17 @@ function authHeaders() {
     };
 }
 
-window.auth = { getToken, isLoggedIn, logout, authHeaders };
+function redirectIfAuthenticated() {
+    if (isLoggedIn()) {
+        window.location.href = '../../GrowthTrcakSection/pages/DashBoardPage.html';
+    }
+}
+
+function hideAuthLinks() {
+    if (isLoggedIn()) {
+        const signInLinks = document.querySelectorAll('.signin-btn, a[href*="sign-in"], a[href*="sign-up"]');
+        signInLinks.forEach(link => link.style.display = 'none');
+    }
+}
+
+window.auth = { getToken, isLoggedIn, logout, authHeaders, redirectIfAuthenticated, hideAuthLinks };
