@@ -16,7 +16,10 @@ loginBtn.onclick = async function() {
         const data = await res.json();
         if (res.status === 200 && data.data && data.data.accessToken) {
             localStorage.setItem('jwt_token', data.data.accessToken);
-            window.location.href = '../../GrowthTrcakSection/pages/DashBoardPage.html';
+            // Save a simple display name for the UI
+            localStorage.setItem('userName', email.split('@')[0]);
+            // Redirect to main dashboard
+            window.location.href = '../../dashboard.html';
         } else {
             errorDiv.textContent = data.message || 'Login failed';
         }
