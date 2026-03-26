@@ -246,7 +246,10 @@
         }
 
         // --- Weather Fetch Logic ---
-        const OPENWEATHER_API_KEY = '8e5731aa6d098ff8d9648f8035b07994';
+        // const OPENWEATHER_API_KEY = 'YOUR_API_KEY_HERE';
+        // For security, load the API key from .weather_api_key (not committed to git)
+        // Example: fetch('/.weather_api_key').then(r => r.text()).then(line => { const OPENWEATHER_API_KEY = line.split('=')[1].trim(); ... });
+        // (You must implement secure loading in your build or server environment)
         const DEFAULT_CITY = 'Kandy';
         const locationCity = document.getElementById('location-city');
         const tempEl = document.getElementById('weather-temp');
