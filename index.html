@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --gray: #9ca3af;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .nav-links a.active,
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 18px;
+        }
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 12px 32px;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        .btn-secondary {
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        .features {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            margin: 0 auto 60px auto;
+            max-width: 1100px;
+            flex-wrap: wrap;
+        }
+        .feature-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 36px 28px;
+            flex: 1 1 260px;
+            min-width: 260px;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid #e5e7eb;
+        }
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .footer {
+            background: #fff;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 24px 0 18px 0;
+            font-size: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        @media (max-width: 900px) {
+            .navbar { padding: 15px 24px; }
+            .features { gap: 18px; }
+        }
+        @media (max-width: 700px) {
+            .features { flex-direction: column; align-items: center; }
+            .feature-card { width: 100%; max-width: 400px; }
+        }
+        @media (max-width: 500px) {
+            .hero-title { font-size: 2rem; }
+            .hero { padding: 40px 8px 24px 8px; }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="logo">Growth Tracker</a>
+    <ul class="nav-links">
+        <li><a href="sing-in/pages/sign-in.html">Sign In</a></li>
+        <li><a href="sing-in/pages/sign-up.html">Sign Up</a></li>
+    </ul>
+</nav>
+<section class="hero">
+    <div class="hero-title">Growth Tracker</div>
+    <div class="hero-tagline">Track your plant's 30-day journey from seed to harvest</div>
+    <div class="hero-btns">
+        <a href="sing-in/pages/sign-up.html" class="btn-primary">Get Started</a>
+        <a href="sing-in/pages/sign-in.html" class="btn-secondary">Sign In</a>
+    </div>
+</section>
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-title">30-Day Tracking</div>
+        <div class="feature-desc">Monitor your plant every day through 6 growth stages from germination to harvest ready</div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-title">Daily Alerts</div>
+        <div class="feature-desc">Get notified every day with your plant's current stage and growth progress updates</div>
+    </div>
+    <div class="feature-card">
+        <div class="feature-title">Social Sharing</div>
+        <div class="feature-desc">Auto-generated captions for every growth milestone ready to share with the world</div>
+    </div>
+</section>
+<footer class="footer">
+    Growth Tracker &mdash; Built for smart gardeners
+</footer>
+<script src="API/auth.js"></script>
+<script>
+    if (window.auth && auth.isLoggedIn && auth.isLoggedIn()) {
+        window.location.href = 'dashboard.html';
+    }
+</script>
+</body>
+</html>

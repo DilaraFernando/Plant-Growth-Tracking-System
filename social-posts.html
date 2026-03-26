@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Posts - Growth Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --gray: #9ca3af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-links a.active { color: var(--primary); }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .btn-admin {
+            background: #4b5563;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-admin:hover { background: #374151; }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 24px;
+        }
+
+        .post-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .plant-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary);
+        }
+        .day-label {
+            font-size: 12px;
+            font-weight: 600;
+            background: #f3f4f6;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .post-caption {
+            font-size: 15px;
+            line-height: 1.6;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed #d1d5db;
+            white-space: pre-wrap;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            color: #4b5563;
+            text-transform: uppercase;
+        }
+
+        .copy-btn {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .loading, .error, .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        @media (max-width: 600px) {
+            .posts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="images/ba686471016a10447f0fec61c115ed8c-removebg-preview.png" alt="" style="width:24px;">
+            <span>Growth-Agri</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="register-plant.html">Register New Plant</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="social-posts.html" class="active">Social Posts</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="logout-btn" onclick="auth.logout()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Social Media Posts</h1>
+            <button class="btn-admin" onclick="triggerDailyUpdate()">
+                <i class="fas fa-magic"></i> Trigger Daily Update
+            </button>
+        </div>
+
+        <div id="posts-container">
+            <div class="loading">Loading generated posts...</div>
+        </div>
+    </div>
+
+    <script src="API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) {
+            window.location.href = "sing-in/pages/sign-in.html";
+        }
+
+        async function triggerDailyUpdate() {
+            if (!confirm('This will increment the day for all active plants and generate new logs/posts. Proceed?')) return;
+            
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/plants/admin/trigger-daily-update', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Daily update triggered successfully!');
+                    fetchAllPosts(); // Refresh
+                } else {
+                    throw new Error(data.message || 'Failed to trigger update');
+                }
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        async function fetchAllPosts() {
+            const container = document.getElementById('posts-container');
+            try {
+                // 1. Get all plants
+                const plantsResponse = await fetch('http://localhost:8080/api/v1/plants', {
+                    headers: auth.authHeaders()
+                });
+                const plants = await plantsResponse.json();
+                
+                if (plants.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><h3>No plants registered yet.</h3></div>';
+                    return;
+                }
+
+                // 2. For each plant, get its social posts
+                let allPosts = [];
+                for (const plant of plants) {
+                    const postsResponse = await fetch(`http://localhost:8080/api/v1/plants/${plant.id}/social-posts`, {
+                        headers: auth.authHeaders()
+                    });
+                    const posts = await postsResponse.json();
+                    // Add plant name to each post for display
+                    posts.forEach(p => p.plantName = plant.plantName);
+                    allPosts = allPosts.concat(posts);
+                }
+
+                renderPosts(allPosts);
+            } catch (err) {
+                container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+            }
+        }
+
+        function renderPosts(posts) {
+            const container = document.getElementById('posts-container');
+            
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-share-alt" style="font-size: 48px; color: var(--gray); margin-bottom: 16px;"></i>
+                        <p>No social posts generated yet. Trigger a daily update to see some!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by createdAt descending
+            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            let html = '<div class="posts-grid">';
+            posts.forEach(post => {
+                html += `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <span class="plant-name">${post.plantName}</span>
+                            <span class="day-label">Day ${post.dayNumber}</span>
+                        </div>
+                        <div class="post-caption" id="caption-${post.id}">${post.caption}</div>
+                        <div class="post-footer">
+                            <span class="status-badge">${post.status}</span>
+                            <button class="copy-btn" onclick="copyCaption('${post.id}')">
+                                <i class="far fa-copy"></i> Copy Caption
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function copyCaption(id) {
+            const caption = document.getElementById(`caption-${id}`).innerText;
+            navigator.clipboard.writeText(caption).then(() => {
+                const btn = event.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.borderColor = 'var(--success)';
+                btn.style.color = 'var(--success)';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.borderColor = 'var(--primary)';
+                    btn.style.color = 'var(--primary)';
+                }, 2000);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.hideAuthLinks();
+            fetchAllPosts();
+        });
+    </script>
+</body>
+</html>

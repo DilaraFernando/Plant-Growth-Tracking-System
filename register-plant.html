@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Plant - Growth Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-hover: #1b5e20;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --error: #dc2626;
+            --success: #10b981;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-links a.active { color: var(--primary); }
+
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .form-card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .form-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+        .btn-submit:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        .message.success {
+            display: block;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="images/ba686471016a10447f0fec61c115ed8c-removebg-preview.png" alt="" style="width:24px;">
+            <span>Growth-Agri</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="register-plant.html" class="active">Register New Plant</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li><a href="social-posts.html">Social Posts</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="logout-btn" onclick="auth.logout()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-card">
+            <div class="form-header">
+                <i class="fas fa-seedling"></i>
+                <h1>Register New Plant</h1>
+                <p>Start tracking your plant's growth journey</p>
+            </div>
+
+            <div id="message-container" class="message"></div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="plantName">Plant Name</label>
+                    <input type="text" id="plantName" class="form-control" placeholder="e.g. My Sunny Tomato" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="plantType">Plant Type</label>
+                    <select id="plantType" class="form-control" required>
+                        <option value="" disabled selected>Select plant type</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Rose">Rose</option>
+                        <option value="Basil">Basil</option>
+                        <option value="Sunflower">Sunflower</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn-submit">Register Plant</button>
+            </form>
+
+            <a href="dashboard.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) {
+            window.location.href = "sing-in/pages/sign-in.html";
+        }
+
+        const form = document.getElementById('register-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const messageContainer = document.getElementById('message-container');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const plantName = document.getElementById('plantName').value;
+            const plantType = document.getElementById('plantType').value;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering...';
+            messageContainer.className = 'message';
+            messageContainer.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/plants/register', {
+                    method: 'POST',
+                    headers: auth.authHeaders(),
+                    body: JSON.stringify({ plantName, plantType })
+                });
+
+                if (response.status === 201) {
+                    messageContainer.textContent = 'Plant registered successfully! Redirecting...';
+                    messageContainer.className = 'message success';
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2000);
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.message || 'Failed to register plant');
+                }
+            } catch (err) {
+                messageContainer.textContent = err.message;
+                messageContainer.className = 'message error';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register Plant';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.hideAuthLinks();
+        });
+    </script>
+</body>
+</html>

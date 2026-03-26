@@ -21,7 +21,7 @@ function authHeaders() {
 
 function redirectIfAuthenticated() {
     if (isLoggedIn()) {
-        window.location.href = '../../GrowthTrcakSection/pages/DashBoardPage.html';
+        window.location.href = '../../dashboard.html';
     }
 }
 

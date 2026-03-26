@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Growth Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            
+            /* Badge Colors */
+            --planting-success: #10b981;
+            --daily-update: #3b82f6;
+            --completed: #f59e0b;
+            --active: #10b981;
+        }
+        .badge.active { background: var(--active); }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 80px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-links a.active { color: var(--primary); }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            margin-bottom: 30px;
+        }
+        .header-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .notifications-list {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .notification-item {
+            padding: 20px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+        .notification-item.unread {
+            background: #f0fdf4;
+        }
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+        .notification-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .notification-message {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .notification-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            color: white;
+        }
+        .badge.planting_success { background: var(--planting-success); }
+        .badge.daily_update { background: var(--daily-update); }
+        .badge.completed { background: var(--completed); }
+
+        .loading, .error, .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="dashboard.html" class="logo">
+            <img src="images/ba686471016a10447f0fec61c115ed8c-removebg-preview.png" alt="" style="width:24px;">
+            <span>Growth-Agri</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="register-plant.html">Register New Plant</a></li>
+            <li><a href="notifications.html" class="active">Notifications</a></li>
+            <li><a href="social-posts.html">Social Posts</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="logout-btn" onclick="auth.logout()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Notifications</h1>
+        </div>
+
+        <div id="notifications-container" class="notifications-list">
+            <div class="loading">Loading notifications...</div>
+        </div>
+    </div>
+
+    <script src="API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) {
+            window.location.href = "sing-in/pages/sign-in.html";
+        }
+
+        async function fetchNotifications() {
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/plants/notifications', {
+                    headers: auth.authHeaders()
+                });
+                const notifications = await response.json();
+                renderNotifications(notifications);
+            } catch (err) {
+                document.getElementById('notifications-container').innerHTML = `<div class="error">Failed to load notifications</div>`;
+            }
+        }
+
+        function renderNotifications(notifications) {
+            const container = document.getElementById('notifications-container');
+            
+            if (notifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="far fa-bell-slash" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
+                        <p>No notifications yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by created date descending
+            notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            let html = '';
+            notifications.forEach(notif => {
+                const typeClass = notif.type.toLowerCase();
+                const unreadClass = notif.isRead ? '' : 'unread';
+                const timeStr = new Date(notif.createdAt).toLocaleString();
+                
+                let icon = 'fa-bell';
+                if (notif.type === 'PLANTING_SUCCESS') icon = 'fa-seedling';
+                if (notif.type === 'DAILY_UPDATE') icon = 'fa-chart-line';
+                if (notif.type === 'COMPLETED') icon = 'fa-trophy';
+
+                html += `
+                    <div class="notification-item ${unreadClass}" onclick="markAsRead(${notif.id})">
+                        <div class="notification-icon" style="background: ${getBackgroundColor(notif.type)}; color: white;">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-top">
+                                <span class="badge ${typeClass}">${notif.type.replace('_', ' ')}</span>
+                                <span class="notification-time">${timeStr}</span>
+                            </div>
+                            <div class="notification-message">${notif.message}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function getBackgroundColor(type) {
+            if (type === 'PLANTING_SUCCESS') return '#10b981';
+            if (type === 'DAILY_UPDATE') return '#3b82f6';
+            if (type === 'COMPLETED') return '#f59e0b';
+            return '#6b7280';
+        }
+
+        async function markAsRead(id) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/plants/notifications/${id}/read`, {
+                    method: 'PATCH',
+                    headers: auth.authHeaders()
+                });
+                if (response.ok) {
+                    fetchNotifications(); // Refresh list
+                }
+            } catch (err) {
+                console.error('Failed to mark notification as read', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            auth.hideAuthLinks();
+            fetchNotifications();
+        });
+    </script>
+</body>
+</html>
