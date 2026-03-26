@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Growth Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@lucide/icons@latest/dist/umd/lucide.min.css">
     <style>
         :root {
-            --primary: #2e7d32;
-            --primary-hover: #1b5e20;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1f2937;
+            --primary: #4f8a8b;
+            --primary-hover: #357376;
+            --sidebar-bg: #f4f6fb;
+            --sidebar-active: #e0f2f1;
+            --card: #fff;
+            --radius: 16px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.07);
             --text-muted: #6b7280;
-            --success: #10b981;
-            --gray: #9ca3af;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --radius: 12px;
+            --text-main: #222;
         }
         * {
             margin: 0;
@@ -26,17 +25,17 @@
             font-family: 'Inter', sans-serif;
         }
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background: #f6f8fa;
+            color: var(--text-main);
             min-height: 100vh;
         }
         .navbar {
+            background: var(--sidebar-bg);
+            box-shadow: var(--shadow);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 80px;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            justify-content: space-between;
+            padding: 18px 36px;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -44,9 +43,9 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 1.6rem;
             color: var(--primary);
             text-decoration: none;
         }
@@ -57,8 +56,8 @@
         }
         .nav-links a {
             text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
+            color: var(--text-main);
+            font-size: 1rem;
             font-weight: 500;
             transition: 0.3s;
         }
@@ -76,6 +75,7 @@
             text-align: center;
         }
         .hero-title {
+            font-family: 'Inter', Arial, sans-serif;
             font-size: 2.8rem;
             font-weight: 700;
             color: var(--primary);
@@ -173,7 +173,10 @@
 </head>
 <body>
 <nav class="navbar">
-    <a href="index.html" class="logo">Growth Tracker</a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <i data-lucide="leaf" style="color: var(--primary); width: 32px; height: 32px;"></i>
+        <a href="index.html" class="logo">Growth Tracker</a>
+    </div>
     <ul class="nav-links">
         <li><a href="sing-in/pages/sign-in.html">Sign In</a></li>
         <li><a href="sing-in/pages/sign-up.html">Sign Up</a></li>
@@ -190,14 +193,17 @@
 </section>
 <section class="features">
     <div class="feature-card">
+        <i data-lucide="calendar-days" style="color: var(--primary); width: 28px; height: 28px; margin-bottom: 10px;"></i>
         <div class="feature-title">30-Day Tracking</div>
         <div class="feature-desc">Monitor your plant every day through 6 growth stages from germination to harvest ready</div>
     </div>
     <div class="feature-card">
+        <i data-lucide="bell" style="color: var(--primary); width: 28px; height: 28px; margin-bottom: 10px;"></i>
         <div class="feature-title">Daily Alerts</div>
         <div class="feature-desc">Get notified every day with your plant's current stage and growth progress updates</div>
     </div>
     <div class="feature-card">
+        <i data-lucide="share-2" style="color: var(--primary); width: 28px; height: 28px; margin-bottom: 10px;"></i>
         <div class="feature-title">Social Sharing</div>
         <div class="feature-desc">Auto-generated captions for every growth milestone ready to share with the world</div>
     </div>
@@ -206,9 +212,13 @@
     Growth Tracker &mdash; Built for smart gardeners
 </footer>
 <script src="API/auth.js"></script>
+<script src="https://unpkg.com/@lucide/icons@latest"></script>
 <script>
     if (window.auth && auth.isLoggedIn && auth.isLoggedIn()) {
         window.location.href = 'dashboard.html';
+    }
+    if (window.lucide) {
+        lucide.createIcons();
     }
 </script>
 </body>

@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Posts - Growth Tracking</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
-            --primary: #2e7d32;
-            --primary-hover: #1b5e20;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
+            --primary: #059669;
+            --primary-hover: #047857;
+            --primary-light: #ecfdf5;
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
             --gray: #9ca3af;
         }
 
@@ -26,10 +29,88 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
         body {
-            background-color: var(--bg);
-            color: var(--text);
             min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
+        }
+        .dashboard-layout {
+            display: flex;
+            width: 100vw;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            border-right: 1.5px solid var(--glass-border);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.7rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 36px 32px 28px 32px;
+            text-decoration: none;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
+            border-bottom: 1.5px solid var(--glass-border);
+            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
+        }
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px 10px 0 10px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 20px 13px 22px;
+            border-radius: 14px;
+            color: var(--text-dim);
+            font-size: 1.08rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s, border-left 0.18s;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+            border-left: 4px solid var(--primary-light);
+        }
+        .sidebar-link .lucide {
+            width: 22px;
+            height: 22px;
+        }
+        .sidebar-footer {
+            padding: 24px 32px;
+            border-top: 1px solid var(--glass-border);
         }
 
         .navbar {
@@ -65,9 +146,22 @@
         }
         .nav-links a.active { color: var(--primary); }
 
+        .main-content {
+            flex: 1;
+            padding: 60px 0 0 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
+            border-radius: 0;
+            margin: 0;
+        }
         .container {
+            width: 100%;
             max-width: 1000px;
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
@@ -185,34 +279,35 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="dashboard.html" class="logo">
-            <img src="images/ba686471016a10447f0fec61c115ed8c-removebg-preview.png" alt="" style="width:24px;">
-            <span>Growth-Agri</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="register-plant.html">Register New Plant</a></li>
-            <li><a href="notifications.html">Notifications</a></li>
-            <li><a href="social-posts.html" class="active">Social Posts</a></li>
-            <li><a href="weather.html">Weather</a></li>
-        </ul>
-        <div class="nav-right">
-            <button class="logout-btn" onclick="auth.logout()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;">Logout</button>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="header-section">
-            <h1>Social Media Posts</h1>
-            <button class="btn-admin" onclick="triggerDailyUpdate()">
-                <i class="fas fa-magic"></i> Trigger Daily Update
-            </button>
-        </div>
-
-        <div id="posts-container">
-            <div class="loading">Loading generated posts...</div>
-        </div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="logo">
+                <i class="lucide lucide-leaf"></i>
+                Growth-Agri
+            </a>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
+                <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="social-posts.html" class="sidebar-link active" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
+                <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
+                <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+            </nav>
+            <div class="sidebar-footer"></div>
+        </aside>
+        <main class="main-content">
+            <div class="container">
+                <div class="header-section">
+                    <h1>Social Media Posts</h1>
+                    <button class="btn-admin" onclick="triggerDailyUpdate()">
+                        <i data-lucide="wand-2"></i> Trigger Daily Update
+                    </button>
+                </div>
+                <div id="posts-container">
+                    <div class="loading">Loading generated posts...</div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="API/auth.js"></script>
@@ -279,7 +374,7 @@
         function renderPosts(posts, plants) {
             const container = document.getElementById('posts-container');
             if (!Array.isArray(posts) || posts.length === 0) {
-                let html = '<div class="empty-state"><i class="fas fa-share-alt" style="font-size: 48px; color: var(--gray); margin-bottom: 16px;"></i><p>No social posts generated yet. Trigger a daily update to see some!</p></div>';
+                let html = '<div class="empty-state"><i data-lucide="share-2" style="width:48px;height:48px;color:var(--gray);margin-bottom:16px;"></i><p>No social posts generated yet. Trigger a daily update to see some!</p></div>';
                 // Show per-plant Generate Post buttons even if no posts
                 if (Array.isArray(plants) && plants.length > 0) {
                     html += '<div class="plants-generate-btns">';
@@ -289,6 +384,7 @@
                     html += '</div>';
                 }
                 container.innerHTML = html;
+                lucide.createIcons();
                 return;
             }
 
@@ -307,7 +403,7 @@
                         <div class="post-footer">
                             <span class="status-badge">${post.status}</span>
                             <button class="copy-btn" onclick="copyCaption('${post.id}')">
-                                <i class="far fa-copy"></i> Copy Caption
+                                <i data-lucide="copy"></i> Copy Caption
                             </button>
                             <button class="generate-btn" onclick="generatePost(${post.plantId})">Generate Post</button>
                         </div>
@@ -316,6 +412,7 @@
             });
             html += '</div>';
             container.innerHTML = html;
+            lucide.createIcons();
         }
 
         async function generatePost(plantId) {
@@ -339,15 +436,18 @@
             navigator.clipboard.writeText(caption).then(() => {
                 const btn = event.currentTarget;
                 const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.innerHTML = '<i data-lucide="check"></i> Copied!';
+                lucide.createIcons();
                 btn.style.borderColor = 'var(--success)';
                 btn.style.color = 'var(--success)';
                 setTimeout(() => {
                     btn.innerHTML = originalHtml;
+                    lucide.createIcons();
                     btn.style.borderColor = 'var(--primary)';
                     btn.style.color = 'var(--primary)';
                 }, 2000);
             });
+            lucide.createIcons();
         }
 
         document.addEventListener('DOMContentLoaded', () => {

@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Plant - Growth Tracking</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
-            --primary: #2e7d32;
-            --primary-hover: #1b5e20;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1f2937;
-            --text-muted: #6b7280;
+            --primary: #059669;
+            --primary-hover: #047857;
+            --primary-light: #ecfdf5;
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
             --error: #dc2626;
             --success: #10b981;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
         }
 
         * {
@@ -27,10 +30,88 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
         body {
-            background-color: var(--bg);
-            color: var(--text);
             min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
+        }
+        .dashboard-layout {
+            display: flex;
+            width: 100vw;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            border-right: 1.5px solid var(--glass-border);
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.7rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 36px 32px 28px 32px;
+            text-decoration: none;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
+            border-bottom: 1.5px solid var(--glass-border);
+            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
+        }
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px 10px 0 10px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 20px 13px 22px;
+            border-radius: 14px;
+            color: var(--text-dim);
+            font-size: 1.08rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s, border-left 0.18s;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+            border-left: 4px solid var(--primary-light);
+        }
+        .sidebar-link .lucide {
+            width: 22px;
+            height: 22px;
+        }
+        .sidebar-footer {
+            padding: 24px 32px;
+            border-top: 1px solid var(--glass-border);
         }
 
         .navbar {
@@ -63,26 +144,39 @@
         }
         .nav-links a.active { color: var(--primary); }
 
+        .main-content {
+            flex: 1;
+            padding: 60px 0 0 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
+            border-radius: 0;
+            margin: 0;
+        }
         .container {
-            max-width: 500px;
-            margin: 60px auto;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
             padding: 0 20px;
         }
-
         .form-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid #e5e7eb;
+            background: var(--card-bg);
+            padding: 40px 32px 32px 32px;
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1.5px solid var(--glass-border);
         }
 
         .form-header {
             text-align: center;
             margin-bottom: 30px;
         }
-        .form-header i {
-            font-size: 40px;
+        .form-header i[data-lucide] {
+            width: 40px;
+            height: 40px;
             color: var(--primary);
             margin-bottom: 15px;
         }
@@ -122,21 +216,22 @@
         .btn-submit {
             width: 100%;
             background: var(--primary);
-            color: white;
+            color: #fff;
             border: none;
             padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.08rem;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.18s;
             margin-top: 10px;
+            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.08);
         }
         .btn-submit:hover {
             background: var(--primary-hover);
         }
         .btn-submit:disabled {
-            background: var(--gray);
+            background: var(--text-dim);
             cursor: not-allowed;
             opacity: 0.7;
         }
@@ -175,61 +270,65 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="dashboard.html" class="logo">
-            <img src="images/ba686471016a10447f0fec61c115ed8c-removebg-preview.png" alt="" style="width:24px;">
-            <span>Growth-Agri</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="register-plant.html" class="active">Register New Plant</a></li>
-            <li><a href="notifications.html">Notifications</a></li>
-            <li><a href="social-posts.html">Social Posts</a></li>
-        </ul>
-        <div class="nav-right">
-            <button class="logout-btn" onclick="auth.logout()" style="background: none; border: 1px solid var(--primary); color: var(--primary); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;">Logout</button>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="form-card">
-            <div class="form-header">
-                <i class="fas fa-seedling"></i>
-                <h1>Register New Plant</h1>
-                <p>Start tracking your plant's growth journey</p>
-            </div>
-
-            <div id="message-container" class="message"></div>
-
-            <form id="register-form">
-                <div class="form-group">
-                    <label for="plantName">Plant Name</label>
-                    <input type="text" id="plantName" class="form-control" placeholder="e.g. My Sunny Tomato" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="plantType">Plant Type</label>
-                    <select id="plantType" class="form-control" required>
-                        <option value="" disabled selected>Select plant type</option>
-                        <option value="Tomato">Tomato</option>
-                        <option value="Rose">Rose</option>
-                        <option value="Basil">Basil</option>
-                        <option value="Sunflower">Sunflower</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <button type="submit" id="submit-btn" class="btn-submit">Register Plant</button>
-            </form>
-
-            <a href="dashboard.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> Back to Dashboard
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="logo">
+                <i class="lucide lucide-leaf"></i>
+                Growth-Agri
             </a>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
+                <a href="register-plant.html" class="sidebar-link active" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
+                <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+            </nav>
+            <div class="sidebar-footer"></div>
+        </aside>
+        <main class="main-content">
+
+        <div class="container">
+            <div class="form-card">
+                <div class="form-header">
+                    <i data-lucide="sprout"></i>
+                    <h1>Register New Plant</h1>
+                    <p>Start tracking your plant's growth journey</p>
+                </div>
+
+                <div id="message-container" class="message"></div>
+
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="plantName">Plant Name</label>
+                        <input type="text" id="plantName" class="form-control" placeholder="e.g. My Sunny Tomato" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="plantType">Plant Type</label>
+                        <select id="plantType" class="form-control" required>
+                            <option value="" disabled selected>Select plant type</option>
+                            <option value="Tomato">Tomato</option>
+                            <option value="Rose">Rose</option>
+                            <option value="Basil">Basil</option>
+                            <option value="Sunflower">Sunflower</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="btn-submit">Register Plant</button>
+                </form>
+
+                <a href="dashboard.html" class="back-link">
+                    <i data-lucide="arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
         </div>
+        </main>
     </div>
 
     <script src="API/auth.js"></script>
     <script>
+            lucide.createIcons();
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }

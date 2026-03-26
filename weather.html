@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather - Plant Growth Tracking</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <link rel="stylesheet" href="mainPage/style/HomeSection.css">
     <style>
         .weather-cards-row {
@@ -50,8 +51,102 @@
         .alert-red { background: #ffe6e6; color: #991b1b; border: 2px solid #ef4444; }
     </style>
     <style>
-        body { background: var(--bg, #f8fafc); color: var(--text, #1f2937); min-height: 100vh; }
-        .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: var(--shadow, 0 4px 6px -1px rgba(0,0,0,0.1)); padding: 32px; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: row;
+            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
+        }
+        .dashboard-layout {
+            display: flex;
+            width: 100vw;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            border-right: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.7rem;
+            color: #059669;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 36px 32px 28px 32px;
+            text-decoration: none;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
+            border-bottom: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
+        }
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px 10px 0 10px;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 20px 13px 22px;
+            border-radius: 14px;
+            color: #64748b;
+            font-size: 1.08rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s, border-left 0.18s;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active {
+            background: #ecfdf5;
+            color: #059669;
+            border-left: 4px solid #059669;
+        }
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: #059669;
+            border-left: 4px solid #ecfdf5;
+        }
+        .sidebar-link .lucide {
+            width: 22px;
+            height: 22px;
+        }
+        .sidebar-footer {
+            padding: 24px 32px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .main-content {
+            flex: 1;
+            padding: 60px 0 0 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
+            border-radius: 0;
+            margin: 0;
+        }
+        .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 32px; }
         .form-group { margin-bottom: 20px; }
         label { font-weight: 600; margin-bottom: 8px; display: block; }
         input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray, #9ca3af); font-size: 16px; }
@@ -69,19 +164,25 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> Plant Growth</a>
-        <ul class="nav-links">
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="register-plant.html">Register Plant</a></li>
-            <li><a href="social-posts.html">Social Posts</a></li>
-            <li><a href="notifications.html">Notifications</a></li>
-            <li><a href="weather.html" class="active">Weather</a></li>
-            <li><a href="sing-in/pages/sign-in.html" id="auth-link">Sign In</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <h2 style="margin-bottom: 24px;">Weather & Plant Alerts</h2>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="logo">
+                <i class="lucide lucide-leaf"></i>
+                Growth-Agri
+            </a>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
+                <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
+                <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
+                <a href="weather.html" class="sidebar-link active" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+            </nav>
+            <div class="sidebar-footer"></div>
+        </aside>
+        <main class="main-content">
+            <div class="container">
+            <h2 style="margin-bottom: 24px;display:flex;align-items:center;gap:10px;"><i data-lucide="cloud-sun"></i> Weather & Plant Alerts</h2>
         <div class="form-group">
             <label for="city">City Name</label>
             <input type="text" id="city" placeholder="Enter city name">
@@ -89,33 +190,79 @@
         <div class="form-group">
             <button id="check-weather">Check Weather</button>
         </div>
-        <div class="form-group">
-            <label for="plant-type">Plant Type</label>
-            <select id="plant-type">
-                <option>Tomato</option>
-                <option>Rose</option>
-                <option>Basil</option>
-                <option>Sunflower</option>
-                <option>Other</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="plant-dropdown">Select Plant</label>
+                <select id="plant-dropdown"></select>
+                <div id="no-plants-msg" style="color:#991b1b; font-weight:600; margin-top:10px; display:none;">No active plants found. Register a plant first.</div>
+            </div>
         <div class="form-group">
             <button id="get-alert">Get Plant Alert</button>
+            <button id="get-maintenance">Get Maintenance Tips</button>
         </div>
         <div id="weather-result" class="weather-result" style="display:none;"></div>
         <div id="alert-result" class="alert-result" style="display:none;"></div>
+            </div>
+        </main>
     </div>
     <script src="API/auth.js"></script>
     <script>
+            lucide.createIcons();
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }
         hideAuthLinks();
+        let plants = [];
+        let activePlant = null;
+        let currentDay = 1;
+        let plantType = "Plant";
+
+        async function fetchPlants() {
+            const res = await fetch("http://localhost:8080/api/v1/plants", { headers: auth.authHeaders() });
+            const json = await res.json();
+            if (json && json.data) {
+                plants = json.data;
+                activePlant = plants.find(p => p.status === "ACTIVE");
+                currentDay = activePlant ? activePlant.currentDay : 1;
+                plantType = activePlant ? activePlant.plantType : "Plant";
+            }
+        }
+
+            async function fetchPlantsAndPopulateDropdown() {
+                const res = await fetch("http://localhost:8080/api/v1/plants", { headers: auth.authHeaders() });
+                const json = await res.json();
+                const dropdown = document.getElementById('plant-dropdown');
+                dropdown.innerHTML = '';
+                plants = (json && json.data) ? json.data : [];
+                if (!plants.length) {
+                    document.getElementById('no-plants-msg').style.display = '';
+                    dropdown.style.display = 'none';
+                    document.getElementById('get-alert').disabled = true;
+                    document.getElementById('get-maintenance').disabled = true;
+                } else {
+                    document.getElementById('no-plants-msg').style.display = 'none';
+                    dropdown.style.display = '';
+                    document.getElementById('get-alert').disabled = false;
+                    document.getElementById('get-maintenance').disabled = false;
+                    plants.forEach(plant => {
+                        const option = document.createElement('option');
+                        option.value = plant.id;
+                        option.text = plant.plantName + ' (' + plant.plantType + ')';
+                        option.dataset.plantType = plant.plantType;
+                        option.dataset.currentDay = plant.currentDay;
+                        dropdown.appendChild(option);
+                    });
+                }
+            }
+
+            fetchPlantsAndPopulateDropdown();
+
         document.getElementById('check-weather').onclick = async function() {
             const city = document.getElementById('city').value.trim();
-            if (!city) return;
+                const dropdown = document.getElementById('plant-dropdown');
+                const selected = dropdown.options[dropdown.selectedIndex];
             const res = await fetch("http://localhost:8080/api/v1/weather/current?city=" + encodeURIComponent(city), {
-                headers: auth.authHeaders()
+                const plantType = selected.dataset.plantType;
+                const res = await fetch("http://localhost:8080/api/v1/weather/alert?city=" + encodeURIComponent(city) + "&plantType=" + encodeURIComponent(plantType), {
             });
             const json = await res.json();
             if (json && json.data) {
@@ -146,6 +293,31 @@
                 document.getElementById('weather-result').innerHTML = 'Could not fetch weather.';
             }
         };
+                document.getElementById('get-maintenance').onclick = async function() {
+                        const dropdown = document.getElementById('plant-dropdown');
+                        const selected = dropdown.options[dropdown.selectedIndex];
+                        if (!selected) return;
+                        const plantType = selected.dataset.plantType;
+                        const currentDay = selected.dataset.currentDay;
+                        const res = await fetch(`http://localhost:8080/api/v1/weather/maintenance?plantType=${encodeURIComponent(plantType)}&currentDay=${currentDay}`, {
+                        headers: auth.authHeaders()
+                    });
+                    const json = await res.json();
+                    if (json && json.data) {
+                        let color = 'alert-green';
+                        const msg = json.data.toLowerCase();
+                        if (msg.includes('germination') || msg.includes('diluted') || msg.includes('nitrogen') || msg.includes('npk') || msg.includes('phosphorus') || msg.includes('potassium')) {
+                            color = 'alert-yellow';
+                        }
+                        document.getElementById('alert-result').style.display = '';
+                        document.getElementById('alert-result').className = 'alert-result ' + color;
+                        document.getElementById('alert-result').innerText = json.data;
+                    } else {
+                        document.getElementById('alert-result').style.display = '';
+                        document.getElementById('alert-result').className = 'alert-result alert-red';
+                        document.getElementById('alert-result').innerText = 'Could not fetch maintenance tip.';
+                    }
+                };
         document.getElementById('get-alert').onclick = async function() {
             const city = document.getElementById('city').value.trim();
             const plantType = document.getElementById('plant-type').value;
