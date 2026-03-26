@@ -3,288 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Locator - Growth Agri</title>
+    <title>Plant Locator | PlantPulse</title>
+    <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
-            color: var(--text-main);
         }
 
-        .sidebar {
+        /* --- Sidebar --- */
+        aside {
             width: 260px;
-            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            background: var(--sidebar-bg);
             border-right: 1.5px solid var(--glass-border);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
+            z-index: 100;
         }
 
-        .sidebar .logo {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            font-size: 1.7rem;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 36px 32px 28px 32px;
+            margin-bottom: 3rem;
             text-decoration: none;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
-            border-bottom: 1.5px solid var(--glass-border);
         }
 
-        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 18px 10px; }
+        nav { flex: 1; }
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 0.5rem; }
 
-        .sidebar-link {
+        .nav-link {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
             color: var(--text-dim);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary-light); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary-glow); }
+
+        /* --- Main Content --- */
+        main { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-title h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .header-title p { color: var(--text-dim); font-size: 1rem; margin-top: 4px; }
+
+        .search-container { position: relative; width: 400px; }
+        .search-container input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border-radius: 50px;
+            border: 1.5px solid var(--glass-border);
+            background: #fff;
             font-size: 1rem;
             font-weight: 600;
-            text-decoration: none;
+            outline: none;
             transition: all 0.2s;
-            border-left: 4px solid transparent;
+            box-shadow: var(--card-shadow);
         }
+        .search-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-dim); }
 
-        .sidebar-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
+        .grid { display: grid; grid-template-columns: 1fr 350px; gap: 32px; }
 
-        .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        .header-section { margin-bottom: 40px; }
-        .header-section h1 { font-size: 2.2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
-
-        .map-container {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid var(--glass-border);
+        .map-card {
+            background: #fff;
             border-radius: 32px;
+            height: 600px;
+            border: 1.5px solid var(--glass-border);
+            position: relative;
             padding: 40px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             box-shadow: var(--card-shadow);
         }
 
-        .map-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #fff;
-            padding: 12px 20px;
-            border-radius: 20px;
-            border: 1.5px solid var(--glass-border);
-            width: 400px;
-        }
-
-        .search-box input { flex: 1; border: none; outline: none; font-size: 1rem; font-weight: 500; }
-
-        .garden-architecture {
-            display: flex;
-            flex-direction: column;
+        .garden-sections {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-        }
-
-        .section-block {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 24px;
-            background: #f8fafc;
+            padding: 20px;
+            background: #f1f5f9;
             border-radius: 24px;
-            border: 1.5px solid var(--glass-border);
-            position: relative;
         }
 
-        .section-label {
-            position: absolute;
-            top: -12px;
-            left: 24px;
-            background: var(--primary);
-            color: #fff;
-            padding: 4px 16px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .plant-cell {
-            width: 80px;
-            height: 80px;
+        .section {
             background: #fff;
-            border: 1.5px solid var(--glass-border);
             border-radius: 20px;
+            border: 2px dashed var(--glass-border);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-dim);
+            padding: 20px;
+            transition: all 0.3s;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .plant-cell:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
-        .plant-cell i { color: var(--primary); width: 20px; height: 20px; }
-        .plant-cell.empty { color: #cbd5e1; border-style: dashed; }
-        .plant-cell.empty i { color: #cbd5e1; }
-        .plant-cell.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); box-shadow: 0 8px 16px rgba(5,150,105,0.1); }
-
-        .walkway {
-            background: #e2e8f0;
-            color: #64748b;
             text-align: center;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .map-footer {
-            margin-top: 32px;
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-        }
+        .section:hover { background: var(--primary-light); border-color: var(--primary); transform: scale(1.02); }
+        .section-icon { color: var(--text-dim); margin-bottom: 12px; }
+        .section-name { font-weight: 800; font-size: 1.1rem; color: var(--text-main); display: block; }
+        .section-count { font-size: 0.8rem; color: var(--primary); font-weight: 700; background: #fff; padding: 4px 10px; border-radius: 50px; margin-top: 8px; border: 1.5px solid var(--primary-light); }
 
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; color: var(--text-dim); }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .sidebar-card { background: var(--card-bg); border-radius: 32px; padding: 32px; border: 1.5px solid var(--glass-border); backdrop-filter: blur(12px); box-shadow: var(--card-shadow); }
+        .sidebar-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 24px; }
 
-        @media (max-width: 900px) {
-            .sidebar { width: 80px; }
-            .sidebar .logo span { display: none; }
-            .sidebar-link span { display: none; }
-            .sidebar-link { justify-content: center; padding: 16px; }
-            .search-box { width: 100%; }
+        .location-item { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1.5px solid var(--glass-border); }
+        .loc-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; }
+        .loc-details div:first-child { font-weight: 700; font-size: 1rem; }
+        .loc-details div:last-child { font-size: 0.85rem; color: var(--text-dim); font-weight: 600; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+        @media (max-width: 768px) {
+            aside { width: 80px; padding: 2rem 1rem; }
+            .nav-link span, .logo span { display: none; }
+            .grid { grid-template-columns: 1fr; }
+            .search-container { width: 100%; margin-top: 20px; }
+            header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
-    <aside class="sidebar">
-        <a href="dashboard.html" class="logo">
-            <i class="lucide lucide-leaf"></i>
-            <span>Growth Agri</span>
+
+    <aside>
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
         </a>
-        <nav class="sidebar-nav">
-            <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> <span>Dashboard</span></a>
-            <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> <span>Register Plant</span></a>
-            <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> <span>My Greenhouse</span></a>
-            <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> <span>Social Posts</span></a>
-            <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> <span>Notifications</span></a>
-            <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> <span>Weather</span></a>
-            <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> <span>Expert Advice</span></a>
-            <a href="locator.html" class="sidebar-link active" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> <span>Plant Locator</span></a>
-            <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> <span>Logout</span></a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
+                <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="social-posts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
+                <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
+                <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
+                <li><a href="experts.html" class="nav-link"><i data-lucide="users"></i> <span>Expert Corner</span></a></li>
+                <li><a href="locator.html" class="nav-link active"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
+            </ul>
         </nav>
+        <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
     </aside>
 
-    <main class="main-content">
-        <div class="header-section">
-            <h1>Precision Locator</h1>
-            <p style="color:var(--text-dim); margin-top:8px;">Manage your garden architecture and pinpoint plant locations.</p>
-        </div>
+    <main>
+        <header>
+            <div class="header-title">
+                <h1>Plant Locator</h1>
+                <p>Precise coordinate tracking for your distributed garden architecture.</p>
+            </div>
+            <div class="search-container">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" placeholder="Locate a specific plant...">
+            </div>
+        </header>
 
-        <div class="map-container">
-            <div class="map-header">
-                <div>
-                    <h2 style="font-size:1.4rem; font-weight:800;">Garden Layout</h2>
+        <div class="grid">
+            <div class="map-card">
+                <h3 style="margin-bottom: 24px; font-weight: 800; font-size: 1.2rem;">Live Architecture Map</h3>
+                <div class="garden-sections">
+                    <div class="section">
+                        <i data-lucide="leaf" size="32" class="section-icon"></i>
+                        <span class="section-name">Medicinal Garden</span>
+                        <span class="section-count">12 Plants</span>
+                    </div>
+                    <div class="section">
+                        <i data-lucide="carrot" size="32" class="section-icon"></i>
+                        <span class="section-name">Organic Vegetables</span>
+                        <span class="section-count">48 Plants</span>
+                    </div>
+                    <div class="section">
+                        <i data-lucide="flower" size="32" class="section-icon"></i>
+                        <span class="section-name">Ornamental Zone</span>
+                        <span class="section-count">24 Plants</span>
+                    </div>
                 </div>
-                <div class="search-box">
-                    <i class="lucide lucide-search" style="color:#94a3b8;"></i>
-                    <input type="text" placeholder="Search Plant ID (e.g. Aloe-01)...">
+                <div style="margin-top: 32px; padding: 24px; background: var(--primary-light); border-radius: 20px; color: var(--primary-dark); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 12px;">
+                    <i data-lucide="info"></i> Tap a section to view detailed grid coordinates and individual plant health status.
                 </div>
             </div>
 
-            <div class="garden-architecture">
-                <div class="section-block">
-                    <div class="section-label">Section A (Medicinal)</div>
-                    <div class="plant-cell" data-id="Aloe-01"><i class="lucide lucide-leaf"></i>A-01</div>
-                    <div class="plant-cell" data-id="Aloe-02"><i class="lucide lucide-leaf"></i>A-02</div>
-                    <div class="plant-cell active" data-id="Mint-01"><i class="lucide lucide-leaf"></i>A-03</div>
-                    <div class="plant-cell" data-id="Mint-02"><i class="lucide lucide-leaf"></i>A-04</div>
-                    <div class="plant-cell empty"><i class="lucide lucide-plus"></i>Open</div>
+            <div class="sidebar-card">
+                <h3>Recently Located</h3>
+                <div class="location-item">
+                    <div class="loc-icon"><i data-lucide="sprout"></i></div>
+                    <div class="loc-details">
+                        <div>Heirloom Tomato</div>
+                        <div><i data-lucide="map-pin" size="14"></i> Section B | Row 4</div>
+                    </div>
                 </div>
-
-                <div class="walkway">Central Walkway West</div>
-
-                <div class="section-block">
-                    <div class="section-label">Section B (Vegetables)</div>
-                    <div class="plant-cell" data-id="Tomato-01"><i class="lucide lucide-sprout"></i>B-01</div>
-                    <div class="plant-cell" data-id="Chili-04"><i class="lucide lucide-sprout"></i>B-02</div>
-                    <div class="plant-cell empty"><i class="lucide lucide-plus"></i>Open</div>
-                    <div class="plant-cell" data-id="Carrot-01"><i class="lucide lucide-sprout"></i>B-04</div>
+                <div class="location-item">
+                    <div class="loc-icon"><i data-lucide="flower-2"></i></div>
+                    <div class="loc-details">
+                        <div>Wild Rose</div>
+                        <div><i data-lucide="map-pin" size="14"></i> Ornamental | Row 2</div>
+                    </div>
                 </div>
-
-                <div class="walkway">Central Walkway East</div>
-
-                <div class="section-block">
-                    <div class="section-label">Section C (Flowers)</div>
-                    <div class="plant-cell" data-id="Rose-01"><i class="lucide lucide-flower2"></i>C-01</div>
-                    <div class="plant-cell" data-id="Rose-02"><i class="lucide lucide-flower2"></i>C-02</div>
-                    <div class="plant-cell empty"><i class="lucide lucide-plus"></i>Open</div>
+                <div class="location-item">
+                    <div class="loc-icon"><i data-lucide="shrub"></i></div>
+                    <div class="loc-details">
+                        <div>Aloe Vera</div>
+                        <div><i data-lucide="map-pin" size="14"></i> Medicinal | Row 1</div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="map-footer">
-                <div class="legend-item"><div class="dot" style="background:#e2e8f0;"></div> Walkway</div>
-                <div class="legend-item"><div class="dot" style="background:#fff; border:1px solid #ddd;"></div> Available Slot</div>
-                <div class="legend-item"><div class="dot" style="background:var(--primary);"></div> Located Target</div>
             </div>
         </div>
     </main>
 
     <script src="API/auth.js"></script>
     <script>
-        if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
-        if (auth.hideAuthLinks) auth.hideAuthLinks();
         lucide.createIcons();
+        if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
     </script>
 </body>
 </html>

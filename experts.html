@@ -3,214 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert Advice - Growth Agri</title>
+    <title>Expert Corner | PlantPulse</title>
+    <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
-            color: var(--text-main);
         }
 
-        .sidebar {
+        /* --- Sidebar --- */
+        aside {
             width: 260px;
-            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            background: var(--sidebar-bg);
             border-right: 1.5px solid var(--glass-border);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
+            z-index: 100;
         }
 
-        .sidebar .logo {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            font-size: 1.7rem;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 36px 32px 28px 32px;
+            margin-bottom: 3rem;
             text-decoration: none;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
-            border-bottom: 1.5px solid var(--glass-border);
         }
 
-        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 18px 10px; }
+        nav { flex: 1; }
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 0.5rem; }
 
-        .sidebar-link {
+        .nav-link {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 12px;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
             color: var(--text-dim);
-            font-size: 1rem;
-            font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s;
-            border-left: 4px solid transparent;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 600;
         }
 
-        .sidebar-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary-light); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary-glow); }
 
-        .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-        }
+        /* --- Main Content --- */
+        main { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
+        header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-title h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .header-title p { color: var(--text-dim); font-size: 1rem; margin-top: 4px; }
 
-        .header-section { margin-bottom: 40px; }
-        .header-section h1 { font-size: 2.2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
-        .header-section p { color: var(--text-dim); font-size: 1.1rem; margin-top: 8px; }
-
-        .experts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 32px;
-        }
+        .experts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; }
 
         .expert-card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 32px;
             padding: 32px;
             text-align: center;
+            border: 1.5px solid var(--glass-border);
+            backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: var(--card-shadow);
             position: relative;
-            overflow: hidden;
         }
 
-        .expert-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-        }
+        .expert-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1); }
 
         .expert-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 30px;
-            margin: 0 auto 20px auto;
+            width: 110px;
+            height: 110px;
+            border-radius: 36px;
+            margin: 0 auto 24px auto;
             object-fit: cover;
             border: 4px solid #fff;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
         }
 
         .expert-name { font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
-        .expert-role { color: var(--primary); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: block; }
-        .expert-bio { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+        .expert-role { color: var(--primary); font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: block; }
+        .expert-bio { color: var(--text-dim); font-size: 1rem; line-height: 1.6; margin-bottom: 24px; font-weight: 500; }
 
-        .btn-request {
+        .btn-consult {
             background: var(--primary);
             color: #fff;
             border: none;
-            padding: 14px 28px;
-            border-radius: 16px;
-            font-weight: 700;
+            padding: 16px;
+            border-radius: 18px;
+            font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            box-shadow: 0 8px 16px -4px rgba(5, 150, 105, 0.3);
         }
 
-        .btn-request:hover { background: #047857; transform: scale(1.02); }
+        .btn-consult:hover { transform: scale(1.02); background: #047857; }
 
-        /* Chat Overlay Mockup */
+        /* Chat UI Mockup remains simple as established */
         .chat-overlay {
             position: fixed;
             bottom: 40px;
             right: 40px;
             width: 380px;
-            height: 500px;
+            height: 520px;
             background: #fff;
-            border-radius: 24px;
+            border-radius: 32px;
             box-shadow: 0 24px 60px -12px rgba(0,0,0,0.2);
             display: none;
             flex-direction: column;
-            z-index: 100;
+            z-index: 1000;
             border: 1.5px solid var(--glass-border);
             overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .chat-header {
-            padding: 20px;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; background: #f8fafc; }
-        .chat-input { padding: 20px; border-top: 1.5px solid var(--glass-border); display: flex; gap: 10px; }
-        .chat-input input { flex: 1; border: none; padding: 10px; outline: none; font-size: 0.95rem; }
+        .chat-header { padding: 24px; background: var(--primary); color: #fff; display: flex; align-items: center; gap: 16px; }
+        .chat-messages { flex: 1; padding: 24px; overflow-y: auto; background: #f8fafc; }
+        .chat-input { padding: 20px; border-top: 1.5px solid var(--glass-border); display: flex; gap: 12px; }
+        .chat-input input { flex: 1; border: none; padding: 12px 16px; outline: none; font-size: 1rem; background: #f1f5f9; border-radius: 14px; }
 
-        @media (max-width: 900px) {
-            .sidebar { width: 80px; }
-            .sidebar .logo span { display: none; }
-            .sidebar-link span { display: none; }
-            .sidebar-link { justify-content: center; padding: 16px; }
+        @media (max-width: 768px) {
+            aside { width: 80px; padding: 2rem 1rem; }
+            .nav-link span, .logo span { display: none; }
         }
     </style>
 </head>
 <body>
-    <aside class="sidebar">
-        <a href="dashboard.html" class="logo">
-            <i class="lucide lucide-leaf"></i>
-            <span>Growth Agri</span>
+
+    <aside>
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
         </a>
-        <nav class="sidebar-nav">
-            <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> <span>Dashboard</span></a>
-            <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> <span>Register Plant</span></a>
-            <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> <span>My Greenhouse</span></a>
-            <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> <span>Social Posts</span></a>
-            <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> <span>Notifications</span></a>
-            <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> <span>Weather</span></a>
-            <a href="experts.html" class="sidebar-link active" id="sidebar-experts"><i class="lucide lucide-users"></i> <span>Expert Advice</span></a>
-            <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> <span>Plant Locator</span></a>
-            <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> <span>Logout</span></a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
+                <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="social-posts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
+                <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
+                <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
+                <li><a href="experts.html" class="nav-link active"><i data-lucide="users"></i> <span>Expert Corner</span></a></li>
+                <li><a href="locator.html" class="nav-link"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
+            </ul>
         </nav>
+        <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
     </aside>
 
-    <main class="main-content">
-        <div class="header-section">
-            <h1>Expert Advice</h1>
-            <p>Connect with professional agronomists and plant specialists.</p>
+    <main>
+        <div class="header-title">
+            <h1>Expert Corner</h1>
+            <p>Connect with professional agronomists for high-precision growth advice.</p>
         </div>
 
         <div class="experts-grid">
@@ -219,28 +198,18 @@
                 <h3 class="expert-name">Dr. Denver Simonz</h3>
                 <span class="expert-role">Plant Pathologists</span>
                 <p class="expert-bio">Specializing in disease diagnosis and organic pest management for commercial crops.</p>
-                <button class="btn-request" onclick="openChat('Dr. Denver Simonz')">
-                    <i class="lucide lucide-message-circle"></i> Send Consultation Request
+                <button class="btn-consult" onclick="openChat('Dr. Denver Simonz')">
+                    <i data-lucide="message-circle"></i> Start Consultation
                 </button>
             </div>
 
             <div class="expert-card">
                 <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200" class="expert-avatar" alt="Expert">
                 <h3 class="expert-name">Harshitha Fernandez</h3>
-                <span class="expert-role">Climate & Weather Experts</span>
+                <span class="expert-role">Climate Experts</span>
                 <p class="expert-bio">Providing strategic advice on irrigation and harvest timing based on micro-climate data.</p>
-                <button class="btn-request" onclick="openChat('Harshitha Fernandez')">
-                    <i class="lucide lucide-message-circle"></i> Send Consultation Request
-                </button>
-            </div>
-
-            <div class="expert-card">
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200" class="expert-avatar" alt="Expert">
-                <h3 class="expert-name">Shashi Waduge</h3>
-                <span class="expert-role">Soil Scientist</span>
-                <p class="expert-bio">Expert in soil nutrient optimization and pH balancing for sustainable plant growth.</p>
-                <button class="btn-request" onclick="openChat('Shashi Waduge')">
-                    <i class="lucide lucide-message-circle"></i> Send Consultation Request
+                <button class="btn-consult" onclick="openChat('Harshitha Fernandez')">
+                    <i data-lucide="message-circle"></i> Start Consultation
                 </button>
             </div>
         </div>
@@ -248,26 +217,26 @@
 
     <div class="chat-overlay" id="chatOverlay">
         <div class="chat-header">
-            <i class="lucide lucide-user"></i>
-            <div style="flex:1;"><strong id="chatExpertName">Expert Name</strong><br><small>Active Now</small></div>
-            <i class="lucide lucide-x" style="cursor:pointer;" onclick="closeChat()"></i>
+            <div class="avatar" style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center;">HS</div>
+            <div style="flex:1;"><strong id="chatExpertName" style="font-size:1.1rem; display:block;">Expert Name</strong><small style="opacity:0.8; font-weight:600;">Active for Pulse Users</small></div>
+            <i data-lucide="x" style="cursor:pointer;" onclick="closeChat()"></i>
         </div>
         <div class="chat-messages" id="chatMessages">
-            <div style="background:#fff; padding:12px; border-radius:12px; margin-bottom:10px; border:1.5px solid var(--glass-border); font-size:0.9rem;">
-                Hello! I am reviewing your plant's data. Please wait a moment.
+            <div style="background:#fff; padding:16px; border-radius:16px; margin-bottom:12px; border:1.5px solid var(--glass-border); font-size:0.95rem; line-height:1.5; font-weight:500;">
+                Hello! I am Dr. Simonz. I am currently reviewing your Monstera's health data. Please upload a clear photo if possible.
             </div>
-            <div style="color:var(--text-dim); font-size:0.8rem; text-align:center;">Today 10:45 AM</div>
+            <div style="color:var(--text-dim); font-size:0.8rem; text-align:center; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Today 7:45 PM</div>
         </div>
         <div class="chat-input">
-            <input type="text" placeholder="Type your message...">
-            <button style="width:auto; padding:8px 16px; border-radius:12px;"><i class="lucide lucide-send"></i></button>
+            <input type="text" placeholder="Explain your plant concern...">
+            <button style="background:var(--primary); color:#fff; border:none; padding:10px; border-radius:12px; cursor:pointer;"><i data-lucide="send"></i></button>
         </div>
     </div>
 
     <script src="API/auth.js"></script>
     <script>
+        lucide.createIcons();
         if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
-        if (auth.hideAuthLinks) auth.hideAuthLinks();
 
         function openChat(name) {
             document.getElementById('chatExpertName').textContent = name;
@@ -277,8 +246,6 @@
         function closeChat() {
             document.getElementById('chatOverlay').style.display = 'none';
         }
-
-        lucide.createIcons();
     </script>
 </body>
 </html>

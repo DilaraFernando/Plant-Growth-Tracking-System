@@ -3,373 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications - Growth Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <title>Notifications | PlantPulse</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
+            --accent-blue: #2563eb;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-            --planting-success: #059669;
-            --daily-update: #3b82f6;
-            --completed: #f59e0b;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: var(--bg-color);
-            color: var(--text-main);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            flex-direction: row;
-            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
         }
 
-        .sidebar {
+        /* --- Sidebar --- */
+        aside {
             width: 260px;
-            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            background: var(--sidebar-bg);
             border-right: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
+            z-index: 100;
         }
 
-        .sidebar .logo {
-            font-weight: 800;
-            font-size: 1.7rem;
-            color: var(--primary);
+        .logo {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 36px 32px 28px 32px;
-            text-decoration: none;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
-            border-bottom: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 18px 10px 0 10px;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 13px 20px 13px 22px;
-            border-radius: 14px;
-            color: var(--text-dim);
-            font-size: 1.08rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: background 0.15s, color 0.15s, border-left 0.18s;
-            border-left: 4px solid transparent;
-        }
-
-        .sidebar-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
-
-        .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-            border-left: 4px solid var(--primary-light);
-        }
-
-        .sidebar-link .lucide {
-            width: 22px;
-            height: 22px;
-        }
-
-        .sidebar-footer {
-            padding: 24px 32px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 40px 0 0 0;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
-            margin: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 40px 40px 40px;
-        }
-
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .header-section h1 {
-            font-size: 2.2rem;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--primary);
-            letter-spacing: -1px;
+            margin-bottom: 3rem;
+            text-decoration: none;
         }
 
-        .notifications-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        nav { flex: 1; }
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 0.5rem; }
 
-        .notification-item {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px 24px;
-            display: flex;
-            gap: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: var(--card-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .notification-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
-        }
-
-        .notification-item.unread {
-            background: #fff;
-            border-left: 5px solid var(--primary);
-        }
-
-        .notification-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+        .nav-link {
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .notification-message {
-            font-size: 1.05rem;
-            line-height: 1.5;
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .notification-time {
-            font-size: 0.85rem;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
             color: var(--text-dim);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s ease;
             font-weight: 600;
         }
 
-        .badge {
-            font-size: 0.75rem;
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary-light); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary-glow); }
+
+        /* --- Main Content --- */
+        main { flex: 1; padding: 40px; max-width: 1000px; margin: 0 auto; width: 100%; }
+
+        .header-section { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-title h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .header-title p { color: var(--text-dim); font-size: 1rem; margin-top: 4px; }
+
+        .btn-clear {
+            background: white;
+            color: var(--text-main);
+            border: 1.5px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 12px;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .badge.planting_success { background: var(--primary-light); color: var(--primary); }
-        .badge.daily_update { background: #dbeafe; color: #1e40af; }
-        .badge.completed { background: #fef3c7; color: #b45309; }
+        .btn-clear:hover { background: #f1f5f9; border-color: var(--text-dim); }
 
-        .loading, .error, .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 1.1rem;
-            color: var(--text-dim);
+        .notification-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1.5px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            display: flex;
+            gap: 20px;
+            transition: all 0.3s;
+            box-shadow: var(--card-shadow);
+        }
+
+        .notification-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.05); }
+
+        .notification-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-content { flex: 1; }
+        .notification-title { font-weight: 800; color: var(--text-main); font-size: 1.1rem; margin-bottom: 4px; }
+        .notification-time { font-size: 0.85rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: block; }
+        .notification-body { color: var(--text-dim); line-height: 1.6; font-size: 1rem; font-weight: 500; }
+
+        .status-unread { border-right: 6px solid var(--primary); }
+        .type-alert { background: #fff1f2; color: var(--danger); }
+        .type-success { background: var(--primary-light); color: var(--primary); }
+        .type-info { background: #eff6ff; color: var(--accent-blue); }
+
+        @media (max-width: 768px) {
+            aside { width: 80px; padding: 2rem 1rem; }
+            .nav-link span, .logo span { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <a href="dashboard.html" class="logo">
-                <i class="lucide lucide-leaf"></i>
-                Growth-Agri
-            </a>
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
-                <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
-                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
-                <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
-                <a href="notifications.html" class="sidebar-link active" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
-                <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
-                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
-            </nav>
-            <div class="sidebar-footer"></div>
-        </aside>
-        <main class="main-content">
-            <div class="container">
-                <div class="header-section">
-                    <h1>Notifications</h1>
-                </div>
-                <div id="notifications-container" class="notifications-list">
-                    <div class="loading">Loading notifications...</div>
+
+    <aside>
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
+                <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="social-posts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
+                <li><a href="notifications.html" class="nav-link active"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
+                <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
+                <li><a href="experts.html" class="nav-link"><i data-lucide="users"></i> <span>Expert Corner</span></a></li>
+                <li><a href="locator.html" class="nav-link"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
+            </ul>
+        </nav>
+        <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
+    </aside>
+
+    <main>
+        <div class="header-section">
+            <div class="header-title">
+                <h1>Notifications</h1>
+                <p>Stay updated on your garden's alerts and milestones.</p>
+            </div>
+            <button class="btn-clear" onclick="clearAll()">
+                <i data-lucide="check-circle-2"></i> Mark All Read
+            </button>
+        </div>
+
+        <div id="notification-list">
+            <div class="notification-card status-unread">
+                <div class="notification-icon type-alert"><i data-lucide="droplets"></i></div>
+                <div class="notification-content">
+                    <span class="notification-time">10 Minutes Ago</span>
+                    <div class="notification-title">Critical Moisture Alert</div>
+                    <p class="notification-body">Your Snake Plant in the bedroom has dropped below 15% soil moisture. It requires urgent watering.</p>
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="notification-card status-unread">
+                <div class="notification-icon type-success"><i data-lucide="sprout"></i></div>
+                <div class="notification-content">
+                    <span class="notification-time">3 Hours Ago</span>
+                    <div class="notification-title">New Stage Unlocked!</div>
+                    <p class="notification-body">Congratulations! Your Heirloom Tomato has moved to the 'Vegetative Stage' after 14 days of growth.</p>
+                </div>
+            </div>
+
+            <div class="notification-card">
+                <div class="notification-icon type-info"><i data-lucide="cloud-lightning"></i></div>
+                <div class="notification-content">
+                    <span class="notification-time">Yesterday</span>
+                    <div class="notification-title">Weather Advisory</div>
+                    <p class="notification-body">Storm expected tomorrow evening. Consider moving your outdoor balcony plants into the shade.</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="API/auth.js"></script>
     <script>
+        lucide.createIcons();
+
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }
 
         async function fetchNotifications() {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/plants/notifications', {
-                    headers: auth.authHeaders()
-                });
-                const json = await response.json();
-                const notifications = json.data;
-                renderNotifications(notifications);
+                // Fetch actual notifications if API is ready
+                // const response = await fetch('http://localhost:8080/api/v1/notifications', { ... });
+                // renderNotifications(data);
             } catch (err) {
-                document.getElementById('notifications-container').innerHTML = `<div class="error">Failed to load notifications</div>`;
+                console.error(err);
             }
         }
 
-        function renderNotifications(notifications) {
-            const container = document.getElementById('notifications-container');
-            if (!Array.isArray(notifications) || notifications.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i data-lucide="bell-off" style="width:48px;height:48px;color:var(--text-dim);margin-bottom:16px;"></i>
-                        <p>No notifications yet</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            let html = '';
-            notifications.forEach(notif => {
-                const typeClass = notif.type.toLowerCase();
-                const unreadClass = (notif.isRead !== undefined ? !notif.isRead : !notif.read) ? 'unread' : '';
-                const timeStr = new Date(notif.createdAt).toLocaleDateString(undefined, {
-                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
-                });
-
-                let icon = 'bell';
-                if (notif.type === 'PLANTING_SUCCESS') icon = 'sprout';
-                if (notif.type === 'DAILY_UPDATE') icon = 'bar-chart-3';
-                if (notif.type === 'COMPLETED') icon = 'trophy';
-                
-                const bgColor = getBackgroundColor(notif.type);
-                const textColor = getTextColor(notif.type);
-
-                html += `
-                    <div class="notification-item ${unreadClass}" onclick="markAsRead(${notif.id})">
-                        <div class="notification-icon" style="background: ${bgColor}; color: ${textColor};">
-                            <i data-lucide="${icon}" style="width:24px;height:24px;"></i>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-top">
-                                <span class="badge ${typeClass}">${notif.type.replace('_', ' ')}</span>
-                                <span class="notification-time">${timeStr}</span>
-                            </div>
-                            <div class="notification-message">${notif.message}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-            lucide.createIcons();
+        function clearAll() {
+            document.querySelectorAll('.notification-card').forEach(card => card.classList.remove('status-unread'));
+            alert('All notifications marked as read.');
         }
 
-        function getBackgroundColor(type) {
-            if (type === 'PLANTING_SUCCESS') return '#ecfdf5';
-            if (type === 'DAILY_UPDATE') return '#eff6ff';
-            if (type === 'COMPLETED') return '#fffbeb';
-            return '#f3f4f6';
-        }
-
-        function getTextColor(type) {
-            if (type === 'PLANTING_SUCCESS') return '#059669';
-            if (type === 'DAILY_UPDATE') return '#3b82f6';
-            if (type === 'COMPLETED') return '#f59e0b';
-            return '#6b7280';
-        }
-
-        async function markAsRead(id) {
-            try {
-                const response = await fetch(`http://localhost:8080/api/v1/plants/notifications/${id}/read`, {
-                    method: 'PATCH',
-                    headers: auth.authHeaders()
-                });
-                if (response.ok) {
-                    fetchNotifications(); // Refresh list
-                }
-            } catch (err) {
-                console.error('Failed to mark notification as read', err);
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            auth.hideAuthLinks();
-            fetchNotifications();
-        });
+        fetchNotifications();
     </script>
 </body>
 </html>

@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growth Tracker</title>
-    <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/@lucide/icons@latest/dist/umd/lucide.min.css">
+    <title>PlantPulse | Smart Care for Every Leaf</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --sidebar-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-dark: #064e3b;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
+            --accent-blue: #2563eb;
+            --accent-amber: #d97706;
+            --danger: #dc2626;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            --radius: 24px;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -24,280 +31,310 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background: var(--bg-color);
-            background: linear-gradient(135deg, #f8fafc 0%, #e0f7fa 100%);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            min-height: 100vh;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 25%);
         }
 
-        .navbar {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1.5px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 60px;
-            position: sticky;
+        /* --- Navigation --- */
+        nav.landing-nav {
+            position: fixed;
             top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            font-size: 1.8rem;
             color: var(--primary);
             text-decoration: none;
-            letter-spacing: -1px;
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
-            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-dim);
-            font-size: 1.05rem;
-            font-weight: 600;
-            transition: 0.3s;
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--primary);
         }
 
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 70vh;
-            padding: 80px 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 24px;
-            letter-spacing: -2px;
-            line-height: 1.1;
-        }
-
-        .hero-title span {
-            color: var(--primary);
-            background: linear-gradient(to right, #059669, #10b981);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-tagline {
-            font-size: 1.4rem;
-            color: var(--text-dim);
-            margin-bottom: 48px;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 60px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn-primary, .btn-secondary {
-            padding: 16px 40px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .btn-primary {
             background: var(--primary);
-            color: #fff;
-            box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.3);
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px 0 var(--primary-glow);
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.4);
-            background: #047857;
+            background: var(--primary-dark);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
         }
 
-        .btn-secondary {
-            background: #fff;
-            color: var(--text-main);
-            border: 1.5px solid var(--glass-border);
-            box-shadow: var(--card-shadow);
-        }
-
-        .btn-secondary:hover {
-            background: #f8fafc;
-            transform: translateY(-2px);
-            border-color: var(--primary);
-        }
-
-        .features {
+        /* --- Hero Section --- */
+        .hero {
+            padding: 10rem 10% 5rem;
             display: flex;
-            gap: 32px;
-            justify-content: center;
-            margin: 0 auto 100px auto;
-            max-width: 1200px;
-            padding: 0 40px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            min-height: 90vh;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .hero-visual {
+            flex: 1.2;
+            position: relative;
+        }
+
+        /* Mockup of the dashboard in the landing page */
+        .mockup-container {
+            background: white;
+            padding: 10px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            transform: perspective(1000px) rotateY(-15deg) rotateX(10deg);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mockup-container:hover {
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+        }
+
+        .mockup-img {
+            width: 100%;
+            border-radius: 16px;
+            display: block;
+            filter: brightness(0.95);
+        }
+
+        .floating-stat {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: white;
+            padding: 18px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--glass-border);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- Features Section --- */
+        .features {
+            padding: 8rem 10%;
+            background: white;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
         }
 
         .feature-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius);
-            box-shadow: var(--card-shadow);
-            padding: 40px 32px;
-            flex: 1 1 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            padding: 3rem;
+            border-radius: 32px;
+            background: var(--bg-color);
             border: 1.5px solid var(--glass-border);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-12px);
             border-color: var(--primary);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            background: white;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
         }
 
-        .feature-icon-wrapper {
-            width: 56px;
-            height: 56px;
+        .feature-icon {
+            width: 64px;
+            height: 64px;
             background: var(--primary-light);
-            border-radius: 16px;
+            color: var(--primary);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 24px;
-            color: var(--primary);
+            margin-bottom: 2rem;
         }
 
-        .feature-title {
-            font-size: 1.5rem;
+        .feature-card h3 {
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
+            margin-bottom: 1rem;
         }
 
-        .feature-desc {
+        .feature-card p {
             color: var(--text-dim);
-            font-size: 1.1rem;
             line-height: 1.6;
+            font-size: 1.05rem;
         }
 
-        .footer {
-            background: rgba(255, 255, 255, 0.5);
-            color: var(--text-dim);
-            text-align: center;
-            padding: 40px 0;
-            font-size: 1rem;
-            font-weight: 500;
-            border-top: 1.5px solid var(--glass-border);
-        }
-
-        @media (max-width: 900px) {
-            .navbar { padding: 15px 30px; }
-            .hero-title { font-size: 3rem; }
-            .features { gap: 24px; }
-        }
-
-        @media (max-width: 600px) {
-            .hero-title { font-size: 2.5rem; }
-            .hero { padding: 60px 20px; }
-            .nav-links { display: none; }
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 8rem; padding-bottom: 4rem; }
+            .hero h1 { font-size: 3rem; }
+            .hero p { margin: 0 auto 2.5rem; }
+            .hero-content { display: flex; flex-direction: column; align-items: center; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .mockup-container { transform: none; max-width: 600px; margin: 0 auto; }
+            .hero-visual { margin-top: 4rem; }
         }
     </style>
 </head>
 <body>
-<nav class="navbar">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <i data-lucide="leaf" style="color: var(--primary); width: 36px; height: 36px;"></i>
-        <a href="index.html" class="logo">Growth Agri</a>
-    </div>
-    <ul class="nav-links">
-        <li><a href="sing-in/pages/sign-in.html">Sign In</a></li>
-        <li><a href="sing-in/pages/sign-up.html">Sign Up</a></li>
-        <li><a href="weather.html">Weather</a></li>
-    </ul>
-</nav>
 
-<section class="hero">
-    <div class="hero-title">Track Your Plant's <span>Growth Journey</span></div>
-    <div class="hero-tagline">Experience the joy of gardening with our smart 30-day tracking system. From seed to harvest, we're with you every step of the way.</div>
-    <div class="hero-btns">
-        <a href="sing-in/pages/sign-up.html" class="btn-primary">
-            Start Your Journey 
-            <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+    <nav class="landing-nav">
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
         </a>
-        <a href="sing-in/pages/sign-in.html" class="btn-secondary">Sign In to Dashboard</a>
-    </div>
-</section>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="experts.html">Experts</a>
+            <a href="dashboard.html" class="btn-primary">Launch Dashboard</a>
+        </div>
+    </nav>
 
-<section class="features">
-    <div class="feature-card">
-        <div class="feature-icon-wrapper">
-            <i data-lucide="calendar-days" style="width: 32px; height: 32px;"></i>
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">New: AI Growth Predictions</span>
+            <h1>Intelligence for your Indoor Jungle.</h1>
+            <p>Monitor moisture, optimize sunlight, and automate your plant care with the world's most advanced plant tracking dashboard.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn-primary">Get Started Free</a>
+                <a href="#features" style="text-decoration: none; color: var(--text-main); font-weight: 600; padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
+                    View Features <i data-lucide="chevron-down"></i>
+                </a>
+            </div>
         </div>
-        <div class="feature-title">30-Day Tracking</div>
-        <div class="feature-desc">Monitor your plant every day through 6 growth stages from germination to harvest ready.</div>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon-wrapper">
-            <i data-lucide="bell" style="width: 32px; height: 32px;"></i>
+        <div class="hero-visual">
+            <div class="mockup-container">
+                <img src="https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&q=80&w=1000" alt="Plant Dashboard" class="mockup-img">
+                <div class="floating-stat">
+                    <div style="background: var(--primary-light); color: var(--primary); padding: 10px; border-radius: 12px;"><i data-lucide="droplets"></i></div>
+                    <div>
+                        <div style="font-size: 11px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Moisture</div>
+                        <div style="font-size: 20px; font-weight: 800;">72%</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="feature-title">Daily Alerts</div>
-        <div class="feature-desc">Get notified every day with your plant's current stage and growth progress updates.</div>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon-wrapper">
-            <i data-lucide="share-2" style="width: 32px; height: 32px;"></i>
-        </div>
-        <div class="feature-title">Social Sharing</div>
-        <div class="feature-desc">Auto-generated captions for every growth milestone ready to share with the world.</div>
-    </div>
-</section>
+    </section>
 
-<footer class="footer">
-    &copy; 2026 Growth Agri &mdash; Built for smart gardeners
-</footer>
-<script src="API/auth.js"></script>
-<script src="https://unpkg.com/@lucide/icons@latest"></script>
-<script>
-    if (window.auth && auth.isLoggedIn && auth.isLoggedIn()) {
-        window.location.href = 'dashboard.html';
-    }
-    if (window.lucide) {
+    <section id="features" class="features">
+        <div class="section-header">
+            <span style="color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.8rem; display: block; margin-bottom: 1rem;">Core Features</span>
+            <h2>Everything you need to thrive.</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="activity"></i></div>
+                <h3>Real-time Vitals</h3>
+                <p>Track soil moisture, light intensity, and ambient temperature with precision sensors updated every second.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="zap"></i></div>
+                <h3>Smart Automation</h3>
+                <p>Connect your smart plugs to automate grow lights and irrigation systems based on live plant needs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="bar-chart-3"></i></div>
+                <h3>Growth Analytics</h3>
+                <p>Visualize your plant's development over time with automated growth charts and health trend reports.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
         lucide.createIcons();
-    }
-</script>
+    </script>
 </body>
 </html>

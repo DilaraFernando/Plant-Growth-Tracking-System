@@ -3,484 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Posts - Growth Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <title>Social Feed | PlantPulse</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
+            --accent-blue: #2563eb;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: var(--bg-color);
-            color: var(--text-main);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            flex-direction: row;
-            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
         }
 
-        .sidebar {
+        /* --- Sidebar --- */
+        aside {
             width: 260px;
-            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            background: var(--sidebar-bg);
             border-right: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
+            z-index: 100;
         }
 
-        .sidebar .logo {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            font-size: 1.7rem;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 36px 32px 28px 32px;
+            margin-bottom: 3rem;
             text-decoration: none;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
-            border-bottom: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
         }
 
-        .sidebar-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 18px 10px 0 10px;
-        }
+        nav { flex: 1; }
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 0.5rem; }
 
-        .sidebar-link {
+        .nav-link {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 13px 20px 13px 22px;
-            border-radius: 14px;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
             color: var(--text-dim);
-            font-size: 1.08rem;
-            font-weight: 500;
             text-decoration: none;
-            transition: background 0.15s, color 0.15s, border-left 0.18s;
-            border-left: 4px solid transparent;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 600;
         }
 
-        .sidebar-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary-light); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary-glow); }
 
-        .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-            border-left: 4px solid var(--primary-light);
-        }
+        /* --- Main Content --- */
+        main { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-        .sidebar-link .lucide {
-            width: 22px;
-            height: 22px;
-        }
+        header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-title h1 { font-size: 2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .header-title p { color: var(--text-dim); font-size: 1rem; margin-top: 4px; }
 
-        .sidebar-footer {
-            padding: 24px 32px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 40px 0 0 0;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
-            margin: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 40px 40px 40px;
-        }
-
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .header-section h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
-        }
-
-        .btn-admin {
-            background: var(--text-main);
-            color: white;
+        .btn-create {
+            background: var(--primary);
+            color: #fff;
             border: none;
-            padding: 12px 24px;
-            border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.3);
+            text-decoration: none;
         }
 
-        .btn-admin:hover {
-            background: #000;
-            transform: translateY(-2px);
+        .btn-create:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.4); }
+
+        .form-card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 32px;
+            margin-bottom: 40px;
+            border: 1.5px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            display: none;
         }
 
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-            gap: 32px;
+        .form-card.visible { display: block; animation: slideDown 0.4s ease-out; }
+
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1.5px solid var(--glass-border);
+            background: #f8fafc;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            resize: none;
+            outline: none;
         }
+
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 32px; }
 
         .post-card {
             background: var(--card-bg);
-            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 0;
+            overflow: hidden;
             border: 1.5px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s;
             box-shadow: var(--card-shadow);
         }
 
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary);
-        }
+        .post-card:hover { transform: translateY(-6px); border-color: var(--primary); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
 
-        .post-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .post-img { width: 100%; height: 240px; object-fit: cover; }
 
-        .plant-name {
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--text-main);
-        }
+        .post-body { padding: 24px; }
+        .post-user { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 12px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; }
+        .user-name { font-weight: 700; color: var(--text-main); font-size: 1rem; }
 
-        .day-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 6px 14px;
-            border-radius: 20px;
-        }
+        .post-caption { color: var(--text-main); font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; font-weight: 500; }
 
-        .post-caption {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            background: #fff;
-            padding: 20px;
-            border-radius: 16px;
-            border: 1.5px solid var(--glass-border);
-            color: var(--text-main);
-            white-space: pre-wrap;
-            position: relative;
-        }
+        .post-actions { display: flex; gap: 16px; border-top: 1.5px solid var(--glass-border); padding-top: 20px; }
+        .action-btn { background: none; border: none; display: flex; align-items: center; gap: 8px; color: var(--text-dim); font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .action-btn:hover { color: var(--primary); }
+        .action-btn.liked { color: var(--primary); }
 
-        .post-caption::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 3rem;
-            color: var(--primary-light);
-            font-family: serif;
-            line-height: 1;
-            opacity: 0.5;
-        }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .status-badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 8px;
-            background: #f1f5f9;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-
-        .copy-btn, .generate-btn {
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .copy-btn {
-            background: var(--primary-light);
-            border: 1.5px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .copy-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .generate-btn {
-            background: #fff;
-            border: 1.5px solid var(--glass-border);
-            color: var(--text-main);
-        }
-
-        .generate-btn:hover {
-            background: #f8fafc;
-            border-color: var(--primary);
-        }
-
-        .loading, .error, .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 1.1rem;
-            color: var(--text-dim);
-        }
-
-        @media (max-width: 600px) {
-            .posts-grid { grid-template-columns: 1fr; }
-            .container { padding: 0 20px 20px 20px; }
+        @media (max-width: 768px) {
+            aside { width: 80px; padding: 2rem 1rem; }
+            .nav-link span, .logo span { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <a href="dashboard.html" class="logo">
-                <i class="lucide lucide-leaf"></i>
-                Growth-Agri
-            </a>
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
-                <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
-                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
-                <a href="social-posts.html" class="sidebar-link active" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
-                <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
-                <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
-                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
-            </nav>
-            <div class="sidebar-footer"></div>
-        </aside>
-        <main class="main-content">
-            <div class="container">
-                <div class="header-section">
-                    <h1>Social Media Posts</h1>
-                    <button class="btn-admin" onclick="triggerDailyUpdate()">
-                        <i data-lucide="wand-2"></i> Trigger Daily Update
-                    </button>
+
+    <aside>
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
+                <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="social-posts.html" class="nav-link active"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
+                <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
+                <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
+                <li><a href="experts.html" class="nav-link"><i data-lucide="users"></i> <span>Expert Corner</span></a></li>
+                <li><a href="locator.html" class="nav-link"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
+            </ul>
+        </nav>
+        <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
+    </aside>
+
+    <main>
+        <header>
+            <div class="header-title">
+                <h1>Social Feed</h1>
+                <p>Share your growth journey with the PlantPulse community.</p>
+            </div>
+            <button class="btn-create" onclick="toggleForm()">
+                <i data-lucide="plus"></i> New Post
+            </button>
+        </header>
+
+        <div id="create-form" class="form-card">
+            <textarea id="post-caption" rows="3" placeholder="How's your plant doing today?"></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 12px; color: var(--text-dim); font-weight: 700; cursor: pointer;">
+                    <i data-lucide="image"></i> Add Image
                 </div>
-                <div id="posts-container">
-                    <div class="loading">Loading generated posts...</div>
+                <button class="btn-create" onclick="publishPost()" style="padding: 10px 24px;">Publish</button>
+            </div>
+        </div>
+
+        <div class="posts-grid" id="posts-container">
+            <!-- Simulated Posts -->
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?auto=format&fit=crop&w=600" class="post-img" alt="Post">
+                <div class="post-body">
+                    <div class="post-user">
+                        <div class="post-avatar">DF</div>
+                        <span class="user-name">Dilara Fernando</span>
+                    </div>
+                    <p class="post-caption">My Monstera blossomed today! This new growth serum is doing wonders. 🌱✨ #PlantPulse #GrowthJourney</p>
+                    <div class="post-actions">
+                        <button class="action-btn liked"><i data-lucide="heart" style="fill: var(--primary);"></i> 24</button>
+                        <button class="action-btn"><i data-lucide="message-circle"></i> 5</button>
+                        <button class="action-btn"><i data-lucide="share-2"></i></button>
+                    </div>
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="post-card">
+                <img src="https://images.unsplash.com/photo-1453904300235-0f2f60b15b5d?auto=format&fit=crop&w=600" class="post-img" alt="Post">
+                <div class="post-body">
+                    <div class="post-user">
+                        <div class="post-avatar">AW</div>
+                        <span class="user-name">Amila Wickram</span>
+                    </div>
+                    <p class="post-caption">Succulent corner update. Simple, clean, and thriving. 🪴 #IndoorJungle #PulseLife</p>
+                    <div class="post-actions">
+                        <button class="action-btn"><i data-lucide="heart"></i> 18</button>
+                        <button class="action-btn"><i data-lucide="message-circle"></i> 2</button>
+                        <button class="action-btn"><i data-lucide="share-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="API/auth.js"></script>
     <script>
+        lucide.createIcons();
+
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }
 
-        async function triggerDailyUpdate() {
-            if (!confirm('This will increment the day for all active plants and generate new logs/posts. Proceed?')) return;
+        function toggleForm() {
+            document.getElementById('create-form').classList.toggle('visible');
+        }
+
+        function publishPost() {
+            const caption = document.getElementById('post-caption').value;
+            if(!caption) return;
             
-            try {
-                const response = await fetch('http://localhost:8080/api/v1/plants/admin/trigger-daily-update', {
-                    method: 'POST'
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Daily update triggered successfully!');
-                    fetchAllPosts(); // Refresh
-                } else {
-                    throw new Error(data.message || 'Failed to trigger update');
-                }
-            } catch (err) {
-                alert('Error: ' + err.message);
-            }
+            // Logic to publish...
+            alert('Post published! (Simulation)');
+            document.getElementById('post-caption').value = '';
+            toggleForm();
         }
-
-        async function fetchAllPosts() {
-            const container = document.getElementById('posts-container');
-            try {
-                // 1. Get all plants
-                const plantsResponse = await fetch('http://localhost:8080/api/v1/plants', {
-                    headers: auth.authHeaders()
-                });
-                const json = await plantsResponse.json();
-                const plants = json.data;
-
-                if (!Array.isArray(plants) || plants.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><h3>No plants registered yet.</h3></div>';
-                    return;
-                }
-
-                // 2. For each plant, get its social posts
-                let allPosts = [];
-                for (const plant of plants) {
-                    const postsResponse = await fetch(`http://localhost:8080/api/v1/plants/${plant.id}/social-posts`, {
-                        headers: auth.authHeaders()
-                    });
-                    const postsJson = await postsResponse.json();
-                    const posts = postsJson.data;
-                    // Add plant name to each post for display
-                    posts.forEach(p => p.plantName = plant.plantName);
-                    // Attach plantId for Generate Post button
-                    posts.forEach(p => p.plantId = plant.id);
-                    allPosts = allPosts.concat(posts);
-                }
-
-                renderPosts(allPosts, plants);
-            } catch (err) {
-                container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
-            }
-        }
-
-        function renderPosts(posts, plants) {
-            const container = document.getElementById('posts-container');
-            if (!Array.isArray(posts) || posts.length === 0) {
-                let html = '<div class="empty-state"><i data-lucide="share-2" style="width:48px;height:48px;color:var(--gray);margin-bottom:16px;"></i><p>No social posts generated yet. Trigger a daily update to see some!</p></div>';
-                // Show per-plant Generate Post buttons even if no posts
-                if (Array.isArray(plants) && plants.length > 0) {
-                    html += '<div class="plants-generate-btns">';
-                    plants.forEach(plant => {
-                        html += `<button class="generate-btn" onclick="generatePost(${plant.id})">Generate Post for ${plant.plantName}</button>`;
-                    });
-                    html += '</div>';
-                }
-                container.innerHTML = html;
-                lucide.createIcons();
-                return;
-            }
-
-            // Sort by createdAt descending
-            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            let html = '<div class="posts-grid">';
-            posts.forEach(post => {
-                html += `
-                    <div class="post-card">
-                        <div class="post-header">
-                            <span class="plant-name">${post.plantName}</span>
-                            <span class="day-label">Day ${post.dayNumber}</span>
-                        </div>
-                        <div class="post-caption" id="caption-${post.id}">${post.caption}</div>
-                        <div class="post-footer">
-                            <span class="status-badge">${post.status}</span>
-                            <button class="copy-btn" onclick="copyCaption('${post.id}')">
-                                <i data-lucide="copy"></i> Copy Caption
-                            </button>
-                            <button class="generate-btn" onclick="generatePost(${post.plantId})">Generate Post</button>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML = html;
-            lucide.createIcons();
-        }
-
-        async function generatePost(plantId) {
-            try {
-                const response = await fetch(`http://localhost:8080/api/v1/plants/${plantId}/social-posts/generate`, {
-                    method: 'POST',
-                    headers: auth.authHeaders()
-                });
-                if (response.ok) {
-                    fetchAllPosts();
-                } else {
-                    alert('Failed to generate post');
-                }
-            } catch (err) {
-                alert('Error generating post');
-            }
-        }
-
-        function copyCaption(id) {
-            const caption = document.getElementById(`caption-${id}`).innerText;
-            navigator.clipboard.writeText(caption).then(() => {
-                const btn = event.currentTarget;
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i data-lucide="check"></i> Copied!';
-                lucide.createIcons();
-                btn.style.borderColor = 'var(--success)';
-                btn.style.color = 'var(--success)';
-                setTimeout(() => {
-                    btn.innerHTML = originalHtml;
-                    lucide.createIcons();
-                    btn.style.borderColor = 'var(--primary)';
-                    btn.style.color = 'var(--primary)';
-                }, 2000);
-            });
-            lucide.createIcons();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            auth.hideAuthLinks();
-            fetchAllPosts();
-        });
     </script>
 </body>
 </html>

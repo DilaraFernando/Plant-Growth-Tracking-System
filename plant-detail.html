@@ -3,644 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Details - Growth Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <title>Plant Analytics | PlantPulse</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --primary: #059669;
-            --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.8);
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
+            --accent-blue: #2563eb;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-            --success: #10b981;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: var(--bg-color);
-            color: var(--text-main);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 25%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            flex-direction: row;
-            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
         }
 
-        .sidebar {
+        /* --- Sidebar --- */
+        aside {
             width: 260px;
-            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            background: var(--sidebar-bg);
             border-right: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.03);
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
             position: sticky;
             top: 0;
             height: 100vh;
+            z-index: 100;
+        }
+
+        .logo {
             display: flex;
-            flex-direction: column;
-            z-index: 10;
+            align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 3rem; text-decoration: none;
         }
 
-        .sidebar .logo {
-            font-weight: 800;
-            font-size: 1.7rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 36px 32px 28px 32px;
-            text-decoration: none;
-            letter-spacing: -1px;
-            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
-            border-bottom: 1.5px solid var(--glass-border);
-            box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
+        nav { flex: 1; }
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 0.5rem; }
+
+        .nav-link {
+            display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; color: var(--text-dim); text-decoration: none; border-radius: 12px; transition: all 0.2s ease; font-weight: 600;
         }
 
-        .sidebar-nav {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 18px 10px 0 10px;
+        .nav-link:hover { background: #f1f5f9; color: var(--primary); }
+        .nav-link.active { background: var(--primary-light); color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary-glow); }
+
+        /* --- Main Content --- */
+        main { flex: 1; padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-title h1 { font-size: 2.2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1.5px; }
+        .header-title p { color: var(--text-dim); font-size: 1.1rem; margin-top: 4px; font-weight: 600; }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; }
+
+        .card {
+            background: var(--card-bg); border-radius: 32px; padding: 32px; border: 1.5px solid var(--glass-border); backdrop-filter: blur(12px); box-shadow: var(--card-shadow); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 13px 20px 13px 22px;
-            border-radius: 14px;
-            color: var(--text-dim);
-            font-size: 1.08rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: background 0.15s, color 0.15s, border-left 0.18s;
-            border-left: 4px solid transparent;
-        }
+        .card h3 { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 24px; letter-spacing: -0.5px; }
 
-        .sidebar-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-        }
+        .health-hero { grid-column: span 2; display: flex; gap: 32px; align-items: center; }
+        .health-img { width: 240px; height: 240px; border-radius: 40px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1); }
 
-        .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--primary);
-            border-left: 4px solid var(--primary-light);
-        }
+        .metric-badge { padding: 8px 16px; border-radius: 50px; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .badge-safe { background: var(--primary-light); color: var(--primary); }
 
-        .sidebar-link .lucide {
-            width: 22px;
-            height: 22px;
-        }
+        .stat-group { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .stat-card { background: #f8fafc; border-radius: 20px; padding: 20px; border: 1.5px solid var(--glass-border); text-align: center; }
+        .stat-label { color: var(--text-dim); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
 
-        .sidebar-footer {
-            padding: 24px 32px;
-            border-top: 1px solid var(--glass-border);
-        }
+        .span-2 { grid-column: span 2; }
+        .large-chart { height: 350px; background: #fff; border-radius: 24px; border: 1.5px solid var(--glass-border); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        /* Growth Timeline */
+        .timeline-item { position: relative; padding-left: 32px; margin-bottom: 24px; }
+        .timeline-item::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px; background: var(--glass-border); }
+        .timeline-dot { position: absolute; left: -6px; top: 6px; width: 14px; height: 14px; background: var(--primary); border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 0 4px var(--primary-light); }
+        .timeline-date { font-weight: 800; font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; display: block; }
 
-        .main-content {
-            flex: 1;
-            padding: 40px 0 0 0;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
-            margin: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 40px 40px 40px;
-        }
-
-        .detail-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 32px;
-        }
-
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 1.5px solid var(--bg-color);
-            padding-bottom: 24px;
-            margin-bottom: 24px;
-        }
-
-        .plant-title h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -1px;
-            margin-bottom: 8px;
-        }
-
-        .plant-meta {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: flex;
-            gap: 24px;
-        }
-
-        .plant-meta i { vertical-align: middle; margin-right: 6px; }
-
-        .status-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .status-badge.active { background: var(--primary-light); color: var(--primary); }
-        .status-badge.completed { background: #f1f5f9; color: var(--text-dim); }
-
-        .status-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .status-box {
-            background: #fff;
-            padding: 24px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1.5px solid var(--glass-border);
-        }
-
-        .status-box .label {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .status-box .value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .progress-wide {
-            padding: 10px 0;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .progress-bar-bg {
-            height: 14px;
-            background: #f1f5f9;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), #10b981);
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .timeline-section h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            color: var(--text-main);
-            letter-spacing: -0.5px;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 32px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--primary-light);
-            border-radius: 10px;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 24px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -37px;
-            top: 8px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #fff;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-light);
-            z-index: 1;
-        }
-
-        .timeline-content {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px 24px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.2s;
-        }
-
-        .timeline-content:hover {
-            transform: translateX(5px);
-            border-color: var(--primary);
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        .timeline-day {
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--primary);
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            font-weight: 600;
-        }
-
-        .timeline-stage {
-            font-size: 1rem;
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .loading, .error {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.1rem;
-            color: var(--text-dim);
-        }
-
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .health-card {
-            background: #fff;
-            border: 1.5px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .health-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
-
-        .health-core {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 20px 0;
-        }
-
-        .indicator-item {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .indicator-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary-light);
-            color: var(--primary);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .indicator-label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; }
-        .indicator-value { font-size: 1rem; font-weight: 800; color: var(--text-main); }
-
-        .plant-illustration {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-        }
-
-        .metrics-card {
-            background: var(--primary);
-            color: #fff;
-            border-radius: 24px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .metrics-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .metrics-header h3 { font-size: 1.1rem; font-weight: 700; opacity: 0.9; }
-
-        .metrics-value { font-size: 2.4rem; font-weight: 800; margin-bottom: 10px; }
-        .metrics-desc { font-size: 0.9rem; font-weight: 500; opacity: 0.8; line-height: 1.5; }
-
-        .condition-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .condition-item {
-            background: var(--card-bg);
-            border: 1.5px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .condition-item i { color: var(--primary); margin-bottom: 10px; display: block; }
-        .condition-label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; display: block; }
-        .condition-value { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
-
-        @media (max-width: 600px) {
-            .container { padding: 0 20px 20px 20px; }
-            .status-section { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: 1fr; }
+            .health-hero, .span-2 { grid-column: span 1; }
+            .health-hero { flex-direction: column; text-align: center; }
+            aside { width: 80px; padding: 2rem 1rem; }
+            .nav-link span, .logo span { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <a href="dashboard.html" class="logo">
-                <i class="lucide lucide-leaf"></i>
-                Growth-Agri
-            </a>
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
-                <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
-                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
-                <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
-                <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
-                <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
-                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
-            </nav>
-            <div class="sidebar-footer"></div>
-        </aside>
-        <main class="main-content">
-            <div class="container">
-                <div id="plant-detail-container">
-                    <div class="loading">Loading details...</div>
+
+    <aside>
+        <a href="index.html" class="logo">
+            <i data-lucide="sprout"></i>
+            <span>PlantPulse</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
+                <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
+                <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="social-posts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
+                <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
+                <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
+                <li><a href="experts.html" class="nav-link"><i data-lucide="users"></i> <span>Expert Corner</span></a></li>
+                <li><a href="locator.html" class="nav-link"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
+            </ul>
+        </nav>
+        <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
+    </aside>
+
+    <main id="main-content">
+        <header>
+            <div class="header-title">
+                <h1 id="plant-name-top">Monstera Deliciosa</h1>
+                <p id="plant-type-top">Indoor Houseplant • Zone 10b</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="badge-safe metric-badge"><i data-lucide="activity"></i> Optimizing</button>
+                <div class="stat-card" style="padding: 8px 16px;">
+                    <span class="stat-label">Health Score</span>
+                    <span class="stat-value" style="font-size: 1.4rem; color: var(--primary);">92</span>
                 </div>
-                <div class="timeline-section">
-                    <h2>Growth Timeline</h2>
-                    <div id="timeline-container">
-                        <div class="loading">Loading growth logs...</div>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card health-hero">
+                <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=400" id="plant-img-main" class="health-img" alt="Plant">
+                <div style="flex:1;">
+                    <div class="metric-badge badge-safe"><i data-lucide="check-circle-2"></i> No Disease Detected</div>
+                    <h3>Growth Diagnostic</h3>
+                    <p style="color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; font-weight: 500;">Your Monstera shows excellent leaf turgidity and stem girth. AI analysis suggests the current light cycle is pushing 12% faster growth than average for this species.</p>
+                    <div class="stat-group">
+                        <div class="stat-card">
+                            <span class="stat-label">Moisture</span>
+                            <span class="stat-value" id="moist-val">68%</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Light</span>
+                            <span class="stat-value">650lx</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="card">
+                <h3>Vitals Breakdown</h3>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Leaf Health</span><span style="color:var(--primary); font-weight:800;">High</span></div>
+                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:94%; height:100%; background:var(--primary);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Chlorophyll Density</span><span style="color:var(--primary); font-weight:800;">Optimum</span></div>
+                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:88%; height:100%; background:var(--primary);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Transpiration Rate</span><span style="color:var(--accent-blue); font-weight:800;">Steady</span></div>
+                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:70%; height:100%; background:var(--accent-blue);"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card span-2">
+                <h3>Growth Trajectory</h3>
+                <div class="large-chart">
+                    <!-- Future: Integrate Chart.js -->
+                    <div style="text-align:center; color: var(--text-dim);">
+                        <i data-lucide="line-chart" size="48" style="opacity:0.2; margin-bottom: 16px;"></i>
+                        <p style="font-weight:600;">Historical Growth Data Stream</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Growth Timeline</h3>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">Yesterday</span>
+                    <strong style="display:block; margin-bottom:4px;">New Leaf Unfurled</strong>
+                    <p style="font-size:0.9rem; color:var(--text-dim);">Central stem node 4 shows rapid expansion.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">3 Days Ago</span>
+                    <strong style="display:block; margin-bottom:4px;">Watering Cycle</strong>
+                    <p style="font-size:0.9rem; color:var(--text-dim);">Administered 400ml focused irrigation.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">1 Week Ago</span>
+                    <strong style="display:block; margin-bottom:4px;">Bio-Fertilizer Added</strong>
+                    <p style="font-size:0.9rem; color:var(--text-dim);">N-P-K balance updated for growth phase.</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="API/auth.js"></script>
     <script>
-        if (!auth.isLoggedIn()) {
-            window.location.href = "sing-in/pages/sign-in.html";
-        }
+        lucide.createIcons();
+        if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
 
+        // Fetch Individual Plant Data
         const urlParams = new URLSearchParams(window.location.search);
         const plantId = urlParams.get('id');
 
-        if (!plantId) {
-            window.location.href = 'dashboard.html';
-        }
-
-        async function fetchPlantDetails() {
+        async function fetchDetail() {
+            if(!plantId) return;
             try {
-                // Fetch all plants and find the one with the matching ID
-                const response = await fetch('http://localhost:8080/api/v1/plants', {
+                const response = await fetch(`http://localhost:8080/api/v1/plants/${plantId}`, {
                     headers: auth.authHeaders()
                 });
                 const json = await response.json();
-                const plants = json.data;
-                const plant = plants.find(p => p.id == plantId);
-
-                if (!plant) throw new Error('Plant not found');
-
-                renderPlantDetail(plant);
-                fetchLogs();
+                const plant = json.data;
+                if(plant) {
+                    document.getElementById('plant-name-top').innerText = plant.plantName;
+                    document.getElementById('plant-type-top').innerText = `${plant.plantType} • Indoor Garden`;
+                    document.getElementById('moist-val').innerText = plant.status === 'THIRSTY' ? '12%' : '68%';
+                }
             } catch (err) {
-                document.getElementById('plant-detail-container').innerHTML = `<div class="error">${err.message}</div>`;
+                console.error(err);
             }
         }
-
-        async function fetchLogs() {
-            try {
-                const response = await fetch(`http://localhost:8080/api/v1/plants/${plantId}/logs`, {
-                    headers: auth.authHeaders()
-                });
-                const json = await response.json();
-                const logs = json.data;
-                renderLogs(logs);
-            } catch (err) {
-                document.getElementById('timeline-container').innerHTML = `<div class="error">Failed to load logs</div>`;
-            }
-        }
-
-        function renderPlantDetail(plant) {
-            const container = document.getElementById('plant-detail-container');
-            const progress = Math.min((plant.currentDay / 30) * 100, 100);
-            const plantedDate = plant.plantedDate ? new Date(plant.plantedDate).toLocaleDateString() : 'N/A';
-
-            container.innerHTML = `
-                <div class="detail-card">
-                    <div class="detail-header">
-                        <div class="plant-title">
-                            <h1>${plant.plantName}</h1>
-                            <div class="plant-meta">
-                                <span><i data-lucide="leaf" style="width:16px;height:16px;vertical-align:middle;"></i> ${plant.plantType}</span>
-                                <span><i data-lucide="calendar" style="width:16px;height:16px;vertical-align:middle;"></i> Planted on ${plantedDate}</span>
-                            </div>
-                        </div>
-                        <span class="status-badge ${plant.status.toLowerCase()}">${plant.status}</span>
-                    </div>
-
-                    <div class="status-section">
-                        <div class="status-box">
-                            <span class="label">Current Day</span>
-                            <span class="value">${plant.currentDay}</span>
-                        </div>
-                        <div class="status-box">
-                            <span class="label">Current Stage</span>
-                            <span class="value">${plant.currentStage || 'Unknown'}</span>
-                        </div>
-                    </div>
-
-                    <div class="progress-wide">
-                        <div class="progress-labels">
-                            <span>Growth Progress</span>
-                            <span>${Math.round(progress)}%</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" style="width: ${progress}%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="analysis-grid">
-                    <div class="health-card">
-                        <h3>Visual Health Analysis</h3>
-                        <div class="health-core">
-                            <div class="indicator-item">
-                                <div class="indicator-icon"><i data-lucide="leaf"></i></div>
-                                <span class="indicator-label">Leaves</span>
-                                <span class="indicator-value">Healthy</span>
-                            </div>
-                            <img src="images/c432b3faa4249ea7cabd7392c83d611b-removebg-preview.png" class="plant-illustration" alt="Plant">
-                            <div class="indicator-item">
-                                <div class="indicator-icon"><i data-lucide="ruler"></i></div>
-                                <span class="indicator-label">Stem</span>
-                                <span class="indicator-value">${(10 + plant.currentDay * 0.5).toFixed(1)} cm</span>
-                            </div>
-                        </div>
-                        <div style="display:flex; justify-content: space-around; border-top: 1.5px solid var(--bg-color); padding-top: 20px;">
-                            <div style="text-align:center;"><b style="font-size:1.2rem; display:block;">${Math.floor(5 + plant.currentDay * 0.8)}</b><small style="color:var(--text-dim); font-weight:700; text-transform:uppercase; font-size:0.75rem;">Total Leaves</small></div>
-                            <div style="text-align:center;"><b style="font-size:1.2rem; display:block; color:var(--primary);">98%</b><small style="color:var(--text-dim); font-weight:700; text-transform:uppercase; font-size:0.75rem;">Health Score</small></div>
-                        </div>
-                    </div>
-                    <div class="metrics-card">
-                        <div class="metrics-header">
-                            <h3>Daily Growth</h3>
-                            <i data-lucide="trending-up"></i>
-                        </div>
-                        <div>
-                            <div class="metrics-value">+${(Math.random() * 0.5 + 0.5).toFixed(1)}<small style="font-size:1rem; font-weight:600; margin-left:4px;">cm</small></div>
-                            <p class="metrics-desc">Your plant grew significantly today. Keep up the consistent watering schedule!</p>
-                        </div>
-                        <div style="background:rgba(255,255,255,0.2); height:60px; border-radius:12px; margin-top:16px; border:1px dashed rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600;">Chart Visualization</div>
-                    </div>
-                </div>
-
-                <div class="condition-grid">
-                    <div class="condition-item">
-                        <i data-lucide="droplets"></i>
-                        <span class="condition-label">Moisture</span>
-                        <span class="condition-value">45%</span>
-                    </div>
-                    <div class="condition-item">
-                        <i data-lucide="test-tube"></i>
-                        <span class="condition-label">pH Level</span>
-                        <span class="condition-value">6.4</span>
-                    </div>
-                    <div class="condition-item">
-                        <i data-lucide="thermometer"></i>
-                        <span class="condition-label">Temp</span>
-                        <span class="condition-value">22°C</span>
-                    </div>
-                    <div class="condition-item">
-                        <i data-lucide="wind"></i>
-                        <span class="condition-label">Humidity</span>
-                        <span class="condition-value">55%</span>
-                    </div>
-                </div>
-            `;
-            lucide.createIcons();
-        }
-
-        function renderLogs(logs) {
-            const container = document.getElementById('timeline-container');
-            
-            if (logs.length === 0) {
-                container.innerHTML = '<div class="error">No logs available for this plant yet.</div>';
-                return;
-            }
-
-            // Sort logs by day descending
-            logs.sort((a, b) => b.dayNumber - a.dayNumber);
-
-            let html = '<div class="timeline">';
-            logs.forEach(log => {
-                const logDate = new Date(log.date).toLocaleDateString(undefined, { 
-                    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-                });
-                html += `
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <span class="timeline-day">Day ${log.dayNumber}</span>
-                                <span class="timeline-date">${logDate}</span>
-                            </div>
-                            <div class="timeline-stage">${log.stageName}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            container.innerHTML = html;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            auth.hideAuthLinks();
-            fetchPlantDetails();
-        });
+        fetchDetail();
     </script>
 </body>
 </html>
