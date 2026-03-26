@@ -308,10 +308,13 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-link active" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
                 <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
                 <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
                 <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
                 <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
+                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
             </nav>
             <div class="sidebar-footer"></div>
         </aside>
@@ -371,9 +374,37 @@
                 const json = await res.json();
                 const plants = json.data;
                 renderPlants(plants);
+                updateStats(plants);
+                fetchNotificationsCount();
             } catch (err) {
                 container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
             }
+        }
+
+        async function fetchNotificationsCount() {
+            try {
+                const res = await fetch('http://localhost:8080/api/v1/plants/notifications', {
+                    headers: auth.authHeaders()
+                });
+                if (res.ok) {
+                    const json = await res.json();
+                    const count = Array.isArray(json.data) ? json.data.length : 0;
+                    document.getElementById('stat-notifications').textContent = count;
+                }
+            } catch (err) {
+                console.error('Failed to fetch notifications count', err);
+            }
+        }
+
+        function updateStats(plants) {
+            if (!Array.isArray(plants)) return;
+            const total = plants.length;
+            const active = plants.filter(p => p.status === 'ACTIVE').length;
+            const completed = plants.filter(p => p.status === 'COMPLETED').length;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-completed').textContent = completed;
         }
 
         function renderPlants(plants) {
@@ -381,10 +412,10 @@
             if (!Array.isArray(plants) || plants.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i data-lucide="sprout" style="width:48px;height:48px;color:var(--gray);margin-bottom:16px;"></i>
+                        <i data-lucide="sprout" style="width:48px;height:48px;color:var(--text-dim);margin-bottom:16px;"></i>
                         <h3>No plants registered</h3>
                         <p>You have no plants yet. Register your first plant to begin.</p>
-                        <a href="register-plant.html" class="btn-primary">Register Your First Plant</a>
+                        <a href="register-plant.html" class="btn-primary" style="display:inline-block;padding:12px 24px;background:var(--primary);color:#fff;border-radius:12px;text-decoration:none;">Register Your First Plant</a>
                     </div>
                 `;
                 lucide.createIcons();
@@ -393,35 +424,34 @@
 
             let html = '<div class="plants-grid">';
             plants.forEach(plant => {
-                const percent = Math.round((plant.currentDay / 30) * 100);
+                const percent = Math.min(100, Math.round((plant.currentDay / 30) * 100));
                 const statusClass = plant.status === 'COMPLETED' ? 'completed' : 'active';
                 html += `
                     <div class="plant-card">
                         <div class="plant-header">
-                            <div class="plant-avatar">
-                                <i data-lucide="leaf" style="width:32px;height:32px;color:var(--primary);"></i>
+                            <div class="plant-avatar" style="width:48px;height:48px;background:var(--primary-light);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                                <i data-lucide="leaf" style="width:24px;height:24px;color:var(--primary);"></i>
                             </div>
-                            <div class="plant-info">
-                                <h3>${plant.plantName}</h3>
-                                <div class="plant-type">${plant.plantType}</div>
+                            <div class="plant-info" style="flex:1;margin-left:16px;">
+                                <h3 style="margin:0;font-size:1.1rem;font-weight:700;">${plant.plantName}</h3>
+                                <div class="plant-type" style="font-size:0.9rem;color:var(--text-dim);">${plant.plantType}</div>
                             </div>
                             <span class="status-badge ${statusClass}">
-                                <i data-lucide="check-circle" style="width:18px;height:18px;vertical-align:middle;${statusClass === 'completed' ? 'color:var(--success);' : 'color:var(--primary);'}"></i>
                                 ${plant.status}
                             </span>
                         </div>
                         <div class="growth-stats">
-                            <div class="day-info">
-                                <span>Day ${plant.currentDay} of 30</span>
-                                <span class="stage-name">${plant.currentStage || 'N/A'}</span>
+                            <div class="day-info" style="display:flex;justify-content:space-between;font-size:0.9rem;margin-bottom:8px;">
+                                <span style="font-weight:500;color:var(--text-dim);">Day ${plant.currentDay} of 30</span>
+                                <span class="stage-name" style="font-weight:700;color:var(--primary);">${plant.currentStage || 'N/A'}</span>
                             </div>
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: ${percent}%"></div>
+                            <div class="progress-container" style="height:8px;background:#f1f5f9;border-radius:10px;overflow:hidden;">
+                                <div class="progress-bar" style="width: ${percent}%;height:100%;background:var(--primary);border-radius:10px;"></div>
                             </div>
                         </div>
-                        <a href="plant-detail.html?id=${plant.id}" class="view-details-btn">
-                            <i data-lucide="arrow-right-circle" style="width:18px;height:18px;vertical-align:middle;"></i>
+                        <a href="plant-detail.html?id=${plant.id}" class="view-details-btn" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--primary-light);color:var(--primary);border-radius:14px;text-decoration:none;font-weight:700;transition:all 0.2s;">
                             View Progress
+                            <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
                         </a>
                     </div>
                 `;
@@ -432,7 +462,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            auth.hideAuthLinks();
+            if (auth.hideAuthLinks) auth.hideAuthLinks();
             fetchPlants();
         });
     </script>

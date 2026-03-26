@@ -114,39 +114,9 @@
             border-top: 1px solid var(--glass-border);
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 80px;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .nav-links a.active { color: var(--primary); }
-
         .main-content {
             flex: 1;
-            padding: 60px 0 0 0;
+            padding: 40px 0 0 0;
             min-width: 0;
             display: flex;
             flex-direction: column;
@@ -279,9 +249,13 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
                 <a href="register-plant.html" class="sidebar-link active" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
                 <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
                 <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+                <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
+                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
+                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
             </nav>
             <div class="sidebar-footer"></div>
         </aside>

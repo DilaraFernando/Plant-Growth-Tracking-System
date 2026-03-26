@@ -10,16 +10,14 @@
     <style>
         :root {
             --primary: #059669;
-            --primary-hover: #047857;
             --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.8);
             --text-main: #1e293b;
             --text-dim: #64748b;
             --glass-border: rgba(226, 232, 240, 0.8);
             --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-            --gray: #9ca3af;
         }
 
         * {
@@ -33,21 +31,17 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
             background: var(--bg-color);
             color: var(--text-main);
         }
+
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: row;
             background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
         }
-        .dashboard-layout {
-            display: flex;
-            width: 100vw;
-            min-height: 100vh;
-        }
+
         .sidebar {
             width: 260px;
             background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
@@ -60,6 +54,7 @@
             flex-direction: column;
             z-index: 10;
         }
+
         .sidebar .logo {
             font-weight: 800;
             font-size: 1.7rem;
@@ -74,6 +69,7 @@
             border-bottom: 1.5px solid var(--glass-border);
             box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
         }
+
         .sidebar-nav {
             flex: 1;
             display: flex;
@@ -81,6 +77,7 @@
             gap: 10px;
             padding: 18px 10px 0 10px;
         }
+
         .sidebar-link {
             display: flex;
             align-items: center;
@@ -94,116 +91,106 @@
             transition: background 0.15s, color 0.15s, border-left 0.18s;
             border-left: 4px solid transparent;
         }
+
         .sidebar-link.active {
             background: var(--primary-light);
             color: var(--primary);
             border-left: 4px solid var(--primary);
         }
+
         .sidebar-link:hover {
             background: #f1f5f9;
             color: var(--primary);
             border-left: 4px solid var(--primary-light);
         }
+
         .sidebar-link .lucide {
             width: 22px;
             height: 22px;
         }
+
         .sidebar-footer {
             padding: 24px 32px;
             border-top: 1px solid var(--glass-border);
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 80px;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .nav-links a.active { color: var(--primary); }
-
         .main-content {
             flex: 1;
-            padding: 60px 0 0 0;
+            padding: 40px 0 0 0;
             min-width: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             background: rgba(255,255,255,0.85);
             box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
-            border-radius: 0;
             margin: 0;
         }
+
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px 40px 40px;
         }
 
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
+
         .header-section h1 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
         }
 
         .btn-admin {
-            background: #4b5563;
+            background: var(--text-main);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .btn-admin:hover { background: #374151; }
+
+        .btn-admin:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
 
         .posts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+            gap: 32px;
         }
 
         .post-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow);
-            border: 1px solid #e5e7eb;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
         }
 
         .post-header {
@@ -211,70 +198,107 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .plant-name {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-main);
         }
+
         .day-label {
-            font-size: 12px;
-            font-weight: 600;
-            background: #f3f4f6;
-            padding: 4px 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 14px;
             border-radius: 20px;
         }
 
         .post-caption {
-            font-size: 15px;
+            font-size: 1.05rem;
             line-height: 1.6;
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #d1d5db;
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1.5px solid var(--glass-border);
+            color: var(--text-main);
             white-space: pre-wrap;
+            position: relative;
+        }
+
+        .post-caption::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 3rem;
+            color: var(--primary-light);
+            font-family: serif;
+            line-height: 1;
+            opacity: 0.5;
         }
 
         .post-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: auto;
         }
+
         .status-badge {
-            font-size: 11px;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: #e5e7eb;
-            color: #4b5563;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: var(--text-dim);
             text-transform: uppercase;
         }
 
-        .copy-btn {
-            background: white;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
+        .copy-btn, .generate-btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
+
+        .copy-btn {
+            background: var(--primary-light);
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+        }
+
         .copy-btn:hover {
             background: var(--primary);
             color: white;
         }
 
+        .generate-btn {
+            background: #fff;
+            border: 1.5px solid var(--glass-border);
+            color: var(--text-main);
+        }
+
+        .generate-btn:hover {
+            background: #f8fafc;
+            border-color: var(--primary);
+        }
+
         .loading, .error, .empty-state {
             text-align: center;
             padding: 60px 20px;
+            font-size: 1.1rem;
+            color: var(--text-dim);
         }
 
         @media (max-width: 600px) {
             .posts-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 20px 20px 20px; }
         }
     </style>
 </head>
@@ -288,10 +312,13 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
                 <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
                 <a href="social-posts.html" class="sidebar-link active" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
                 <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
                 <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
+                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
             </nav>
             <div class="sidebar-footer"></div>
         </aside>

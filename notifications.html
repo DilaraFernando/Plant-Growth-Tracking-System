@@ -10,21 +10,18 @@
     <style>
         :root {
             --primary: #059669;
-            --primary-hover: #047857;
             --primary-light: #ecfdf5;
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: rgba(255, 255, 255, 0.8);
             --text-main: #1e293b;
             --text-dim: #64748b;
             --glass-border: rgba(226, 232, 240, 0.8);
             --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-            --planting-success: #10b981;
+            --planting-success: #059669;
             --daily-update: #3b82f6;
             --completed: #f59e0b;
-            --active: #10b981;
         }
-        .badge.active { background: var(--active); }
 
         * {
             margin: 0;
@@ -37,21 +34,17 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
             background: var(--bg-color);
             color: var(--text-main);
         }
+
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: row;
             background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
         }
-        .dashboard-layout {
-            display: flex;
-            width: 100vw;
-            min-height: 100vh;
-        }
+
         .sidebar {
             width: 260px;
             background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
@@ -64,6 +57,7 @@
             flex-direction: column;
             z-index: 10;
         }
+
         .sidebar .logo {
             font-weight: 800;
             font-size: 1.7rem;
@@ -78,6 +72,7 @@
             border-bottom: 1.5px solid var(--glass-border);
             box-shadow: 0 2px 8px 0 rgba(5,150,105,0.03);
         }
+
         .sidebar-nav {
             flex: 1;
             display: flex;
@@ -85,6 +80,7 @@
             gap: 10px;
             padding: 18px 10px 0 10px;
         }
+
         .sidebar-link {
             display: flex;
             align-items: center;
@@ -98,162 +94,146 @@
             transition: background 0.15s, color 0.15s, border-left 0.18s;
             border-left: 4px solid transparent;
         }
+
         .sidebar-link.active {
             background: var(--primary-light);
             color: var(--primary);
             border-left: 4px solid var(--primary);
         }
+
         .sidebar-link:hover {
             background: #f1f5f9;
             color: var(--primary);
             border-left: 4px solid var(--primary-light);
         }
+
         .sidebar-link .lucide {
             width: 22px;
             height: 22px;
         }
+
         .sidebar-footer {
             padding: 24px 32px;
             border-top: 1px solid var(--glass-border);
         }
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 80px;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .nav-links a.active { color: var(--primary); }
-
         .main-content {
             flex: 1;
-            padding: 60px 0 0 0;
+            padding: 40px 0 0 0;
             min-width: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             background: rgba(255,255,255,0.85);
             box-shadow: 0 8px 32px 0 rgba(5,150,105,0.06);
-            border-radius: 0;
             margin: 0;
         }
+
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px 40px 40px;
         }
 
         .header-section {
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
         }
+
         .header-section h1 {
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -1px;
         }
 
         .notifications-list {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid #e5e7eb;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .notification-item {
-            padding: 20px;
-            border-bottom: 1px solid #f3f4f6;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 24px;
             display: flex;
-            gap: 15px;
+            gap: 20px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            box-shadow: var(--card-shadow);
             position: relative;
+            overflow: hidden;
         }
-        .notification-item:last-child {
-            border-bottom: none;
-        }
+
         .notification-item:hover {
-            background: #f9fafb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
         }
+
         .notification-item.unread {
-            background: #f0fdf4;
-        }
-        .notification-item.unread::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--primary);
+            background: #fff;
+            border-left: 5px solid var(--primary);
         }
 
         .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            font-size: 18px;
         }
 
         .notification-content {
             flex: 1;
         }
+
         .notification-top {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        .notification-message {
-            font-size: 14px;
-            line-height: 1.5;
+            align-items: center;
             margin-bottom: 8px;
         }
+
+        .notification-message {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
         .notification-time {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 600;
         }
 
         .badge {
-            font-size: 10px;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 2px 8px;
+            padding: 4px 12px;
             border-radius: 10px;
             text-transform: uppercase;
-            color: white;
+            letter-spacing: 0.5px;
         }
-        .badge.planting_success { background: var(--planting-success); }
-        .badge.daily_update { background: var(--daily-update); }
-        .badge.completed { background: var(--completed); }
+
+        .badge.planting_success { background: var(--primary-light); color: var(--primary); }
+        .badge.daily_update { background: #dbeafe; color: #1e40af; }
+        .badge.completed { background: #fef3c7; color: #b45309; }
 
         .loading, .error, .empty-state {
             text-align: center;
             padding: 60px 20px;
+            font-size: 1.1rem;
+            color: var(--text-dim);
         }
     </style>
 </head>
@@ -267,10 +247,13 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> Dashboard</a>
                 <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> Register Plant</a>
+                <a href="greenhouse.html" class="sidebar-link" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> My Greenhouse</a>
                 <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> Social Posts</a>
                 <a href="notifications.html" class="sidebar-link active" id="sidebar-notifications"><i class="lucide lucide-bell"></i> Notifications</a>
                 <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> Weather</a>
-                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()"><i class="lucide lucide-log-out"></i> Logout</a>
+                <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> Expert Advice</a>
+                <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> Plant Locator</a>
+                <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> Logout</a>
             </nav>
             <div class="sidebar-footer"></div>
         </aside>
@@ -318,24 +301,28 @@
                 return;
             }
 
-            // Sort by created date descending
             notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
             let html = '';
             notifications.forEach(notif => {
                 const typeClass = notif.type.toLowerCase();
-                // Support both isRead and read fields for highlight
                 const unreadClass = (notif.isRead !== undefined ? !notif.isRead : !notif.read) ? 'unread' : '';
-                const timeStr = new Date(notif.createdAt).toLocaleString();
+                const timeStr = new Date(notif.createdAt).toLocaleDateString(undefined, {
+                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                });
 
                 let icon = 'bell';
                 if (notif.type === 'PLANTING_SUCCESS') icon = 'sprout';
                 if (notif.type === 'DAILY_UPDATE') icon = 'bar-chart-3';
                 if (notif.type === 'COMPLETED') icon = 'trophy';
+                
+                const bgColor = getBackgroundColor(notif.type);
+                const textColor = getTextColor(notif.type);
+
                 html += `
                     <div class="notification-item ${unreadClass}" onclick="markAsRead(${notif.id})">
-                        <div class="notification-icon" style="background: ${getBackgroundColor(notif.type)}; color: white;">
-                            <i data-lucide="${icon}" style="width:22px;height:22px;"></i>
+                        <div class="notification-icon" style="background: ${bgColor}; color: ${textColor};">
+                            <i data-lucide="${icon}" style="width:24px;height:24px;"></i>
                         </div>
                         <div class="notification-content">
                             <div class="notification-top">
@@ -349,12 +336,17 @@
             });
             container.innerHTML = html;
             lucide.createIcons();
-                lucide.createIcons();
-            container.innerHTML = html;
         }
 
         function getBackgroundColor(type) {
-            if (type === 'PLANTING_SUCCESS') return '#10b981';
+            if (type === 'PLANTING_SUCCESS') return '#ecfdf5';
+            if (type === 'DAILY_UPDATE') return '#eff6ff';
+            if (type === 'COMPLETED') return '#fffbeb';
+            return '#f3f4f6';
+        }
+
+        function getTextColor(type) {
+            if (type === 'PLANTING_SUCCESS') return '#059669';
             if (type === 'DAILY_UPDATE') return '#3b82f6';
             if (type === 'COMPLETED') return '#f59e0b';
             return '#6b7280';

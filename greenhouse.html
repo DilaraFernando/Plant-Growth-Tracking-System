@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Greenhouse - Growth Agri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-light: #ecfdf5;
+            --bg-color: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
+            color: var(--text-main);
+        }
+
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(160deg, #e0f7fa 0%, #fff 100%);
+            border-right: 1.5px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.7rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 36px 32px 28px 32px;
+            text-decoration: none;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ecfdf5 60%, #fff 100%);
+            border-bottom: 1.5px solid var(--glass-border);
+        }
+
+        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 18px 10px; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-dim);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-link.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .header-section { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .header-section h1 { font-size: 2.2rem; font-weight: 800; color: var(--text-main); letter-spacing: -1px; }
+        .header-section p { color: var(--text-dim); font-size: 1.1rem; margin-top: 8px; }
+
+        .categories-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-pill {
+            padding: 12px 24px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-pill:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .category-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 8px 20px -6px rgba(5, 150, 105, 0.4); }
+
+        .greenhouse-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 32px;
+        }
+
+        .plant-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--card-shadow);
+        }
+
+        .plant-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 24px 50px -15px rgba(0,0,0,0.1); }
+
+        .card-img-wrapper { position: relative; height: 180px; overflow: hidden; }
+        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .plant-card:hover .card-img-wrapper img { transform: scale(1.1); }
+
+        .badge-live { position: absolute; top: 16px; left: 16px; background: rgba(5, 150, 105, 0.9); color: #fff; padding: 6px 14px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 6px; }
+        .badge-live::before { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+
+        .card-body { padding: 24px; }
+        .plant-name { font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
+        .plant-id { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; display: block; }
+
+        .sensor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .sensor-item { background: #f8fafc; border: 1.5px solid var(--glass-border); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+        .sensor-label { color: var(--text-dim); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sensor-value { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+
+        .btn-feedback { margin-top: 24px; background: #fff; border: 1.5px solid var(--glass-border); padding: 12px; border-radius: 16px; display: flex; gap: 10px; transition: all 0.2s; }
+        .btn-feedback:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
+        .btn-feedback input { flex: 1; border: none; outline: none; font-size: 0.9rem; font-weight: 500; }
+        .btn-feedback button { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 10px; cursor: pointer; }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 80px; }
+            .sidebar .logo span { display: none; }
+            .sidebar-link span { display: none; }
+            .sidebar-link { justify-content: center; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="dashboard.html" class="logo">
+            <i class="lucide lucide-leaf"></i>
+            <span>Growth Agri</span>
+        </a>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="sidebar-link" id="sidebar-dashboard"><i class="lucide lucide-layout-dashboard"></i> <span>Dashboard</span></a>
+            <a href="register-plant.html" class="sidebar-link" id="sidebar-register"><i class="lucide lucide-plus-square"></i> <span>Register Plant</span></a>
+            <a href="greenhouse.html" class="sidebar-link active" id="sidebar-greenhouse"><i class="lucide lucide-container"></i> <span>My Greenhouse</span></a>
+            <a href="social-posts.html" class="sidebar-link" id="sidebar-social"><i class="lucide lucide-message-square"></i> <span>Social Posts</span></a>
+            <a href="notifications.html" class="sidebar-link" id="sidebar-notifications"><i class="lucide lucide-bell"></i> <span>Notifications</span></a>
+            <a href="weather.html" class="sidebar-link" id="sidebar-weather"><i class="lucide lucide-cloud-sun"></i> <span>Weather</span></a>
+            <a href="experts.html" class="sidebar-link" id="sidebar-experts"><i class="lucide lucide-users"></i> <span>Expert Advice</span></a>
+            <a href="locator.html" class="sidebar-link" id="sidebar-locator"><i class="lucide lucide-map-pin"></i> <span>Plant Locator</span></a>
+            <a href="#" class="sidebar-link" id="sidebar-logout" onclick="auth.logout()" style="margin-top:auto;"><i class="lucide lucide-log-out"></i> <span>Logout</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-section">
+            <div>
+                <h1>My Greenhouse</h1>
+                <p>Live collection from sector-based greenhouse zones.</p>
+            </div>
+            <div class="user-area" style="display:flex;align-items:center;gap:12px;background:#fff;padding:8px 20px;border-radius:20px;border:1.5px solid var(--glass-border);box-shadow:var(--card-shadow);">
+                <img src="https://ui-avatars.com/api/?name=Dilara+Fernando&background=059669&color=fff" style="width:36px;height:36px;border-radius:12px;" alt="User">
+                <span style="font-weight:700;">Dilara Fernando</span>
+            </div>
+        </div>
+
+        <div class="categories-row">
+            <div class="category-pill active">🌱 All Plants</div>
+            <div class="category-pill">🥕 Vegetables</div>
+            <div class="category-pill">🍎 Fruits</div>
+            <div class="category-pill">🌸 Flowers</div>
+            <div class="category-pill">🪴 Indoor</div>
+            <div class="category-pill">🌳 Outdoor</div>
+        </div>
+
+        <div class="greenhouse-grid">
+            <div class="plant-card">
+                <div class="card-img-wrapper">
+                    <div class="badge-live">Live</div>
+                    <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=600" alt="Plant">
+                </div>
+                <div class="card-body">
+                    <h3 class="plant-name">Heirloom Tomato</h3>
+                    <span class="plant-id">ID: GH-A1 | Sector: Zone A</span>
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <span class="sensor-label">Temperature</span>
+                            <span class="sensor-value">22°C</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Moisture</span>
+                            <span class="sensor-value">45%</span>
+                        </div>
+                    </div>
+                    <div class="btn-feedback">
+                        <input type="text" placeholder="Add public feedback...">
+                        <button><i class="lucide lucide-send"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plant-card">
+                <div class="card-img-wrapper">
+                    <div class="badge-live">Live</div>
+                    <img src="https://images.unsplash.com/photo-1558449195-fa2815c4a548?auto=format&fit=crop&w=600" alt="Plant">
+                </div>
+                <div class="card-body">
+                    <h3 class="plant-name">Bell Pepper</h3>
+                    <span class="plant-id">ID: GH-B5 | Sector: Zone B</span>
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <span class="sensor-label">Temperature</span>
+                            <span class="sensor-value">24°C</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Moisture</span>
+                            <span class="sensor-value">55%</span>
+                        </div>
+                    </div>
+                    <div class="btn-feedback">
+                        <input type="text" placeholder="Add public feedback...">
+                        <button><i class="lucide lucide-send"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plant-card">
+                <div class="card-img-wrapper">
+                    <div class="badge-live">Live</div>
+                    <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600" alt="Plant">
+                </div>
+                <div class="card-body">
+                    <h3 class="plant-name">Aloe Vera</h3>
+                    <span class="plant-id">ID: GH-C2 | Sector: Zone C</span>
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <span class="sensor-label">Temperature</span>
+                            <span class="sensor-value">21°C</span>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Moisture</span>
+                            <span class="sensor-value">30%</span>
+                        </div>
+                    </div>
+                    <div class="btn-feedback">
+                        <input type="text" placeholder="Add public feedback...">
+                        <button><i class="lucide lucide-send"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="API/auth.js"></script>
+    <script>
+        if (!auth.isLoggedIn()) { window.location.href = "sing-in/pages/sign-in.html"; }
+        if (auth.hideAuthLinks) auth.hideAuthLinks();
+        lucide.createIcons();
+    </script>
+</body>
+</html>
