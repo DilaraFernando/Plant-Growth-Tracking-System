@@ -165,6 +165,18 @@
             </div>
 
             <div class="card">
+                <h3>Plant Details</h3>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div><strong>Plant Name:</strong> <span id="detail-plantName">-</span></div>
+                    <div><strong>Plant Type:</strong> <span id="detail-plantType">-</span></div>
+                    <div><strong>Planted Date:</strong> <span id="detail-plantedDate">-</span></div>
+                    <div><strong>Current Day:</strong> <span id="detail-currentDay">-</span></div>
+                    <div><strong>Current Stage:</strong> <span id="detail-currentStage">-</span></div>
+                    <div><strong>Status:</strong> <span id="detail-status">-</span></div>
+                </div>
+            </div>
+
+            <div class="card">
                 <h3>Vitals Breakdown</h3>
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div>
@@ -240,6 +252,14 @@
                     document.getElementById('plant-name-top').innerText = plant.plantName;
                     document.getElementById('plant-type-top').innerText = `${plant.plantType} • Indoor Garden`;
                     document.getElementById('moist-val').innerText = plant.status === 'THIRSTY' ? '12%' : '68%';
+
+                    // Populate details card
+                    document.getElementById('detail-plantName').innerText = plant.plantName || '-';
+                    document.getElementById('detail-plantType').innerText = plant.plantType || '-';
+                    document.getElementById('detail-plantedDate').innerText = plant.plantedDate || '-';
+                    document.getElementById('detail-currentDay').innerText = plant.currentDay != null ? plant.currentDay : '-';
+                    document.getElementById('detail-currentStage').innerText = plant.currentStage || '-';
+                    document.getElementById('detail-status').innerText = plant.status || '-';
                 }
             } catch (err) {
                 console.error(err);

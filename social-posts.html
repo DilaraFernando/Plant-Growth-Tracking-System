@@ -177,6 +177,7 @@
                 <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
                 <li><a href="register-plant.html" class="nav-link"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
                 <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="all-plants.html" class="nav-link"><i data-lucide="leaf"></i> <span>All Plants</span></a></li>
                 <li><a href="social-posts.html" class="nav-link active"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
                 <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
                 <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
@@ -193,78 +194,129 @@
                 <h1>Social Feed</h1>
                 <p>Share your growth journey with the PlantPulse community.</p>
             </div>
-            <button class="btn-create" onclick="toggleForm()">
-                <i data-lucide="plus"></i> New Post
-            </button>
+            <div style="display:flex; align-items:center; gap:18px;">
+                <select id="plant-select" style="padding:12px 18px; border-radius:12px; border:1.5px solid var(--glass-border); font-size:1rem; font-weight:600;">
+                    <option value="">Select Plant</option>
+                </select>
+                <button class="btn-create" id="new-post-btn" onclick="toggleForm()" disabled>
+                    <i data-lucide="plus"></i> New Post
+                </button>
+            </div>
         </header>
 
         <div id="create-form" class="form-card">
-            <textarea id="post-caption" rows="3" placeholder="How's your plant doing today?"></textarea>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; gap: 12px; color: var(--text-dim); font-weight: 700; cursor: pointer;">
-                    <i data-lucide="image"></i> Add Image
-                </div>
-                <button class="btn-create" onclick="publishPost()" style="padding: 10px 24px;">Publish</button>
-            </div>
+            <div style="font-weight:700; color:var(--primary); margin-bottom:10px;">Generate a post for your selected plant</div>
+            <button class="btn-create" id="publish-btn" style="padding: 10px 24px;">Generate Post</button>
+            <span id="post-error" style="color:#dc2626; font-weight:700; margin-left:16px;"></span>
         </div>
 
-        <div class="posts-grid" id="posts-container">
-            <!-- Simulated Posts -->
-            <div class="post-card">
-                <img src="https://images.unsplash.com/photo-1598512752271-33f913a5af13?auto=format&fit=crop&w=600" class="post-img" alt="Post">
-                <div class="post-body">
-                    <div class="post-user">
-                        <div class="post-avatar">DF</div>
-                        <span class="user-name">Dilara Fernando</span>
-                    </div>
-                    <p class="post-caption">My Monstera blossomed today! This new growth serum is doing wonders. 🌱✨ #PlantPulse #GrowthJourney</p>
-                    <div class="post-actions">
-                        <button class="action-btn liked"><i data-lucide="heart" style="fill: var(--primary);"></i> 24</button>
-                        <button class="action-btn"><i data-lucide="message-circle"></i> 5</button>
-                        <button class="action-btn"><i data-lucide="share-2"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="post-card">
-                <img src="https://images.unsplash.com/photo-1453904300235-0f2f60b15b5d?auto=format&fit=crop&w=600" class="post-img" alt="Post">
-                <div class="post-body">
-                    <div class="post-user">
-                        <div class="post-avatar">AW</div>
-                        <span class="user-name">Amila Wickram</span>
-                    </div>
-                    <p class="post-caption">Succulent corner update. Simple, clean, and thriving. 🪴 #IndoorJungle #PulseLife</p>
-                    <div class="post-actions">
-                        <button class="action-btn"><i data-lucide="heart"></i> 18</button>
-                        <button class="action-btn"><i data-lucide="message-circle"></i> 2</button>
-                        <button class="action-btn"><i data-lucide="share-2"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="posts-grid" id="posts-container"></div>
+        <div id="empty-state" style="display:none; text-align:center; color:var(--text-dim); font-size:1.2rem; margin-top:48px;">No posts yet for this plant.</div>
     </main>
 
     <script src="API/auth.js"></script>
     <script>
         lucide.createIcons();
-
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }
+        const BACKEND = 'http://localhost:8080/api/v1';
+        let plants = [];
+        let posts = [];
+        let selectedPlantId = '';
+        const plantSelect = document.getElementById('plant-select');
+        const postsContainer = document.getElementById('posts-container');
+        const emptyState = document.getElementById('empty-state');
+        const newPostBtn = document.getElementById('new-post-btn');
+        const form = document.getElementById('create-form');
+        const publishBtn = document.getElementById('publish-btn');
+        const postError = document.getElementById('post-error');
+
+        function renderPosts() {
+            postsContainer.innerHTML = '';
+            if (!posts.length) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-body">
+                        <div class="post-user">
+                            <div class="post-avatar">${(auth.getToken()||'U').substring(0,2).toUpperCase()}</div>
+                            <span class="user-name">You</span>
+                        </div>
+                        <p class="post-caption">${post.caption}</p>
+                        <div style="color:var(--text-dim); font-size:0.92rem; margin-bottom:8px;">${post.createdAt ? post.createdAt.replace('T',' ').substring(0,16) : ''}</div>
+                    </div>
+                `;
+                postsContainer.appendChild(card);
+            });
+        }
+
+        function fetchPlants() {
+            fetch(`${BACKEND}/plants`, { headers: auth.authHeaders() })
+                .then(r => r.json())
+                .then(json => {
+                    plants = json.data || json;
+                    plantSelect.innerHTML = '<option value="">Select Plant</option>' + plants.map(p => `<option value="${p.id}">${p.plantName}</option>`).join('');
+                });
+        }
+
+        function fetchPosts(plantId) {
+            postsContainer.innerHTML = '';
+            emptyState.style.display = 'none';
+            fetch(`${BACKEND}/plants/${plantId}/social-posts`, { headers: auth.authHeaders() })
+                .then(r => r.json())
+                .then(json => {
+                    posts = json.data || [];
+                    renderPosts();
+                });
+        }
+
+        plantSelect.onchange = function() {
+            selectedPlantId = plantSelect.value;
+            if (selectedPlantId) {
+                newPostBtn.disabled = false;
+                fetchPosts(selectedPlantId);
+            } else {
+                newPostBtn.disabled = true;
+                postsContainer.innerHTML = '';
+                emptyState.style.display = 'none';
+            }
+            form.classList.remove('visible');
+        };
 
         function toggleForm() {
-            document.getElementById('create-form').classList.toggle('visible');
+            if (!selectedPlantId) return;
+            form.classList.toggle('visible');
+            postError.textContent = '';
         }
+        window.toggleForm = toggleForm;
 
-        function publishPost() {
-            const caption = document.getElementById('post-caption').value;
-            if(!caption) return;
-            
-            // Logic to publish...
-            alert('Post published! (Simulation)');
-            document.getElementById('post-caption').value = '';
-            toggleForm();
-        }
+        publishBtn.onclick = function() {
+            if (!selectedPlantId) return;
+            postError.textContent = '';
+            publishBtn.disabled = true;
+            fetch(`${BACKEND}/plants/${selectedPlantId}/social-posts/generate`, {
+                method: 'POST',
+                headers: auth.authHeaders()
+            })
+            .then(async r => {
+                publishBtn.disabled = false;
+                if (r.ok) {
+                    form.classList.remove('visible');
+                    fetchPosts(selectedPlantId);
+                } else {
+                    const err = await r.json();
+                    postError.textContent = err.message || 'Error generating post';
+                }
+            });
+        };
+
+        fetchPlants();
     </script>
 </body>
 </html>

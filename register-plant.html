@@ -150,6 +150,7 @@
                 <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></a></li>
                 <li><a href="register-plant.html" class="nav-link active"><i data-lucide="plus-square"></i> <span>Register Plant</span></a></li>
                 <li><a href="greenhouse.html" class="nav-link"><i data-lucide="container"></i> <span>My Collection</span></a></li>
+                <li><a href="all-plants.html" class="nav-link"><i data-lucide="leaf"></i> <span>All Plants</span></a></li>
                 <li><a href="social-posts.html" class="nav-link"><i data-lucide="message-square"></i> <span>Social Feed</span></a></li>
                 <li><a href="notifications.html" class="nav-link"><i data-lucide="bell"></i> <span>Notifications</span></a></li>
                 <li><a href="weather.html" class="nav-link"><i data-lucide="cloud-sun"></i> <span>Weather</span></a></li>
@@ -222,7 +223,7 @@
             };
 
             try {
-                const response = await fetch('http://localhost:8080/api/v1/plants', {
+                const response = await fetch('http://localhost:8080/api/v1/plants/register', {
                     method: 'POST',
                     headers: auth.authHeaders(),
                     body: JSON.stringify(data)
