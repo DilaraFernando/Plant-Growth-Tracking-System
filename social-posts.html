@@ -246,9 +246,10 @@
                 const plantsResponse = await fetch('http://localhost:8080/api/v1/plants', {
                     headers: auth.authHeaders()
                 });
-                const plants = await plantsResponse.json();
-                
-                if (plants.length === 0) {
+                const json = await plantsResponse.json();
+                const plants = json.data;
+
+                if (!Array.isArray(plants) || plants.length === 0) {
                     container.innerHTML = '<div class="empty-state"><h3>No plants registered yet.</h3></div>';
                     return;
                 }
@@ -259,28 +260,34 @@
                     const postsResponse = await fetch(`http://localhost:8080/api/v1/plants/${plant.id}/social-posts`, {
                         headers: auth.authHeaders()
                     });
-                    const posts = await postsResponse.json();
+                    const postsJson = await postsResponse.json();
+                    const posts = postsJson.data;
                     // Add plant name to each post for display
                     posts.forEach(p => p.plantName = plant.plantName);
+                    // Attach plantId for Generate Post button
+                    posts.forEach(p => p.plantId = plant.id);
                     allPosts = allPosts.concat(posts);
                 }
 
-                renderPosts(allPosts);
+                renderPosts(allPosts, plants);
             } catch (err) {
                 container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
             }
         }
 
-        function renderPosts(posts) {
+        function renderPosts(posts, plants) {
             const container = document.getElementById('posts-container');
-            
-            if (posts.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-share-alt" style="font-size: 48px; color: var(--gray); margin-bottom: 16px;"></i>
-                        <p>No social posts generated yet. Trigger a daily update to see some!</p>
-                    </div>
-                `;
+            if (!Array.isArray(posts) || posts.length === 0) {
+                let html = '<div class="empty-state"><i class="fas fa-share-alt" style="font-size: 48px; color: var(--gray); margin-bottom: 16px;"></i><p>No social posts generated yet. Trigger a daily update to see some!</p></div>';
+                // Show per-plant Generate Post buttons even if no posts
+                if (Array.isArray(plants) && plants.length > 0) {
+                    html += '<div class="plants-generate-btns">';
+                    plants.forEach(plant => {
+                        html += `<button class="generate-btn" onclick="generatePost(${plant.id})">Generate Post for ${plant.plantName}</button>`;
+                    });
+                    html += '</div>';
+                }
+                container.innerHTML = html;
                 return;
             }
 
@@ -301,12 +308,29 @@
                             <button class="copy-btn" onclick="copyCaption('${post.id}')">
                                 <i class="far fa-copy"></i> Copy Caption
                             </button>
+                            <button class="generate-btn" onclick="generatePost(${post.plantId})">Generate Post</button>
                         </div>
                     </div>
                 `;
             });
             html += '</div>';
             container.innerHTML = html;
+        }
+
+        async function generatePost(plantId) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/plants/${plantId}/social-posts/generate`, {
+                    method: 'POST',
+                    headers: auth.authHeaders()
+                });
+                if (response.ok) {
+                    fetchAllPosts();
+                } else {
+                    alert('Failed to generate post');
+                }
+            } catch (err) {
+                alert('Error generating post');
+            }
         }
 
         function copyCaption(id) {

@@ -202,7 +202,8 @@
                 const response = await fetch('http://localhost:8080/api/v1/plants/notifications', {
                     headers: auth.authHeaders()
                 });
-                const notifications = await response.json();
+                const json = await response.json();
+                const notifications = json.data;
                 renderNotifications(notifications);
             } catch (err) {
                 document.getElementById('notifications-container').innerHTML = `<div class="error">Failed to load notifications</div>`;
@@ -211,8 +212,7 @@
 
         function renderNotifications(notifications) {
             const container = document.getElementById('notifications-container');
-            
-            if (notifications.length === 0) {
+            if (!Array.isArray(notifications) || notifications.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="far fa-bell-slash" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
@@ -228,9 +228,10 @@
             let html = '';
             notifications.forEach(notif => {
                 const typeClass = notif.type.toLowerCase();
-                const unreadClass = notif.isRead ? '' : 'unread';
+                // Support both isRead and read fields for highlight
+                const unreadClass = (notif.isRead !== undefined ? !notif.isRead : !notif.read) ? 'unread' : '';
                 const timeStr = new Date(notif.createdAt).toLocaleString();
-                
+
                 let icon = 'fa-bell';
                 if (notif.type === 'PLANTING_SUCCESS') icon = 'fa-seedling';
                 if (notif.type === 'DAILY_UPDATE') icon = 'fa-chart-line';

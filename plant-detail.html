@@ -265,7 +265,8 @@
                 const response = await fetch('http://localhost:8080/api/v1/plants', {
                     headers: auth.authHeaders()
                 });
-                const plants = await response.json();
+                const json = await response.json();
+                const plants = json.data;
                 const plant = plants.find(p => p.id == plantId);
 
                 if (!plant) throw new Error('Plant not found');
@@ -282,7 +283,8 @@
                 const response = await fetch(`http://localhost:8080/api/v1/plants/${plantId}/logs`, {
                     headers: auth.authHeaders()
                 });
-                const logs = await response.json();
+                const json = await response.json();
+                const logs = json.data;
                 renderLogs(logs);
             } catch (err) {
                 document.getElementById('timeline-container').innerHTML = `<div class="error">Failed to load logs</div>`;
