@@ -175,38 +175,43 @@
                 <h1>Weather Intelligence</h1>
                 <p>Localized environmental insights for your garden precision care.</p>
             </div>
-            <div class="location-info">
-                <i data-lucide="map-pin"></i> Kandy, Sri Lanka
+            <div class="location-info" id="location-info">
+                <i data-lucide="map-pin"></i> <span id="location-city">Loading...</span>
             </div>
+            <div style="margin-top: 18px; display: flex; gap: 18px; align-items: center;">
+                <select id="plant-dropdown" style="padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--glass-border); font-size: 1rem;"></select>
+                <button id="plant-alert-btn" style="padding: 8px 18px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">Get Plant Alert</button>
+            </div>
+            <div id="plant-alert-result" style="margin-top: 18px;"></div>
         </header>
 
         <div class="grid">
             <div class="card">
                 <div class="weather-icon" style="background: var(--primary-light); color: var(--primary);"><i data-lucide="sun"></i></div>
-                <div class="weather-value">28°C</div>
+                <div class="weather-value" id="weather-temp">--</div>
                 <div class="weather-label">Temperature</div>
             </div>
             <div class="card">
                 <div class="weather-icon" style="background: rgba(37, 99, 235, 0.1); color: var(--accent-blue);"><i data-lucide="droplets"></i></div>
-                <div class="weather-value">72%</div>
+                <div class="weather-value" id="weather-humidity">--</div>
                 <div class="weather-label">Humidity</div>
             </div>
             <div class="card">
                 <div class="weather-icon" style="background: rgba(217, 119, 6, 0.1); color: var(--accent-amber);"><i data-lucide="cloud-lightning"></i></div>
-                <div class="weather-value">12%</div>
-                <div class="weather-label">Rain Chance</div>
+                <div class="weather-value" id="weather-wind">--</div>
+                <div class="weather-label">Wind Speed</div>
             </div>
             <div class="card">
                 <div class="weather-icon" style="background: #fff1f2; color: var(--danger);"><i data-lucide="thermometer-sun"></i></div>
-                <div class="weather-value">8.4</div>
-                <div class="weather-label">UV Index</div>
+                <div class="weather-value" id="weather-condition">--</div>
+                <div class="weather-label">Condition</div>
             </div>
 
-            <div class="advice-card card">
+            <div class="advice-card card" id="weather-advice-card" style="display:none;">
                 <div style="background:rgba(255,255,255,0.6); padding:20px; border-radius:24px; color: var(--primary);"><i data-lucide="shield-check" size="48"></i></div>
                 <div class="advice-content">
-                    <h2>Maintenance Protocol</h2>
-                    <p>High UV index predicted today. Ensure indoor plants are kept at least 2 meters from southern-facing windows to avoid leaf scorch. Mist tropical plants twice today.</p>
+                    <h2 id="advice-title">Maintenance Protocol</h2>
+                    <p id="advice-msg"></p>
                 </div>
             </div>
         </div>
@@ -240,6 +245,82 @@
         if (!auth.isLoggedIn()) {
             window.location.href = "sing-in/pages/sign-in.html";
         }
+
+        // --- Weather Fetch Logic ---
+        const OPENWEATHER_API_KEY = '8e5731aa6d098ff8d9648f8035b07994';
+        const DEFAULT_CITY = 'Kandy';
+        const locationCity = document.getElementById('location-city');
+        const tempEl = document.getElementById('weather-temp');
+        const humidityEl = document.getElementById('weather-humidity');
+        const windEl = document.getElementById('weather-wind');
+        const condEl = document.getElementById('weather-condition');
+        const adviceCard = document.getElementById('weather-advice-card');
+        const adviceTitle = document.getElementById('advice-title');
+        const adviceMsg = document.getElementById('advice-msg');
+
+        function fetchWeather(city) {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${OPENWEATHER_API_KEY}&units=metric`)
+                .then(r => r.json())
+                .then(data => {
+                    locationCity.innerText = data.name + ', ' + (data.sys.country || '');
+                    tempEl.innerText = Math.round(data.main.temp) + '°C';
+                    humidityEl.innerText = data.main.humidity + '%';
+                    windEl.innerText = data.wind.speed + ' m/s';
+                    condEl.innerText = data.weather[0].main;
+                })
+                .catch(() => {
+                    locationCity.innerText = city;
+                    tempEl.innerText = humidityEl.innerText = windEl.innerText = condEl.innerText = '--';
+                });
+        }
+        fetchWeather(DEFAULT_CITY);
+
+        // --- Plant Dropdown Logic ---
+        const plantDropdown = document.getElementById('plant-dropdown');
+        let plantsList = [];
+        fetch('http://localhost:8080/api/v1/plants', { headers: auth.authHeaders() })
+            .then(r => r.json())
+            .then(json => {
+                plantsList = json.data || [];
+                plantDropdown.innerHTML = '';
+                if (!plantsList.length) {
+                    plantDropdown.innerHTML = '<option value="">No plants found</option>';
+                    plantDropdown.disabled = true;
+                } else {
+                    plantsList.forEach(plant => {
+                        const opt = document.createElement('option');
+                        opt.value = plant.id;
+                        opt.innerText = plant.plantName;
+                        plantDropdown.appendChild(opt);
+                    });
+                    plantDropdown.disabled = false;
+                }
+            });
+
+        // --- Plant Alert Logic ---
+        const alertBtn = document.getElementById('plant-alert-btn');
+        const alertResult = document.getElementById('plant-alert-result');
+        alertBtn.onclick = function() {
+            const plantId = plantDropdown.value;
+            if (!plantId) {
+                alertResult.innerHTML = '<span style="color:var(--danger);font-weight:600;">Please select a plant.</span>';
+                return;
+            }
+            alertResult.innerHTML = 'Loading...';
+            fetch(`http://localhost:8080/api/v1/plants/${plantId}/alert`, { headers: auth.authHeaders() })
+                .then(r => r.json())
+                .then(json => {
+                    const alert = json.data || json.message || 'No alert.';
+                    let color = 'var(--primary-light)';
+                    if (alert.toLowerCase().includes('danger') || alert.toLowerCase().includes('critical')) color = '#fee2e2';
+                    else if (alert.toLowerCase().includes('caution') || alert.toLowerCase().includes('warning')) color = '#fef9c3';
+                    else if (alert.toLowerCase().includes('safe') || alert.toLowerCase().includes('good')) color = '#dcfce7';
+                    alertResult.innerHTML = `<div style="background:${color};padding:18px 22px;border-radius:14px;font-weight:700;font-size:1.08rem;">${alert}</div>`;
+                })
+                .catch(() => {
+                    alertResult.innerHTML = '<span style="color:var(--danger);font-weight:600;">Failed to fetch alert.</span>';
+                });
+        };
     </script>
 </body>
 </html>

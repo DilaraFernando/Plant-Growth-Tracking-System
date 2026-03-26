@@ -12,15 +12,17 @@
         :root {
             --bg-color: #f8fafc;
             --sidebar-bg: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.95);
             --primary: #059669;
-            --primary-light: #ecfdf5;
+            --primary-light: #e0f7ef;
             --primary-glow: rgba(5, 150, 105, 0.15);
             --text-main: #1e293b;
             --text-dim: #64748b;
             --accent-blue: #2563eb;
             --glass-border: rgba(226, 232, 240, 0.8);
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --card-shadow: 0 8px 32px 0 rgba(60, 180, 120, 0.10), 0 1.5px 4px -2px rgb(0 0 0 / 0.05);
+            --border-radius: 32px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -73,7 +75,76 @@
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; }
 
         .card {
-            background: var(--card-bg); border-radius: 32px; padding: 32px; border: 1.5px solid var(--glass-border); backdrop-filter: blur(12px); box-shadow: var(--card-shadow); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px 48px;
+            border: 1.5px solid var(--glass-border);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            margin-top: 48px;
+            margin-bottom: 48px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, transparent 100%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .plant-details {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .plant-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 1.18rem;
+            font-weight: 500;
+            color: var(--text-main);
+            background: rgba(236, 253, 245, 0.7);
+            border-radius: 18px;
+            padding: 16px 22px;
+            box-shadow: 0 2px 8px 0 rgba(5, 150, 105, 0.04);
+            border: 1px solid var(--primary-light);
+        }
+        .plant-detail-label {
+            min-width: 140px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.08rem;
+            letter-spacing: 0.02em;
+        }
+        .plant-detail-value {
+            flex: 1;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .plant-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 18px;
+            letter-spacing: -1px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 24px 8px; }
+            .plant-details { gap: 16px; }
+            .plant-detail-row { font-size: 1rem; padding: 10px 8px; }
+            .plant-title { font-size: 1.3rem; }
         }
 
         .card h3 { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 24px; letter-spacing: -0.5px; }
@@ -126,107 +197,23 @@
                 <li><a href="locator.html" class="nav-link"><i data-lucide="map-pin"></i> <span>Plant Locator</span></a></li>
             </ul>
         </nav>
+        <div id="sidebar-plants-section" style="margin-top: 2.5rem;">
+            <div style="font-weight:700; color:var(--primary); margin-bottom: 0.5rem; font-size:1.08rem; letter-spacing:0.01em;">All Plants</div>
+            <ul id="sidebar-plants-list" style="list-style:none; padding-left:0; margin:0; display:flex; flex-direction:column; gap:0.25rem;"></ul>
+        </div>
         <a href="javascript:void(0)" onclick="auth.logout()" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 600; margin-top: auto; padding: 1rem;"><i data-lucide="log-out"></i> <span>Logout</span></a>
     </aside>
 
     <main id="main-content">
-        <header>
-            <div class="header-title">
-                <h1 id="plant-name-top">Monstera Deliciosa</h1>
-                <p id="plant-type-top">Indoor Houseplant • Zone 10b</p>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="badge-safe metric-badge"><i data-lucide="activity"></i> Optimizing</button>
-                <div class="stat-card" style="padding: 8px 16px;">
-                    <span class="stat-label">Health Score</span>
-                    <span class="stat-value" style="font-size: 1.4rem; color: var(--primary);">92</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="grid">
-            <div class="card health-hero">
-                <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=400" id="plant-img-main" class="health-img" alt="Plant">
-                <div style="flex:1;">
-                    <div class="metric-badge badge-safe"><i data-lucide="check-circle-2"></i> No Disease Detected</div>
-                    <h3>Growth Diagnostic</h3>
-                    <p style="color: var(--text-dim); line-height: 1.6; margin-bottom: 24px; font-weight: 500;">Your Monstera shows excellent leaf turgidity and stem girth. AI analysis suggests the current light cycle is pushing 12% faster growth than average for this species.</p>
-                    <div class="stat-group">
-                        <div class="stat-card">
-                            <span class="stat-label">Moisture</span>
-                            <span class="stat-value" id="moist-val">68%</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-label">Light</span>
-                            <span class="stat-value">650lx</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Plant Details</h3>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div><strong>Plant Name:</strong> <span id="detail-plantName">-</span></div>
-                    <div><strong>Plant Type:</strong> <span id="detail-plantType">-</span></div>
-                    <div><strong>Planted Date:</strong> <span id="detail-plantedDate">-</span></div>
-                    <div><strong>Current Day:</strong> <span id="detail-currentDay">-</span></div>
-                    <div><strong>Current Stage:</strong> <span id="detail-currentStage">-</span></div>
-                    <div><strong>Status:</strong> <span id="detail-status">-</span></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Vitals Breakdown</h3>
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Leaf Health</span><span style="color:var(--primary); font-weight:800;">High</span></div>
-                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:94%; height:100%; background:var(--primary);"></div></div>
-                    </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Chlorophyll Density</span><span style="color:var(--primary); font-weight:800;">Optimum</span></div>
-                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:88%; height:100%; background:var(--primary);"></div></div>
-                    </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span style="font-weight:700;">Transpiration Rate</span><span style="color:var(--accent-blue); font-weight:800;">Steady</span></div>
-                        <div style="height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;"><div style="width:70%; height:100%; background:var(--accent-blue);"></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid">
-            <div class="card span-2">
-                <h3>Growth Trajectory</h3>
-                <div class="large-chart">
-                    <!-- Future: Integrate Chart.js -->
-                    <div style="text-align:center; color: var(--text-dim);">
-                        <i data-lucide="line-chart" size="48" style="opacity:0.2; margin-bottom: 16px;"></i>
-                        <p style="font-weight:600;">Historical Growth Data Stream</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Growth Timeline</h3>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">Yesterday</span>
-                    <strong style="display:block; margin-bottom:4px;">New Leaf Unfurled</strong>
-                    <p style="font-size:0.9rem; color:var(--text-dim);">Central stem node 4 shows rapid expansion.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">3 Days Ago</span>
-                    <strong style="display:block; margin-bottom:4px;">Watering Cycle</strong>
-                    <p style="font-size:0.9rem; color:var(--text-dim);">Administered 400ml focused irrigation.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <span class="timeline-date">1 Week Ago</span>
-                    <strong style="display:block; margin-bottom:4px;">Bio-Fertilizer Added</strong>
-                    <p style="font-size:0.9rem; color:var(--text-dim);">N-P-K balance updated for growth phase.</p>
-                </div>
+        <div class="card">
+            <div class="plant-title" id="detail-plantName-title">Plant Details</div>
+            <div class="plant-details">
+                <div class="plant-detail-row"><span class="plant-detail-label">Plant Name:</span> <span class="plant-detail-value" id="detail-plantName">-</span></div>
+                <div class="plant-detail-row"><span class="plant-detail-label">Plant Type:</span> <span class="plant-detail-value" id="detail-plantType">-</span></div>
+                <div class="plant-detail-row"><span class="plant-detail-label">Planted Date:</span> <span class="plant-detail-value" id="detail-plantedDate">-</span></div>
+                <div class="plant-detail-row"><span class="plant-detail-label">Current Day:</span> <span class="plant-detail-value" id="detail-currentDay">-</span></div>
+                <div class="plant-detail-row"><span class="plant-detail-label">Current Stage:</span> <span class="plant-detail-value" id="detail-currentStage">-</span></div>
+                <div class="plant-detail-row"><span class="plant-detail-label">Status:</span> <span class="plant-detail-value" id="detail-status">-</span></div>
             </div>
         </div>
     </main>
@@ -249,11 +236,7 @@
                 const json = await response.json();
                 const plant = json.data;
                 if(plant) {
-                    document.getElementById('plant-name-top').innerText = plant.plantName;
-                    document.getElementById('plant-type-top').innerText = `${plant.plantType} • Indoor Garden`;
-                    document.getElementById('moist-val').innerText = plant.status === 'THIRSTY' ? '12%' : '68%';
-
-                    // Populate details card
+                    document.getElementById('detail-plantName-title').innerText = plant.plantName ? plant.plantName : 'Plant Details';
                     document.getElementById('detail-plantName').innerText = plant.plantName || '-';
                     document.getElementById('detail-plantType').innerText = plant.plantType || '-';
                     document.getElementById('detail-plantedDate').innerText = plant.plantedDate || '-';
@@ -266,6 +249,45 @@
             }
         }
         fetchDetail();
+
+        // Fetch all user's plants for sidebar
+        async function fetchSidebarPlants() {
+            try {
+                const response = await fetch('http://localhost:8080/api/v1/plants', {
+                    headers: auth.authHeaders()
+                });
+                const json = await response.json();
+                const plants = json.data || [];
+                const list = document.getElementById('sidebar-plants-list');
+                list.innerHTML = '';
+                if (plants.length === 0) {
+                    const li = document.createElement('li');
+                    li.style.color = 'var(--text-dim)';
+                    li.style.fontSize = '0.98rem';
+                    li.innerText = 'No plants found';
+                    list.appendChild(li);
+                } else {
+                    plants.forEach(plant => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = `plant-detail.html?id=${plant.id}`;
+                        a.innerText = plant.plantName || 'Unnamed Plant';
+                        a.style.textDecoration = 'none';
+                        a.style.color = 'var(--text-main)';
+                        a.style.fontWeight = '600';
+                        a.style.padding = '4px 0';
+                        if (plant.id == plantId) {
+                            a.style.color = 'var(--primary)';
+                        }
+                        li.appendChild(a);
+                        list.appendChild(li);
+                    });
+                }
+            } catch (err) {
+                // Optionally handle error
+            }
+        }
+        fetchSidebarPlants();
     </script>
 </body>
 </html>
